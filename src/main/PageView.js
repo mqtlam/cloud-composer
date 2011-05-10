@@ -1,15 +1,11 @@
 
 ////////// CONSTANTS
 // These constants must be changed in CSS as well
-var instrumentSize = 16;			// size of a single image
-
-// Normal constants
 
 
-
-var instrument = "piano";
-
+// reference to the grid object
 var grid;
+var selector;
 
 
 // computed values
@@ -25,10 +21,17 @@ function setEvents() {
 function mouseClick(event) {
 	var current = event.target;
 	if (current.className == "grid_square") { 
-		grid.gridClick(current, instrument);
+		var instrument = selector.currentInstrument;
+		if (instrument) {
+			grid.gridClick(current, selector.currentInstrument);
+		} else {
+			alert("you must select an instrument");
+		}
 		
 	} else if (current.id == "extender") {
 		grid.extendGrid(current);
+	} else if (current.className == "instrumentContainer") {
+		selector.setActiveInstrument(current.id);
 	}
 
 }
@@ -70,11 +73,14 @@ function sortAndPrintNotes() {
 function loadUI() {
 	setEvents();
 	
-	// create Grid
+	// create Grid, multiple of 16
 	grid = new NoteGrid("grid", 112);
-	
-	loadInstruments();
-	
+	selector = new InstrumentSelector([
+			new Instrument("piano", "images/piano.png", "red"),
+			new Instrument("guitar", "images/guitar.png", "orange"),
+			new Instrument("drum", "images/drum.png", "green"),
+			new Instrument("trumpet", "images/trumpet.png", "yellow"),
+			new Instrument("violin", "images/violin.png","purple")]);
 }
 
 

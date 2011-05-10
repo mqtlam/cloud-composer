@@ -11,7 +11,7 @@ function Note(len, inst, pitch) {
 // pre-condition:
 // two notes can't have same instruments and pitch but different length
 Note.prototype.equals = function (note) {
-	return this.instrument == note.instrument
+	return this.instrument.equals(note.instrument)
 		&& this.pitch == note.pitch;
 }
 	

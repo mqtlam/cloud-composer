@@ -32,14 +32,14 @@ NoteData.prototype.addColumns = function (col) {
 
 // adds the note
 NoteData.prototype.addNote = function (column, note) {
-	var noteArray = this.data[column][note.instrument];
+	var noteArray = this.data[column][note.instrument.instrumentName];
 	var index = this.getIndex(column, note);
 	if (index == -1) {
 		// okay to add
 		if (!noteArray) {
-			this.data[column][note.instrument] = [];
+			this.data[column][note.instrument.instrumentName] = [];
 		}
-		this.data[column][note.instrument].push(note);
+		this.data[column][note.instrument.instrumentName].push(note);
 		return true;
 
 	} else {
@@ -51,7 +51,7 @@ NoteData.prototype.addNote = function (column, note) {
 
 // removes the note, returns true on success.
 NoteData.prototype.removeNote = function (column, note) {
-	var noteArray = this.data[column][note.instrument];
+	var noteArray = this.data[column][note.instrument.instrumentName];
 	var index = this.getIndex(column, note);
 
 	if (index == -1) {
@@ -60,21 +60,21 @@ NoteData.prototype.removeNote = function (column, note) {
 		
 	} else {
 		// remove the note
-		this.data[column][note.instrument].splice(index, 1);
+		this.data[column][note.instrument.instrumentName].splice(index, 1);
 		return true;
 	}
 }
 
 NoteData.prototype.changeNoteLength = function (column, note, len) {
 	var index = getIndex(column, note);
-	this.data[column][note.instrument][index].changeLength(len);
+	this.data[column][note.instrument.instrumentName][index].changeLength(len);
 }
 
 
 // searches the data to see if the note exist.
 // if exist, return the index, otherwise -1
 NoteData.prototype.getIndex = function (column, note) {
-	var noteArray = this.data[column][note.instrument];
+	var noteArray = this.data[column][note.instrument.instrumentName];
 	if (noteArray) {
 		for (var i=0; i<noteArray.length; i++) {
 			if (noteArray[i].equals(note)) {
@@ -97,7 +97,6 @@ NoteData.prototype.print = function () {
 		for (var instr in column) {
 			str += "\t" + instr + ":\n";
 			var notes = column[instr];			
-			alert(notes.length);
 			for (var n = 0; n<notes.length; n++) {
 				str += "\t\t" + notes[n].pitch + "\n";
 			}
