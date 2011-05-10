@@ -3,12 +3,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/*
+/**
  * 
+ *
  */
 public class NoteGrid {
 	/** note grid that contains instrument notes **/
-	private List<HashMap<Integer, ArrayList<Note>>> grid;
+	private Map<Integer, HashMap<Integer, ArrayList<Note>>> grid;
 	/** the number of instrument notes on note grid **/
 	private int size;
 	
@@ -16,44 +17,35 @@ public class NoteGrid {
 	 * Constructs a NoteGrid object
 	 */
 	public NoteGrid() {
-		grid = new ArrayList<HashMap<Integer, ArrayList<Note>>>();
+		grid = new HashMap<Integer, HashMap<Integer, ArrayList<Note>>>();
 		size = 0;
 	}
 	
 	/**
-	 * Adds note onto NoteGrid
 	 * 
-	 * @param column, integer that represents a column of NoteGrid
-	 * @param length, integer that represents the length of an instrument
-	 * @param instrument, integer that represents an instrument
-	 * @param pitch, integer that represents the pitch of a note
-	 * @requires column, length, instrument and pitch >= 0
-	 * @modifies this
-	 * @effects adds a note onto the NoteGrid. If the same node already exists,
-	 * 			node will not be added at all.
+	 * @param note
+	 * @param column
 	 */
 	public void add(Note note, int column) {
 		Map<Integer, ArrayList<Note>> columns = grid.get(column);
 		if (columns == null) {
-			columns = new HashMap<Integer, ArrayList<Note>>();
-			List<Note> notes = new ArrayList<Note>();
-			if (notes.add(note)) {
-				columns.put(note.pitch, (ArrayList<Note>) notes);
-				grid.add(column, (HashMap<Integer, ArrayList<Note>>) columns);
-			}
+			Map<Integer, ArrayList<Note>> newColumn = new HashMap<Integer, ArrayList<Note>>();
+			ArrayList<Note> newRow = new ArrayList<Note>();
+			newRow.add(note);
+			newColumn.put(note.pitch, newRow);
 		} else {
-			List<Note> notes = columns.get(note.pitch);
-			if (notes == null) {
-				notes = new ArrayList<Note>();
-				if (notes.add(note))
-					columns.put(note.pitch, (ArrayList<Note>) notes);
-			} else
-				if (!notes.contains(note))
-					try {
-						notes.add(note);
-					} catch(Exception e) {
-						System.err.println("Note is not added");
-					}
+			ArrayList<Note> row = columns.get(columns);
+			if (row == null) {
+				ArrayList<Note> newRow = new ArrayList<Note>();
+				newRow.add(note);
+				columns.put(note.pitch, newRow);
+			} else {
+				if (!row.contains(note)) {
+					row.add(note);
+					columns.put(note.pitch, row);
+				} else
+					return;
+			}
 		}
 		size++;
 	}
@@ -65,14 +57,22 @@ public class NoteGrid {
 	 */
 	public void remove(Note note, int column) {
 		Map<Integer, ArrayList<Note>> columns = grid.get(column);
-		List<Note> notes = columns.get(note.pitch);
-		for (Note n : notes) {
-			if (n.equals(note))
-				if (notes.remove(n))
-					size--;
-		}
+		ArrayList<Note> row = columns.get(note.pitch);
+		row.remove(note);
+		size--;
 	}
-
+	
+	/**
+	 * 
+	 * @param column
+	 * @param pitch
+	 * @return
+	 */
+	public boolean removeAllNotes(int column, int pitch) {
+		size -= grid.get(column).get(pitch).size();
+		return grid.get(column).remove(pitch) != null;
+	}
+	
 	/**
 	 * Returns a copy of a list of notes of given column and pitch
 	 * 
@@ -84,7 +84,7 @@ public class NoteGrid {
 	public List<Note> get(int column, int pitch) {
 		return new ArrayList<Note>(grid.get(column).get(pitch));
 	}
-	
+
 	/**
 	 * Returns true if note already exists.
 	 * Otherwise, returns false.
@@ -98,8 +98,8 @@ public class NoteGrid {
 			for (Note n : grid.get(column).get(note.pitch))
 				return (n.instrument == note.instrument && n.length == note.length);
 		return false;
-	}	
-
+	}
+	
 	/**
 	 * @return the number of instrument notes on note grid
 	 */
