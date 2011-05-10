@@ -32,7 +32,7 @@ public class NoteGrid {
 	 * @effects adds a note onto the NoteGrid. If the same node already exists,
 	 * 			node will not be added at all.
 	 */
-	public void add(int column, Note note) {
+	public void add(Note note, int column) {
 		Map<Integer, ArrayList<Note>> columns = grid.get(column);
 		if (columns == null) {
 			columns = new HashMap<Integer, ArrayList<Note>>();
@@ -49,35 +49,68 @@ public class NoteGrid {
 					columns.put(note.pitch, (ArrayList<Note>) notes);
 			} else
 				if (!notes.contains(note))
-					if (notes.add(note)) {}
+					try {
+						notes.add(note);
+					} catch(Exception e) {
+						System.err.println("Note is not added");
+					}
 		}
 		size++;
 	}
 	
-	public void remove(int column, Note note) {
+	/**
+	 * 
+	 * @param note
+	 * @param column
+	 */
+	public void remove(Note note, int column) {
 		Map<Integer, ArrayList<Note>> columns = grid.get(column);
 		List<Note> notes = columns.get(note.pitch);
-		notes.remove(note);
-		size--;
+		for (Note n : notes) {
+			if (n.equals(note))
+				if (notes.remove(n))
+					size--;
+		}
 	}
 
+	/**
+	 * Returns a copy of a list of notes of given column and pitch
+	 * 
+	 * @param column, index of columns
+	 * @param pitch, integer that represents pitch of note
+	 * @requires column & pitch >= 0
+	 * @return a list of notes of given column and pitch
+	 */
 	public List<Note> get(int column, int pitch) {
-		return grid.get(column).get(pitch);
+		return new ArrayList<Note>(grid.get(column).get(pitch));
 	}
 	
-	public boolean contains(int column, Note note) {
+	/**
+	 * Returns true if note already exists.
+	 * Otherwise, returns false.
+	 * 
+	 * @param note, note object
+	 * @param column, index of columns
+	 * @return true if note exists on note grid. False, otherwise
+	 */
+	public boolean contains(Note note, int column) {
 		if (grid.get(column) != null)
 			for (Note n : grid.get(column).get(note.pitch))
 				return (n.instrument == note.instrument && n.length == note.length);
 		return false;
 	}	
 
+	/**
+	 * @return the number of instrument notes on note grid
+	 */
 	public int size() {
 		return size;
 	}
 		
+	/**
+	 * clears note grid
+	 */
 	public void clear() {
 		grid.clear();
 	}
-
 }
