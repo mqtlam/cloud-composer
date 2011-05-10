@@ -1,20 +1,57 @@
-var PIANO = 1;
-var GUITAR = 2;
-var DRUM = 3;
-var TRUMPET = 4;
-var VIOLIN = 5;
+function InstrumentSelector(list) {
+	this.instruments = list;
+	this.currentInstrument;
 
-var instrumentsOrder = ["noop", "piano", "guitar", "drum", "trumpet", "violin"];	// order of instruments to be displayed in
-var currentInstrument = DRUM;
-	
-function loadInstruments() {
+	this.updateInstrumentView();
+}
+
+InstrumentSelector.prototype.addInstrument = function (type, url, colorCode) {
+	var l = this.instruments.push(new Instrument(type, url, colorCode));
+	this.createInstrumentView(l-1);
+}
+
+InstrumentSelector.prototype.removeInstrument = function (type, url, colorCode) {
+	this.instruments.push(new Instrument(type, url, colorCode));
+	this.updateInstrumentView();
+}
+
+InstrumentSelector.prototype.createInstrumentView = function (index) {
 	var bar = document.getElementById("instrumentBar");
-	for (var i=1; i < instrumentsOrder.length; i++) {
-		var img = document.createElement("span");
-		img.className = "instrumentContainer";
-		img.style.backgroundImage = "url(images/"+instrumentsOrder[i]+".png)";
-		
-		bar.appendChild(img);
-	}
-}	
+	
+	var img = document.createElement("span");
+	img.className = "instrumentContainer";
+	img.id = this.instruments[index].instrumentName;
+	img.style.backgroundImage = "url(" + this.instruments[index].imgURL + ")";
+	img.style.backgroundColor = this.instruments[index].color;
+//	img.style.backgroundImage = "url(images/"+this.instruments[index]+".png)";		
+	bar.appendChild(img);
+}
 
+InstrumentSelector.prototype.updateInstrumentView = function () {
+	var bar = document.getElementById("instrumentBar");
+	// first clear all the children.
+	var len = bar.children.length; 
+	for (var a=0; a<len; a++) {
+		bar.removeChild(bar.children[a]);
+	}
+
+	// then add all
+	for (var i=0; i < this.instruments.length; i++) {
+		this.createInstrumentView(i);
+	}
+}
+
+
+InstrumentSelector.prototype.setActiveInstrument = function (instrumentName) {
+	this.currentInstrument = this.getInstrument(instrumentName);
+}
+
+InstrumentSelector.prototype.getInstrument = function (instrumentName) {
+	for (var i=0; i<this.instruments.length; i++) {
+//		alert(this.instruments[i].instrumentName + "  " + instrumentName);
+		if (this.instruments[i].instrumentName == instrumentName) {
+			return this.instruments[i];
+		}
+	}
+	return null;
+}

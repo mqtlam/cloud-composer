@@ -4,7 +4,6 @@ function NoteGrid(id, cols) {
 	// initiated values
 	this.numColumns = 0;					// current number of columns
 	this.notes = new NoteData(this.numColumns);			// array that contains all the notes
-
 	
 	
 	// constants for the grid	
@@ -188,10 +187,6 @@ NoteGrid.prototype.gridClick = function (evt, instrument) {
 		square.style.backgroundColor = "transparent";
 		this.notes.removeNote(column, note);
 	}
-}
-
-NoteGrid.prototype.getSquare = function(note) {
-
 }
 
 // assume there is some integer in the string
