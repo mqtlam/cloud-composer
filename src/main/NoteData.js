@@ -86,6 +86,19 @@ NoteData.prototype.getIndex = function (column, note) {
 	return -1;
 }
 
+NoteData.prototype.getInstruments = function (column, pitch) {
+	var list = [];
+	for (var instr in this.data[column]) {
+		for (var i=0; i<this.data[column][instr].length; i++) {
+//			alert(this.data[column][instr][i].pitch+" ?? "+pitch);
+			if (this.data[column][instr][i].pitch == pitch) {
+				list.push(instr);
+				break;
+			}
+		}
+	}
+	return list;
+}
 
 // prints the note for debugging
 NoteData.prototype.print = function () {

@@ -44,6 +44,7 @@ InstrumentSelector.prototype.updateInstrumentView = function () {
 
 InstrumentSelector.prototype.setActiveInstrument = function (instrumentName) {
 	this.currentInstrument = this.getInstrument(instrumentName);
+	this.updateSelected();
 }
 
 InstrumentSelector.prototype.getInstrument = function (instrumentName) {
@@ -54,4 +55,13 @@ InstrumentSelector.prototype.getInstrument = function (instrumentName) {
 		}
 	}
 	return null;
+}
+
+InstrumentSelector.prototype.updateSelected = function () {
+	for (var i=0; i<this.instruments.length; i++) {
+		var sel = document.getElementById(this.instruments[i].instrumentName);
+		sel.className = sel.className.replace(" instrumentSelected","");
+	}
+	var sel = document.getElementById(this.currentInstrument.instrumentName);
+	sel.className = sel.className + " instrumentSelected";
 }

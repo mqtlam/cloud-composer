@@ -1,10 +1,10 @@
 // Contains functions related to the grid
 
-function NoteGrid(id, cols) {
+function NoteGrid(id, cols, instr) {
 	// initiated values
 	this.numColumns = 0;					// current number of columns
 	this.notes = new NoteData(this.numColumns);			// array that contains all the notes
-	
+	this.instruments = instr;
 	
 	// constants for the grid	
 	// must change is css
@@ -44,7 +44,6 @@ function NoteGrid(id, cols) {
 	grid.style.height = this.scrollbarOffsets + this.h + "px";
 	grid.appendChild(this.createGrid(cols));	// must be multiple of 16
 }
-
 
 NoteGrid.prototype.createSquare = function (loc_y) {
 	var sq = document.createElement("div");
@@ -169,24 +168,86 @@ NoteGrid.prototype.updateColumnNumber = function (addition) {
 	// update the Notedata
 }
 
+NoteGrid.prototype.updateDisplay = function(column, pitch) {
+	var instrumentsToDisplay = this.getInstruments(this.notes.getInstruments(column, pitch));
+	var column = document.getElementById("column"+column);
+	var square = column.getElementsByClassName("grid_square")[pitch];
+	
+	this.updateIndicator(square, instrumentsToDisplay);
+}
+
+NoteGrid.prototype.updateIndicator = function(square, instrumentsList) {
+	while (square.children.length) {
+		square.removeChild(square.children[0]);
+	}
+	square.appendChild(this.createInstrumentIndicator(instrumentsList));
+}
+
+NoteGrid.prototype.updateMainImage = function(instrumentName) {
+	for (var j=0; j<this.instruments.length; j++) {
+		var notes = document.getElementsByClassName(this.instruments[j].instrumentName);
+		for (var i=0; i<notes.length; i++) {
+			notes[i].style.backgroundImage = "none";
+		}
+	}
+	var notes = document.getElementsByClassName(instrumentName);
+	for (var i=0; i<notes.length; i++) {
+		notes[i].style.backgroundImage = "url('images/thumbnail_"+instrumentName+".png')";
+	}
+}
+
+NoteGrid.prototype.createInstrumentIndicator = function (instrs) {
+	var len = this.instruments.length;
+	var side = Math.floor((this.raw_size-3)/len) - 1;
+	var holder = document.createElement("div");
+	holder.className = "instrumentDisplayBox";
+	holder.style.width = (this.raw_size - 4) + "px";
+	holder.style.height = side + "px";
+	for (var i=0; i<instrs.length; i++) {
+		var span = document.createElement("span");
+		span.className = "instrumentIndicator";
+		span.style.width = side + "px";
+		span.style.height = side + "px";
+		span.style.backgroundColor = instrs[i].color;
+		holder.appendChild(span);
+	}
+	return holder;
+}
+
+NoteGrid.prototype.createInstrumentImg = function (instrumnet) {
+	var len = this.instruments.length;
+	var side = Math.floor((this.raw_size-3)/len) - 1;
+	var holder = document.createElement("div");
+	holder.className = "instrumentDisplayBox";
+	holder.style.width = (this.raw_size - 4) + "px";
+	holder.style.height = (this.raw_size - 6 - side) + "px";
+	holder.className = "instrumentImage";
+
+	return holder;
+}
+
 NoteGrid.prototype.gridClick = function (evt, instrument) {
 	var square = evt;
 	
-	var pitch = this.getInt(square.id);
-	var column = this.getInt(square.parentNode.parentNode.id);
+	var pitch = parseInt(this.getInt(square.id));
+	var column = parseInt(this.getInt(square.parentNode.parentNode.id));
 	
 	var note = new Note(1, instrument, pitch);			/// construct note from input
 	var index = this.notes.getIndex(column, note);
 
 	// should add the note if not already there, otherwise remove
+	
 	if (index == -1) {
-		square.style.backgroundColor = this.noteColor;
 		this.notes.addNote(column, note);
-		
+		square.className = square.className + " " + instrument.instrumentName;
+		square.style.backgroundImage = "url('images/thumbnail_"+instrument.instrumentName+".png')";
 	} else {
-		square.style.backgroundColor = "transparent";
 		this.notes.removeNote(column, note);
+		square.style.backgroundImage = "none";
+		square.className = square.className.replace(" " + instrument.instrumentName, "");
 	}
+	
+	this.updateDisplay(column, pitch);
 }
 
 // assume there is some integer in the string
@@ -194,6 +255,17 @@ NoteGrid.prototype.getInt = function (str) {
 	return str.match(/\d+/)[0];
 }
 
+NoteGrid.prototype.getInstruments = function (instrumentNameList) {
+	var newList = [];
+	for (var i=0; i<this.instruments.length; i++) {
+		for (var j=0; j<instrumentNameList.length; j++) {
+			if (this.instruments[i].instrumentName == instrumentNameList[j]) {
+				newList.push(this.instruments[i]);
+			}	
+		}
+	}
+	return newList;
+}
 
 /* checks if a note is already placed */
 NoteGrid.prototype.checkNote = function (a, b) {

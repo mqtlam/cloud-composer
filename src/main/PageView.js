@@ -20,7 +20,7 @@ function setEvents() {
 
 function mouseClick(event) {
 	var current = event.target;
-	if (current.className == "grid_square") { 
+	if (current.className.indexOf("grid_square") == 0 || current.parentNode.className.indexOf("grid_square") == 0) { 
 		var instrument = selector.currentInstrument;
 		if (instrument) {
 			grid.gridClick(current, selector.currentInstrument);
@@ -31,7 +31,9 @@ function mouseClick(event) {
 	} else if (current.id == "extender") {
 		grid.extendGrid(current);
 	} else if (current.className == "instrumentContainer") {
+	
 		selector.setActiveInstrument(current.id);
+		grid.updateMainImage(selector.currentInstrument.instrumentName);
 	}
 
 }
@@ -72,15 +74,16 @@ function sortAndPrintNotes() {
 
 function loadUI() {
 	setEvents();
-	
-	// create Grid, multiple of 16
-	grid = new NoteGrid("grid", 112);
-	selector = new InstrumentSelector([
+	var instrumentsList = [
 			new Instrument("piano", "images/piano.png", "red"),
 			new Instrument("guitar", "images/guitar.png", "orange"),
 			new Instrument("drum", "images/drum.png", "green"),
 			new Instrument("trumpet", "images/trumpet.png", "yellow"),
-			new Instrument("violin", "images/violin.png","purple")]);
+			new Instrument("violin", "images/violin.png","purple")];
+			
+	selector = new InstrumentSelector(instrumentsList);		
+	// create Grid, multiple of 16
+	grid = new NoteGrid("grid", 112, instrumentsList);		//
 }
 
 

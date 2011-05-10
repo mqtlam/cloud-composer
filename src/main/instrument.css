@@ -1,13 +1,42 @@
 /* Instrument Specific Style: */
-.piano { background-color:blue; }
-.guitar { background-color:green; }
-.drum { background-color:red; }
-.trumpet { background-color:yellow; }
-.violin { background-color:orange; }
+.piano {  }
+.guitar {  }
+.drum {  }
+.trumpet { }
+.violin {  }
 
 .instrumentContainer
 {
 	width:48px;
 	height:48px;
 	float:left;
+	cursor:pointer;
+	margin-bottom:2px;
+}
+
+.instrumentSelected
+{
+	width:44px;
+	height:44px;
+	border:2px dashed #000000;
+}
+
+.instrumentDisplayBox
+{
+	position:absolute;
+	bottom:2px;
+	left:2px;
+}
+
+.instrumentIndicator
+{
+	margin-left:1px;
+	float:left;
+}
+
+.instrumentImage
+{
+	position:absolute;
+	top:2px;
+	left:2px;
 }

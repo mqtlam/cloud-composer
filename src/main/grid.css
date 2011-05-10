@@ -17,7 +17,8 @@ Grid {
 
 .grid_square
 {
-	
+	background-position = 2px 2px;
+	background-repeat:no-repeat;
 }
  
 /* Square */
@@ -29,6 +30,7 @@ Grid {
 	width: 40px;
 	height: 40px;
 	cursor:pointer;
+	position:relative;
 }
 
 /* Octave */
