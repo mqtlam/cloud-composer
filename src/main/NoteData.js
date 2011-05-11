@@ -74,6 +74,7 @@ NoteData.prototype.changeNoteLength = function (column, note, len) {
 // searches the data to see if the note exist.
 // if exist, return the index, otherwise -1
 NoteData.prototype.getIndex = function (column, note) {
+//	alert(this.data.length + " trying to access: 	" + column);					///////////////
 	var noteArray = this.data[column][note.instrument.instrumentName];
 	if (noteArray) {
 		for (var i=0; i<noteArray.length; i++) {
