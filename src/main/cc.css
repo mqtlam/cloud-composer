@@ -53,11 +53,12 @@ body > div
 	float:right;
 	width:200px;
 	height:30px;
-	border:1px solid white;
+/*	border:1px solid white;*/
 	margin-top:24px;
 	font-size:8pt;
 	font-weight:bold;
 	text-align:center;
+	position:relative;
 }
 
 #mid{}
