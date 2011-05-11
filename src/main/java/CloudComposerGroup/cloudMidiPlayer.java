@@ -38,7 +38,6 @@ public class cloudMidiPlayer
 		loadMidiSystem();
 		setTempo(DEFAULTBPM);
 		noteSequences = new Sequence[INSTRUMENTS][SCALENOTES * OCTAVES];
-		generateNotes();
 	}
 	
 	// Sets the tempo of the song using the provided BPM. 
@@ -90,6 +89,7 @@ public class cloudMidiPlayer
 		seq.setTickPosition(0);
 	}
 	
+	// Sets the current place in the song based on a percentage of the song length.
 	public void setPlayTime(float percent) 
 	{
 		long songLength = seq.getTickLength();
@@ -106,7 +106,7 @@ public class cloudMidiPlayer
 	// Adds a note to the sequence provided with the provided details.
 	// startPos and stopPos are in terms of the column locations,
 	// and pitch is also in terms of the row location of the note.
-	public static void addNote(Sequence s, int inst, 
+	public static void addNote(Sequence s, SequenceInst inst, 
 						 int pitch, int startPos, int stopPos) 
 						 throws InvalidMidiDataException 
 	{
@@ -114,11 +114,11 @@ public class cloudMidiPlayer
 		int stopTick = (int) (stopPos * ticksPerSecond / 16);
 		Track t = s.getTracks()[0];
 		ShortMessage m = new ShortMessage();
-		m.setMessage(ShortMessage.NOTE_ON, 0, pitch / SCALENOTES * 12 + SCALE[inst], 100);
+		m.setMessage(ShortMessage.NOTE_ON, 0, pitch / SCALENOTES * 12 + SCALE[inst.value], 100);
 		t.add(new MidiEvent(m, startTick));
 		
 		ShortMessage m2 = new ShortMessage();
-		m2.setMessage(ShortMessage.NOTE_OFF, 0, pitch / SCALENOTES * 12 + SCALE[inst], 100);
+		m2.setMessage(ShortMessage.NOTE_OFF, 0, pitch / SCALENOTES * 12 + SCALE[inst.value], 100);
 		t.add(new MidiEvent(m, stopTick));
 	}
 	
@@ -149,7 +149,7 @@ public class cloudMidiPlayer
 		for (SequenceInst inst : SequenceInst.values()) {
 			for (int pitch = 0; pitch < SCALENOTES * OCTAVES; pitch++) {
 				Sequence s = new Sequence(Sequence.SMPTE_30, ticksPerFrame);
-				addNote(s, inst.value, pitch, 0, 4);
+				addNote(s, inst, pitch, 0, 4);
 				noteSequences[inst.value][pitch] = s;
 			}
 		}
