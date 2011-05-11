@@ -14,7 +14,7 @@ public class cloudMidiPlayer
 	private static final int OCTAVES = 2;
 	private static final int DEFAULTBPM = 120;
 	
-	private float ticksPerSecond;
+	private static float ticksPerSecond;
 	private Sequencer seq;
 	private Synthesizer synth;
 	
@@ -103,6 +103,25 @@ public class cloudMidiPlayer
 		return (int) (currentTick / (ticksPerSecond / 16));
 	}
 	
+	// Adds a note to the sequence provided with the provided details.
+	// startPos and stopPos are in terms of the column locations,
+	// and pitch is also in terms of the row location of the note.
+	public static void addNote(Sequence s, int inst, 
+						 int pitch, int startPos, int stopPos) 
+						 throws InvalidMidiDataException 
+	{
+		int startTick = (int) (startPos * ticksPerSecond / 16);
+		int stopTick = (int) (stopPos * ticksPerSecond / 16);
+		Track t = s.getTracks()[0];
+		ShortMessage m = new ShortMessage();
+		m.setMessage(ShortMessage.NOTE_ON, 0, pitch / SCALENOTES * 12 + SCALE[inst], 100);
+		t.add(new MidiEvent(m, startTick));
+		
+		ShortMessage m2 = new ShortMessage();
+		m2.setMessage(ShortMessage.NOTE_OFF, 0, pitch / SCALENOTES * 12 + SCALE[inst], 100);
+		t.add(new MidiEvent(m, stopTick));
+	}
+	
 	
 // PRIVATE METHODS
 	
@@ -123,21 +142,6 @@ public class cloudMidiPlayer
 		}
 	}
 	
-	// Adds a note to the sequence provided with the provided details.
-	private void addNote(Sequence s, SequenceInst inst, 
-						 int pitch, int startPos, int stopPos) 
-						 throws InvalidMidiDataException 
-	{
-		Track t = s.getTracks()[0];
-		ShortMessage m = new ShortMessage();
-		m.setMessage(ShortMessage.NOTE_ON, 0, pitch / SCALENOTES * 12 + SCALE[inst.value], 100);
-		t.add(new MidiEvent(m, startPos));
-		
-		ShortMessage m2 = new ShortMessage();
-		m2.setMessage(ShortMessage.NOTE_OFF, 0, pitch / SCALENOTES * 12 + SCALE[inst.value], 100);
-		t.add(new MidiEvent(m, stopPos));
-	}
-	
 	// Generates the Sequences required for single note playback.
 	private void generateNotes() throws InvalidMidiDataException 
 	{
@@ -145,7 +149,7 @@ public class cloudMidiPlayer
 		for (SequenceInst inst : SequenceInst.values()) {
 			for (int pitch = 0; pitch < SCALENOTES * OCTAVES; pitch++) {
 				Sequence s = new Sequence(Sequence.SMPTE_30, ticksPerFrame);
-				addNote(s, inst, pitch, 0, (int) ticksPerSecond / 4);
+				addNote(s, inst.value, pitch, 0, 4);
 				noteSequences[inst.value][pitch] = s;
 			}
 		}
