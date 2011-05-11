@@ -7,6 +7,7 @@
 var grid;
 var selector;
 var midiplayer;
+var tempobar;
 
 // computed values
 
@@ -38,7 +39,6 @@ function mouseClick(event) {
 	} else if (current.id == "stopbutton") { // 
 		midiplayer.onStopClick();
 	} else if (current.id == "playpausebutton") {
-		alert("tes");
 		midiplayer.onPlayPauseClick();
 	}
 
@@ -91,7 +91,7 @@ function loadUI() {
 	// create Grid, multiple of 16
 	grid = new NoteGrid("grid", 112, instrumentsList);		//
 	midiplayer = new MidiPlayer();
-
+    tempobar = new Slider("tempo", 200, 10);
 }
 
 
