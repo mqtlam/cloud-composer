@@ -1,3 +1,9 @@
+// cloudMidiPlayer.java
+
+// This file provides a class for storing and playing a song.
+// It also generates and holds individual note pitch data for playing
+// whenever a note is pressed on the user interface.
+
 import javax.sound.midi.*;
 
 public class cloudMidiPlayer 
@@ -6,13 +12,16 @@ public class cloudMidiPlayer
 	private static final int INSTRUMENTS = 5;
 	private static final int SCALENOTES = 5;
 	private static final int OCTAVES = 2;
+	private static final int DEFAULTBPM = 120;
 	
 	private float ticksPerSecond;
 	private Sequencer seq;
 	private Synthesizer synth;
+	
 	private Sequence[][] noteSequences;
 	private Sequence song;
 	
+	// Private enum for the list of instruments Cloud Composer supports.
 	private enum SequenceInst 
 	{
 		PIANO(0), GUITAR(1), DRUM(2), TRUMPET(3), VIOLIN(4);
@@ -23,14 +32,16 @@ public class cloudMidiPlayer
 		}
 	}
 	
+	// Constructs a cloudMidiPlayer with the default BPM.
 	public cloudMidiPlayer() throws Exception 
 	{
 		loadMidiSystem();
-		generateNotes();
+		setTempo(DEFAULTBPM);
 		noteSequences = new Sequence[INSTRUMENTS][SCALENOTES * OCTAVES];
 		generateNotes();
 	}
 	
+	// Sets the tempo of the song using the provided BPM. 
 	public void setTempo(float bpm) throws InvalidMidiDataException 
 	{
 		seq.setTempoInBPM(bpm);
@@ -38,25 +49,43 @@ public class cloudMidiPlayer
 		generateNotes();
 	}
 	
-	public void play() 
-	{
+	// Plays the sequence previously loaded.
+	public void play() {
 		seq.start();
 	}
 	
+	// Plays the sequence provided.
+	public void playSong(Sequence s) throws InvalidMidiDataException 
+	{
+		song = s;
+		seq.setSequence(song);
+		seq.start();
+	}
+	
+	// Pauses the song.
 	public void pause() 
 	{
 		seq.stop();
 	}
 	
+	// Stops the song and returns to the beginning.
 	public void stop() 
 	{
 		seq.stop();
 		seq.setTickPosition(0);
 	}
 	
+	// Returns the column of the playback bar.
+	public int playbackBarColumn() 
+	{
+		int currentTick = (int) seq.getTickPosition();
+		return (int) (currentTick / (ticksPerSecond / 16));
+	}
+	
 	
 // PRIVATE METHODS
 	
+	// Prepares the Midi System for use.
 	private void loadMidiSystem() throws Exception 
 	{
 		seq = MidiSystem.getSequencer();
@@ -73,7 +102,7 @@ public class cloudMidiPlayer
 		}
 	}
 	
-
+	// Adds a note to the sequence provided with the provided details.
 	private void addNote(Sequence s, SequenceInst inst, 
 						 int pitch, int startPos, int stopPos) 
 						 throws InvalidMidiDataException 
@@ -88,6 +117,7 @@ public class cloudMidiPlayer
 		t.add(new MidiEvent(m, stopPos));
 	}
 	
+	// Generates the Sequences required for single note playback.
 	private void generateNotes() throws InvalidMidiDataException 
 	{
 		int ticksPerFrame = (int) ticksPerSecond * 30;
