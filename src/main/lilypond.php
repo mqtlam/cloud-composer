@@ -89,9 +89,15 @@ function generateFileName() {
  */
 function interpretData($data)
 {
-    // TODO
+    // TODO: do actual interpretation
+    // current generates a blank template
     
-    return $data;
+    $newdata = "";
+    
+    $newdata .= "{\n\t\\time 4/4\n\t\\clef treble";
+    $newdata .= "\n}";
+    
+    return $newdata;
 }
 
 /**
