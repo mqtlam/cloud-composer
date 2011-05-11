@@ -21,7 +21,9 @@ function NoteGrid(id, cols, instr) {
 	this.extenderWidth = 24;			// width of the extender bar
 	this.appendBy = 2;					// number of measures to append at a time
 	this.instrumentOffset = 2;			// stack distancei
-	
+	this.scrollbarOffsets = 20;			//
+	this.selectorHeight = 14;			//	
+
 	//computed values
 	this.size = this.raw_size + 2*this.border; 			// actual size including borders
 	this.h = this.size*this.pitches*this.octaves
@@ -29,13 +31,6 @@ function NoteGrid(id, cols, instr) {
 			+ this.selectorHeight; 	// height of a column
 	this.w = (this.margin+this.size)*20; 				// the visible section of the grid
 	
-	
-	// temporary variables... need to get rid of this eventually?
-	this.noteColor = "#CCCCCC";			// 
-	this.extenderOverColor = "#EEEEEE";	// 
-	this.extenderColor = "#444444";		// 
-	this.scrollbarOffsets = 20;			//
-	this.selectorHeight = 14;			//
 
 
 ////////////////// create the grid and then add it to the child
@@ -155,7 +150,7 @@ NoteGrid.prototype.extendGrid = function (bar) {
 		+ this.appendBy*((this.measureWidth*(this.size+this.margin))
 		+ this.measureSeparation)) + "px";	// reset width of innergrid
 	
-	updateColumnNumber(this.appendBy*this.measureWidth);
+	this.updateColumnNumber(this.appendBy*this.measureWidth);
 	
 	// bug fix, onmouseout never gets detected when appending columns:
 	bar.style.backgroundColor = this.extenderColor;
@@ -236,7 +231,6 @@ NoteGrid.prototype.gridClick = function (evt, instrument) {
 	var index = this.notes.getIndex(column, note);
 
 	// should add the note if not already there, otherwise remove
-	
 	if (index == -1) {
 		this.notes.addNote(column, note);
 		square.className = square.className + " " + instrument.instrumentName;
