@@ -21,8 +21,8 @@ public class cloudMidiPlayer
 	private Sequence[][] noteSequences;
 	private Sequence song;
 	
-	// Private enum for the list of instruments Cloud Composer supports.
-	private enum SequenceInst 
+	// Set of enum values for the list of instruments Cloud Composer supports.
+	public enum SequenceInst 
 	{
 		PIANO(0), GUITAR(1), DRUM(2), TRUMPET(3), VIOLIN(4);
 		
@@ -44,6 +44,7 @@ public class cloudMidiPlayer
 	// Sets the tempo of the song using the provided BPM. 
 	public void setTempo(float bpm) throws InvalidMidiDataException 
 	{
+		pause();
 		seq.setTempoInBPM(bpm);
 		ticksPerSecond = 1800 * bpm;
 		generateNotes();
@@ -54,12 +55,26 @@ public class cloudMidiPlayer
 		seq.start();
 	}
 	
-	// Plays the sequence provided.
+	public void playNote(SequenceInst inst, int pitch) throws InvalidMidiDataException 
+	{
+		pause();
+		seq.setSequence(noteSequences[inst.value][pitch]);
+		play();
+	}
+	
+	// Sets the song to the provided sequence and plays the it.
 	public void playSong(Sequence s) throws InvalidMidiDataException 
+	{
+		pause();
+		setSequence(s);
+		play();
+	}
+	
+	// Sets the song to the provided sequence.
+	public void setSequence(Sequence s) throws InvalidMidiDataException 
 	{
 		song = s;
 		seq.setSequence(song);
-		seq.start();
 	}
 	
 	// Pauses the song.
@@ -73,6 +88,12 @@ public class cloudMidiPlayer
 	{
 		seq.stop();
 		seq.setTickPosition(0);
+	}
+	
+	public void setPlayTime(float percent) 
+	{
+		long songLength = seq.getTickLength();
+		seq.setTickPosition((long) (songLength * percent));
 	}
 	
 	// Returns the column of the playback bar.
