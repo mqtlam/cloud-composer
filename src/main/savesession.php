@@ -4,8 +4,11 @@
  * This script gets the composition data from the front end and saves
  * it to a file on the server, then returns the link of the file.
  *
- * Returns the link or displays an error message:
- *      CANNOT OPEN FILE: file cannot be open to write
+ * USAGE:   Pass the composition data to this php file
+ *          using the POST variable 'data'.
+ *          
+ *          Returns the link on success or displays an error message:
+ *              CANNOT OPEN FILE: file cannot be open to write
  * 
  * PHP version 5
  *
