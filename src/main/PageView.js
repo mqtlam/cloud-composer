@@ -20,6 +20,7 @@ function setEvents() {
 
 function mouseClick(event) {
 	var current = event.target;
+	
 	if (current.className.indexOf("grid_square") == 0 || current.parentNode.className.indexOf("grid_square") == 0) { 
 		var instrument = selector.currentInstrument;
 		if (instrument) {
