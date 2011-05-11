@@ -8,6 +8,8 @@
  * USAGE:   Pass the composition data to this php file
  *          using the POST variable 'data'.
  *          
+ *          Saves to ./saved_lilydata/filename.ly
+ *          
  *          Returns the link on success or displays an error message:
  *              CANNOT OPEN FILE: file cannot be open to write
  * 
@@ -89,7 +91,7 @@ function interpretData($data)
 {
     // TODO
     
-    return $data
+    return $data;
 }
 
 /**
