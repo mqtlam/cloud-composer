@@ -86,7 +86,7 @@ function generateFileName() {
 function saveSession($data, $filename)
 {
     // write data
-    $fileHandler = fopen($filename . FILE_EXTENSION, 'w')
+    $fileHandler = fopen(SAVE_DIRECTORY . $filename . FILE_EXTENSION, 'w')
         or die("CANNOT OPEN FILE");
     $dataToWrite = $data;
     fwrite($fileHandler, $dataToWrite);
