@@ -6,7 +6,8 @@
 // reference to the grid object
 var grid;
 var selector;
-
+var midiplayer;
+var tempobar;
 
 // computed values
 
@@ -35,6 +36,10 @@ function mouseClick(event) {
 	
 		selector.setActiveInstrument(current.id);
 		grid.updateMainImage(selector.currentInstrument.instrumentName);
+	} else if (current.id == "stopbutton") { // 
+		midiplayer.onStopClick();
+	} else if (current.id == "playpausebutton") {
+		midiplayer.onPlayPauseClick();
 	}
 
 }
@@ -85,6 +90,8 @@ function loadUI() {
 	selector = new InstrumentSelector(instrumentsList);		
 	// create Grid, multiple of 16
 	grid = new NoteGrid("grid", 112, instrumentsList);		//
+	midiplayer = new MidiPlayer();
+    tempobar = new Slider("tempo", 200, 10);
 }
 
 
