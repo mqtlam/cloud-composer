@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 
- *
+ * This class is for creating a note grid to contain
+ * all the notes of a song
  */
 public class NoteGrid {
 	/** note grid that contains instrument notes **/
@@ -23,9 +23,11 @@ public class NoteGrid {
 	}
 	
 	/**
+	 * Adds a note in a proper position of note grid
 	 * 
-	 * @param note
-	 * @param column
+	 * @param note, note object
+	 * @param column, integer that represents a column of note grid
+	 * @requires note != null && column >= 0
 	 */
 	public void add(Note note, int column) {
 		Map<Integer, ArrayList<Note>> columns = grid.get(column);
@@ -51,9 +53,11 @@ public class NoteGrid {
 	}
 	
 	/**
+	 * Removes a note at a particular of column and pitch
 	 * 
-	 * @param note
-	 * @param column
+	 * @param note, Note object
+	 * @param column, integer that represents a column of the note grid
+	 * @requires note != null && column >= 0
 	 */
 	public void remove(Note note, int column) {
 		Map<Integer, ArrayList<Note>> columns = grid.get(column);
@@ -63,10 +67,12 @@ public class NoteGrid {
 	}
 	
 	/**
+	 * true if it removes all the notes of a particular column and pitch.
+	 * Otherwise, false.
 	 * 
-	 * @param column
-	 * @param pitch
-	 * @return
+	 * @param column, integer that represents a column of the note grid
+	 * @param pitch, integer that represents a pitch of a note
+	 * @requires column && pitch >= 0
 	 */
 	public boolean removeAllNotes(int column, int pitch) {
 		size -= grid.get(column).get(pitch).size();
@@ -85,6 +91,9 @@ public class NoteGrid {
 		return new ArrayList<Note>(grid.get(column).get(pitch));
 	}
 	
+	/**
+	 * Returns a list of integers that represents the columns of the note grid
+	 */
 	@SuppressWarnings("unchecked")
 	public List<Integer> getColumns() {
 		List<Integer> columns = (List<Integer>) grid.keySet();
@@ -92,6 +101,13 @@ public class NoteGrid {
 		return columns;
 	}
 	
+	/**
+	 * Returns HashMap object to provide the notes of a different pitch of a column
+	 * 
+	 * @param column, integer that represents a column of note grid
+	 * @requires column >= 0
+	 * @return HashMap object that contains the notes of a different pitch corresponding to a particular column
+	 */
 	public HashMap<Integer, ArrayList<Note>> getPitches(int column) {
 		return grid.get(column);
 	}
