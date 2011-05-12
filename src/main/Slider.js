@@ -16,7 +16,10 @@ function Slider(id, w, h) {
 		max: 200,
 		value: 80,
 		orientation: 'horizontal',
-		
+		// when slider is load
+		create: function(event, ui){
+			update_bpmValue();
+		},
 		// when value is changed
 		change: function(event, ui){
 			update_bpmValue();
