@@ -6,7 +6,7 @@
 
 import javax.sound.midi.*;
 
-public class cloudMidiPlayer 
+public class CloudMidiPlayer 
 {
 	private static final int[] SCALE = {60, 62, 64, 67, 69};
 	private static final int INSTRUMENTS = 5;
@@ -33,7 +33,7 @@ public class cloudMidiPlayer
 	}
 	
 	// Constructs a cloudMidiPlayer with the default BPM.
-	public cloudMidiPlayer() throws Exception 
+	public CloudMidiPlayer() throws Exception 
 	{
 		loadMidiSystem();
 		noteSequences = new Sequence[INSTRUMENTS][SCALENOTES * OCTAVES];
@@ -49,8 +49,19 @@ public class cloudMidiPlayer
 		generateNotes();
 	}
 	
+	public int getTicksPerFrame() 
+	{
+		return (int) ticksPerSecond * 30;
+	}
+	
+	public int getInstrumentCount()
+	{
+		return INSTRUMENTS;
+	}
+	
 	// Plays the sequence previously loaded.
-	public void play() {
+	public void play() 
+	{
 		seq.start();
 	}
 	
@@ -112,13 +123,14 @@ public class cloudMidiPlayer
 	{
 		int startTick = (int) (startPos * ticksPerSecond / 16);
 		int stopTick = (int) (stopPos * ticksPerSecond / 16);
-		Track t = s.getTracks()[0];
+		Track t = s.getTracks()[inst.value];
 		ShortMessage m = new ShortMessage();
-		m.setMessage(ShortMessage.NOTE_ON, 0, pitch / SCALENOTES * 12 + SCALE[inst.value], 100);
+		int realPitch = pitch / SCALENOTES * 12 + SCALE[pitch % SCALENOTES];
+		m.setMessage(ShortMessage.NOTE_ON, 0, realPitch, 100);
 		t.add(new MidiEvent(m, startTick));
 		
 		ShortMessage m2 = new ShortMessage();
-		m2.setMessage(ShortMessage.NOTE_OFF, 0, pitch / SCALENOTES * 12 + SCALE[inst.value], 100);
+		m2.setMessage(ShortMessage.NOTE_OFF, 0, realPitch, 100);
 		t.add(new MidiEvent(m, stopTick));
 	}
 	
@@ -145,7 +157,7 @@ public class cloudMidiPlayer
 	// Generates the Sequences required for single note playback.
 	private void generateNotes() throws InvalidMidiDataException 
 	{
-		int ticksPerFrame = (int) ticksPerSecond * 30;
+		int ticksPerFrame = getTicksPerFrame();
 		for (SequenceInst inst : SequenceInst.values()) {
 			for (int pitch = 0; pitch < SCALENOTES * OCTAVES; pitch++) {
 				Sequence s = new Sequence(Sequence.SMPTE_30, ticksPerFrame);
