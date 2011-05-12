@@ -9,7 +9,7 @@ import javax.sound.midi.*;
 public class CloudMidiPlayer 
 {
 	private static final int[] SCALE = {60, 62, 64, 67, 69};
-	private static final int INSTRUMENTS = 5;
+	//private static final int INSTRUMENTS = 5;
 	private static final int SCALENOTES = 5;
 	private static final int OCTAVES = 2;
 	private static final int DEFAULTBPM = 120;
@@ -21,6 +21,8 @@ public class CloudMidiPlayer
 	private Sequence[][] noteSequences;
 	private Sequence song;
 	
+	public final SequenceInst[] instruments = SequenceInst.values();
+	
 	// Set of enum values for the list of instruments Cloud Composer supports.
 	public enum SequenceInst 
 	{
@@ -30,13 +32,14 @@ public class CloudMidiPlayer
 		SequenceInst(int value) {
 			this.value = value;
 		}
+		
 	}
 	
 	// Constructs a cloudMidiPlayer with the default BPM.
 	public CloudMidiPlayer() throws Exception 
 	{
 		loadMidiSystem();
-		noteSequences = new Sequence[INSTRUMENTS][SCALENOTES * OCTAVES];
+		noteSequences = new Sequence[instruments.length][SCALENOTES * OCTAVES];
 		setTempo(DEFAULTBPM);
 	}
 	
@@ -53,15 +56,12 @@ public class CloudMidiPlayer
 	{
 		return (int) ticksPerSecond * 30;
 	}
-	
-	public int getInstrumentCount()
-	{
-		return INSTRUMENTS;
-	}
-	
+
 	// Plays the sequence previously loaded.
-	public void play() 
+	public void play() throws InvalidMidiDataException 
 	{
+		pause();
+		seq.setSequence(song);
 		seq.start();
 	}
 	
@@ -117,6 +117,7 @@ public class CloudMidiPlayer
 	// Adds a note to the sequence provided with the provided details.
 	// startPos and stopPos are in terms of the column locations,
 	// and pitch is also in terms of the row location of the note.
+	// This is done here to enforce a specific format related to our Midi Player.
 	public static void addNote(Sequence s, SequenceInst inst, 
 						 int pitch, int startPos, int stopPos) 
 						 throws InvalidMidiDataException 
