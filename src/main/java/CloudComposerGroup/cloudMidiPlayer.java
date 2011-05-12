@@ -36,8 +36,8 @@ public class cloudMidiPlayer
 	public cloudMidiPlayer() throws Exception 
 	{
 		loadMidiSystem();
-		setTempo(DEFAULTBPM);
 		noteSequences = new Sequence[INSTRUMENTS][SCALENOTES * OCTAVES];
+		setTempo(DEFAULTBPM);
 	}
 	
 	// Sets the tempo of the song using the provided BPM. 
