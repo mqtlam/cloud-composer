@@ -90,8 +90,8 @@ function loadUI() {
 	selector = new InstrumentSelector(instrumentsList);		
 	// create Grid, multiple of 16
 	grid = new NoteGrid("grid", 112, instrumentsList);		//
-	midiplayer = new MidiPlayer();
-    tempobar = new Slider("tempo", 200, 10);
+	// midiplayer = new MidiPlayer();
+    tempobar = new Slider("tempo", 190, 10);
 }
 
 

@@ -7,6 +7,28 @@ function Slider(id, w, h) {
 	holder.className = "slider";
 
 	document.getElementById(id).appendChild(holder);
-	$(".slider").slider();
+	
+	$(".slider").slider({
+		// Initializing values
+		animate: true,
+		step: 10,
+		min: 50,
+		max: 200,
+		value: 80,
+		orientation: 'horizontal',
+		
+		// when value is changed
+		change: function(event, ui){
+			update_bpmValueOnPage();
+		}
+	});
 }
 
+function update_bpmValueOnPage(){
+	// get the location to update
+	var bpm = document.getElementById("sliderValue");
+	// get the value from the slider
+	var value = $('.slider').slider('option', 'value');
+	// set the value on the page
+	bpm.innerHTML = "BPM = " + value;
+}
