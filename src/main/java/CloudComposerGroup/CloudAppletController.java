@@ -33,12 +33,14 @@ public class CloudAppletController extends Applet { //implements ActionListener 
 	public void addNote(int[] noteData)
 	{
 		changed = true;
+		grid.add(new Note(noteData[3] - noteData[2] + 1, noteData[0], noteData[1]), noteData[2]);
 	}
 	
 	// TODO: Remove note from NoteGrid
 	public void removeNote(int[] noteData)
 	{
 		changed = true;
+		grid.remove(new Note(noteData[3] - noteData[2] + 1, noteData[0], noteData[1]), noteData[2]);
 	}
 	
 	// Checks if the song has changed since it last played.
