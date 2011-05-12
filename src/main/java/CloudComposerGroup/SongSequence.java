@@ -10,8 +10,11 @@ import javax.sound.midi.Sequence;
  * saving them to sequence, and generating it.
  */
 public class SongSequence {
+	private int instruments;
+	
 	private NoteGrid grid;		// note grid that contains all the notes
 	private Sequence sequence;  // sequence of song to be generated
+	private int ticksPerFrame;
 		
 	/**
 	 * Constructs a SongSequence object
@@ -20,9 +23,10 @@ public class SongSequence {
 	 * @requires grid != null
 	 * @throws InvalidMidiDataException if it cannot create a sequence object
 	 */
-	public SongSequence(NoteGrid grid) throws InvalidMidiDataException {
+	public SongSequence(NoteGrid grid, int ticksPerFrame, int instruments) throws InvalidMidiDataException {
 		this.grid = grid;
-		sequence = new Sequence(Sequence.SMPTE_30, 10);
+		this.ticksPerFrame = ticksPerFrame;
+		this.instruments = instruments;
 	}
 	
 	/**
@@ -33,6 +37,9 @@ public class SongSequence {
 	 * @throws InvalidMidiDataException when it fails to add sequence data
 	 */
 	public Sequence getSequence() throws InvalidMidiDataException {
+		sequence = new Sequence(Sequence.SMPTE_30, ticksPerFrame);
+		for (int i = 0; i < instruments; i++)
+			sequence.createTrack();
 		List<Integer> columns = grid.getColumns();
 		for (int column : columns) {
 			Map<Integer, ArrayList<Note>> pitches = grid.getPitches(column);
