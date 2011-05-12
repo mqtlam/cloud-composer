@@ -40,7 +40,7 @@ import static org.junit.matchers.JUnitMatchers.*;
 /**
  * Unit test for simple App.
  */
-public class AppTest  {
+public class WebAppTest  {
 
   @Test
   public void testApp() {
