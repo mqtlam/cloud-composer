@@ -117,11 +117,3 @@ body > div
 	float:left;
 	overflow:scroll;
 }
-
-#header > header_right > tempo > slider
-{
-	min: 50;
-	max: 200;
-	step: 10;
-	value: 80;
-}
