@@ -31,6 +31,8 @@ function createPlayerSlider(initialValue) {
 //			update_bpmValueOnPage();
 //		}
 	});
+	
+	$("#playbackSlider").slider("disable");
 }
 
 
