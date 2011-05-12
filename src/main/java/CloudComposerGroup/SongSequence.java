@@ -30,7 +30,7 @@ public class SongSequence {
 	 * and return it
 	 * 
 	 * @return Sequence of song 
-	 * @throws InvalidMidiDataException when it fails to add a sequence data
+	 * @throws InvalidMidiDataException when it fails to add sequence data
 	 */
 	public Sequence getSequence() throws InvalidMidiDataException {
 		List<Integer> columns = grid.getColumns();
