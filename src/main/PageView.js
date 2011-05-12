@@ -8,6 +8,7 @@ var grid;
 var selector;
 var midiplayer;
 var tempobar;
+var playerbar;
 
 // computed values
 
@@ -90,10 +91,49 @@ function loadUI() {
 	selector = new InstrumentSelector(instrumentsList);		
 	// create Grid, multiple of 16
 	grid = new NoteGrid("grid", 112, instrumentsList);		//
-	// midiplayer = new MidiPlayer();
-    tempobar = new Slider("tempo", 190, 10);
+	midiplayer = new MidiPlayer();
+    //tempobar = new Slider("tempo", 190, 10, "slider");
+	$("#tempo").slider({
+		// Initializing values
+		animate: true,
+		step: 10,
+		min: 50,
+		max: 200,
+		value: 80,
+		orientation: 'horizontal',
+		
+		// when value is changed
+		change: function(event, ui){
+			update_bpmValueOnPage();
+		}
+	});
+	
+	$("#player").slider({
+		// Initializing values
+		animate: true,
+		step: 10,
+		min: 50,
+		max: 200,
+		value: 80,
+		orientation: 'horizontal',
+		
+		// when value is changed
+		change: function(event, ui){
+			update_bpmValueOnPage();
+		}
+	});
+	
+	//playerbar = new Slider("player", 800, 10, "");
 }
 
+function update_bpmValueOnPage(){
+	// get the location to update
+	var bpm = document.getElementById("sliderValue");
+	// get the value from the slider
+	var value = $('.slider').slider('option', 'value');
+	// set the value on the page
+	bpm.innerHTML = "BPM = " + value;
+}
 
 ///////// FUNCTION CALLs
 	

@@ -95,13 +95,19 @@ body > div
 {
 	border:2px solid white;
 	margin-left:56px;
-	text-align:center;
+	/*text-align:center;*/
 }
 
 #playback > img
 {
 	height: 50px;
 	width: 50px;
+}
+
+#tempo
+{
+	position:"absolute";
+	bottom:"2px";
 }
 
 #footer > *
