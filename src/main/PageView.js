@@ -41,6 +41,11 @@ function mouseClick(event) {
 		midiplayer.onStopClick();
 	} else if (current.id == "playpausebutton") {
 		midiplayer.onPlayPauseClick();
+	} else if (current.id == "getlinkbutton") {
+		alert("HELLO WORLD");
+		// TODO put this code somewhere else...
+		var notegrid = grid.serialize();
+		sendNoteGrid(notegrid, "savesession.php");
 	}
 
 }

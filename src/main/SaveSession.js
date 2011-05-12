@@ -1,13 +1,24 @@
-function getFileContents() {
+// called when user clicks save session button
+function sendNoteGrid(notegrid, dest) {
+	alert("IN SEND NOTE GRID");
 	var xmlhttp;
+	var linkURL;
 	if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
 		xmlhttp=new XMLHttpRequest();
 	}
-	xmlhttp.onreadystatechange = function() {
+	xmlhttp.onreadystatechange = function() {		
 		if (xmlhttp.readyState==4 && xmlhttp.status==200) {
-			document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
+			displayLinkURL(xmlhttp.responseText);
+			alert("got response from server");
 		}
 	}
-	xmlhttp.open("GET","ajax_info.txt",true);
-	xmlhttp.send();
+	xmlhttp.open("POST", dest, true);
+	xmlhttp.send("data="+notegrid);
+	
+}
+
+function displayLinkURL(linkURL) {
+	// TODO change me... just checking if it works.
+	alert("in display link url");
+	alert(linkURL);
 }
