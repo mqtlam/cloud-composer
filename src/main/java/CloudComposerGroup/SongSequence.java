@@ -40,15 +40,15 @@ public class SongSequence {
 				ArrayList<Note> notes = pitches.get(pitch);
 				for (Note n : notes) {
 					if (n.instrument == 0)
-						cloudMidiPlayer.addNote(sequence, cloudMidiPlayer.SequenceInst.PIANO, pitch, column, column + n.length);
+						CloudMidiPlayer.addNote(sequence, CloudMidiPlayer.SequenceInst.PIANO, pitch, column, column + n.length);
 					else if (n.instrument == 1)
-						cloudMidiPlayer.addNote(sequence, cloudMidiPlayer.SequenceInst.GUITAR, pitch, column, column + n.length);
+						CloudMidiPlayer.addNote(sequence, CloudMidiPlayer.SequenceInst.GUITAR, pitch, column, column + n.length);
 					else if (n.instrument == 2)
-						cloudMidiPlayer.addNote(sequence, cloudMidiPlayer.SequenceInst.DRUM, pitch, column, column + n.length);
+						CloudMidiPlayer.addNote(sequence, CloudMidiPlayer.SequenceInst.DRUM, pitch, column, column + n.length);
 					else if (n.instrument == 3)
-						cloudMidiPlayer.addNote(sequence, cloudMidiPlayer.SequenceInst.TRUMPET, pitch, column, column + n.length);
+						CloudMidiPlayer.addNote(sequence, CloudMidiPlayer.SequenceInst.TRUMPET, pitch, column, column + n.length);
 					else
-						cloudMidiPlayer.addNote(sequence, cloudMidiPlayer.SequenceInst.VIOLIN, pitch, column, column + n.length);					
+						CloudMidiPlayer.addNote(sequence, CloudMidiPlayer.SequenceInst.VIOLIN, pitch, column, column + n.length);					
 				}
 			}
 		}
