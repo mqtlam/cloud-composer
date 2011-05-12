@@ -128,3 +128,37 @@ NoteData.prototype.output = function () {
 //		this.data[i];
 //	}
 }
+
+/* returns a string version of the current column of the grid */
+NoteData.prototype.serializeColumn = function (column) {	
+	var columnstring = "";
+	
+	if (this.data[column]) { // TODO why doesn't this.data[column].length > 0 work here?
+		columnstring += "<c" + column + " >";	
+		for (var instr in this.data[column]) {
+			columnstring += this.serializeInstrument(column, instr);
+		}
+		columnstring += "</c" + column + " >";
+	}
+	
+	return columnstring;
+}
+
+/* returns a string version of the current instrument's notes in the given column of the grid */
+NoteData.prototype.serializeInstrument = function (column, instr) {
+	var instrumentstring = "";
+	
+	if (this.data[column][instr].length > 0) {
+		instrumentstring += "<" + instr + ">";
+		for (var i = 0; i < this.data[column][instr].length; i++) {
+			var noteLength = this.data[column][instr][i].noteLength;
+			var pitch = this.data[column][instr][i].pitch;
+
+			var notestring = "{" + noteLength + "," + pitch + "}";
+			instrumentstring += notestring;
+		}
+		instrumentstring += "</" + instr + ">";
+	}
+	
+	return instrumentstring;
+}

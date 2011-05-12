@@ -272,3 +272,12 @@ NoteGrid.prototype.checkNote = function (a, b) {
 	return -1;
 }
 
+/* returns a string version of the current grid (used for submitting form to PHP) */
+NoteGrid.prototype.serialize = function () {
+	var notegridstring = "";
+	for (var i = 0; i < this.numColumns; i++) {
+		notegridstring += this.notes.serializeColumn(i); // returns "<col><><>...</col>"
+	}
+	return notegridstring;
+}
+
