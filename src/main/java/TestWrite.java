@@ -13,7 +13,7 @@ import java.io.IOException;
 
 import javax.sound.midi.*;
 
-public class testwrite {
+public class TestWrite {
 	public static void main(String[] args) 
 	throws InvalidMidiDataException, MidiUnavailableException, IOException {
 		Sequence s = new Sequence(Sequence.SMPTE_30, 10);
