@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,13 +40,12 @@ public class NoteGrid {
 				ArrayList<Note> newRow = new ArrayList<Note>();
 				newRow.add(note);
 				columns.put(note.pitch, newRow);
-			} else {
+			} else
 				if (!row.contains(note)) {
 					row.add(note);
 					columns.put(note.pitch, row);
 				} else
 					return;
-			}
 		}
 		size++;
 	}
@@ -81,10 +81,21 @@ public class NoteGrid {
 	 * @requires column & pitch >= 0
 	 * @return a list of notes of given column and pitch
 	 */
-	public List<Note> get(int column, int pitch) {
+	public List<Note> getNotes(int column, int pitch) {
 		return new ArrayList<Note>(grid.get(column).get(pitch));
 	}
-
+	
+	@SuppressWarnings("unchecked")
+	public List<Integer> getColumns() {
+		List<Integer> columns = (List<Integer>) grid.keySet();
+		Collections.sort(columns);
+		return columns;
+	}
+	
+	public HashMap<Integer, ArrayList<Note>> getPitches(int column) {
+		return grid.get(column);
+	}
+	
 	/**
 	 * Returns true if note already exists.
 	 * Otherwise, returns false.

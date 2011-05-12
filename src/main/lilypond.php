@@ -17,7 +17,7 @@
  *
  * @author     Michael Lam <mqtlam@cs.washington.edu>
  * @version    1.0
- * @link       savesession.php
+ * @link       lilypond.php
  */
 
 // {{{ constants
