@@ -53,11 +53,12 @@ body > div
 	float:right;
 	width:200px;
 	height:30px;
-	border:1px solid white;
+/*	border:1px solid white;*/
 	margin-top:24px;
 	font-size:8pt;
 	font-weight:bold;
 	text-align:center;
+	position:relative;
 }
 
 #mid{}
@@ -97,6 +98,12 @@ body > div
 	text-align:center;
 }
 
+#playback > img
+{
+	height: 50px;
+	width: 50px;
+}
+
 #footer > *
 {
 	float:right;
@@ -110,5 +117,3 @@ body > div
 	float:left;
 	overflow:scroll;
 }
-
-
