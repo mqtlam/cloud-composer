@@ -28,6 +28,7 @@ public class NoteGrid {
 	 * @param note, note object
 	 * @param column, integer that represents a column of note grid
 	 * @requires note != null && column >= 0
+	 * @modifies this
 	 */
 	public void add(Note note, int column) {
 		Map<Integer, ArrayList<Note>> columns = grid.get(column);
@@ -58,6 +59,7 @@ public class NoteGrid {
 	 * @param note, Note object
 	 * @param column, integer that represents a column of the note grid
 	 * @requires note != null && column >= 0
+	 * @modifies this
 	 */
 	public void remove(Note note, int column) {
 		Map<Integer, ArrayList<Note>> columns = grid.get(column);
@@ -73,6 +75,7 @@ public class NoteGrid {
 	 * @param column, integer that represents a column of the note grid
 	 * @param pitch, integer that represents a pitch of a note
 	 * @requires column && pitch >= 0
+	 * @modifies this
 	 */
 	public boolean removeAllNotes(int column, int pitch) {
 		size -= grid.get(column).get(pitch).size();
