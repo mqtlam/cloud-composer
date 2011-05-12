@@ -20,7 +20,7 @@ function NoteData(col) {
 		this.data.push([]);			// notes storage
 	}
 	
-	this.tempo = 0;			// tempo
+	this.tempo = 80;			// tempo
 }
 
 NoteData.prototype.addColumns = function (col) {

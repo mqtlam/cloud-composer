@@ -19,16 +19,20 @@ function Slider(id, w, h) {
 		
 		// when value is changed
 		change: function(event, ui){
-			update_bpmValueOnPage();
+			update_bpmValue();
 		}
 	});
 }
 
-function update_bpmValueOnPage(){
+// Update tempo 
+function update_bpmValue(){
 	// get the location to update
 	var bpm = document.getElementById("sliderValue");
 	// get the value from the slider
 	var value = $('.slider').slider('option', 'value');
 	// set the value on the page
 	bpm.innerHTML = "BPM = " + value;
+	
+	// update tempo in NoteGrid
+	this.grid.notes.tempo = value;
 }
