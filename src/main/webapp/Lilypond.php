@@ -46,7 +46,7 @@ define("DATA_PARAM", "data");
 /**
  * All instruments here. TODO: abstract out along with other files?
  */
-const $instruments = array(   "PIANO"     => "piano",
+$instruments = array(   "PIANO"     => "piano",
                         "VIOLIN"    => "violin",
                         "GUITAR"    => "guitar",
                         "TRUMPET"   => "trumpet",
@@ -55,7 +55,7 @@ const $instruments = array(   "PIANO"     => "piano",
 /**
  * All pitches here. TODO: abstract out along with other files?
  */
-const $pitches = array(   0   => "c'",  // c4 = 60
+$pitches = array(   0   => "c'",  // c4 = 60
                     1   => "d'",
                     2   => "e'",
                     3   => "a'",
@@ -180,9 +180,11 @@ function generateFileName() {
 function interpretData($data)
 {
     global $newData;
+    global $instruments;
+    global $pitches;
     
     $timeSignatureNumerator = SIXTEENTH_NOTES_PER_MEASURE / 4;
-    $header = "\new Staff\n{\n\t\\set Staff.instrumentName = #\"{$instruments['PIANO']}\""
+    $header = "\\new Staff\n{\n\t\\set Staff.instrumentName = #\"{$instruments["PIANO"]}\""
               . "\n\t\\clef treble\n\t\\time $timeSignatureNumerator/4\n\t";
     
     // create file
@@ -200,6 +202,11 @@ function interpretData($data)
     // close xml
     xml_parser_free($xmlParser);
     */
+    
+    // BETA FEATURE: print out canonical scale, that's it
+    // TODO: actually analyze xml file
+    $newData .= "c'4 d'4 e'4 g'1";
+    
     // end new data
     $newData .= "\n}";
     
