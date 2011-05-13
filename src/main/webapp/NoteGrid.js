@@ -1,10 +1,11 @@
 // Contains functions related to the grid
 
-function NoteGrid(id, cols, instr) {
+function NoteGrid(id, cols, instr, midiplayer) {
 	// initiated values
 	this.numColumns = 0;					// current number of columns
 	this.notes = new NoteData(this.numColumns);			// array that contains all the notes
 	this.instruments = instr;
+	this.java = midiplayer;
 	
 	// constants for the grid	
 	// must change is css
@@ -44,7 +45,7 @@ NoteGrid.prototype.createSquare = function (loc_y) {
 	var sq = document.createElement("div");
 	
 	sq.className = "grid_square";
-	sq.id = "square" + loc_y;
+	sq.id = "square" + (this.reversePitch(loc_y));
 	
 	return sq;
 
@@ -169,7 +170,7 @@ NoteGrid.prototype.updateColumnNumber = function (addition) {
 NoteGrid.prototype.updateDisplay = function(column, pitch) {
 	var instrumentsToDisplay = this.getInstruments(this.notes.getInstruments(column, pitch));
 	var column = document.getElementById("column"+column);
-	var square = column.getElementsByClassName("grid_square")[pitch];
+	var square = column.getElementsByClassName("grid_square")[this.reversePitch(pitch)];
 	
 	this.updateIndicator(square, instrumentsToDisplay);
 }
@@ -233,24 +234,38 @@ NoteGrid.prototype.gridClick = function (evt, instrument) {
 	var note = new Note(1, instrument, pitch);			/// construct note from input
 	var index = this.notes.getIndex(column, note);
 
-	// should add the note if not already there, otherwise remove
-	if (index == -1) {
-		this.notes.addNote(column, note);
-//		applet.playNote(0, this.pitches*this.octaves - note.pitch - 1);
-		square.className = square.className + " " + instrument.instrumentName;
-		square.style.backgroundImage = "url('images/thumbnail_"+instrument.instrumentName+".png')";
+	if (applet.player.earlySetString == "") {
+		// should add the note if not already there, otherwise remove
+		if (index == -1) {
+			this.notes.addNote(column, note);
+			this.java.addToPlayer(column, note);
+			square.className = square.className + " " + instrument.instrumentName;
+			square.style.backgroundImage = "url('images/thumbnail_"+instrument.instrumentName+".png')";
+		} else {
+			this.notes.removeNote(column, note);
+			this.java.removeFromPlayer(column, note);
+			square.style.backgroundImage = "none";
+			square.className = square.className.replace(" " + instrument.instrumentName, "");
+		}
+		
+		this.updateDisplay(column, pitch);
 	} else {
-		this.notes.removeNote(column, note);
-		square.style.backgroundImage = "none";
-		square.className = square.className.replace(" " + instrument.instrumentName, "");
+		alert("I am sorry, but your hardware does not support midi playback");
 	}
-	
-	this.updateDisplay(column, pitch);
 }
 
 // assume there is some integer in the string
 NoteGrid.prototype.getInt = function (str) {
 	return str.match(/\d+/)[0];
+}
+
+NoteGrid.prototype.lookUpInstrumentIndex = function (instrumentName) {
+	for (var i=0; i<this.instruments.length; i++) {
+		if (this.instruments[i].instrumentName == instrumentName) {
+			return i;
+		}
+	}
+	return -1;
 }
 
 NoteGrid.prototype.getInstruments = function (instrumentNameList) {
@@ -263,6 +278,10 @@ NoteGrid.prototype.getInstruments = function (instrumentNameList) {
 		}
 	}
 	return newList;
+}
+
+NoteGrid.prototype.reversePitch = function (i) {
+	return (this.pitches*this.octaves - i - 1);
 }
 
 /* checks if a note is already placed */

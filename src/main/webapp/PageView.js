@@ -42,7 +42,7 @@ function mouseClick(event) {
 	} else if (current.id == "stopbutton") { // 
 		midiplayer.onStopClick();
 	} else if (current.id == "playpausebutton") {
-		midiplayer.onPlayPauseClick();
+		midiplayer.onPlayPauseClick(grid.numColumns);
 	} else if (current.id == "getlinkbutton") {
 		// TODO put this code somewhere else...
 		var notegrid = grid.serialize();
@@ -95,17 +95,18 @@ function loadUI() {
 			new Instrument("drum", "images/drum.png", "green"),
 			new Instrument("trumpet", "images/trumpet.png", "yellow"),
 			new Instrument("violin", "images/violin.png","purple")];
-			
+	
+	var initialNumColumns = 112;
+	
 	selector = new InstrumentSelector(instrumentsList);		
+	midiplayer = new MidiPlayer(instrumentsList, initialNumColumns);
 	// create Grid, multiple of 16
-	grid = new NoteGrid("grid", 112, instrumentsList);
+	grid = new NoteGrid("grid", initialNumColumns, instrumentsList, midiplayer);
 	highlightbar = new HighlightBar(0, "#CC6666");
-	midiplayer = new MidiPlayer();
+	
 	applet = document.getElementById('javaApplet');
     //tempobar = new Slider("tempo", 190, 10, "slider");
 	//playerbar = new Slider("player", 800, 10, "");
-	createTempoSlider(80);
-	createPlayerSlider(0);
 }
 
 ///////// FUNCTION CALLs
