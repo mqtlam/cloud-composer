@@ -7,7 +7,7 @@
  * USAGE:   Pass the composition data to this php file
  *          using the POST variable 'data'.
  *          
- *          Saves to ./saved_data/filename.dat
+ *          Saves to /songs/filename.xml
  *          
  *          Returns the link on success or displays an error message:
  *              CANNOT OPEN FILE: file cannot be open to write
