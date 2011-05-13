@@ -10,6 +10,7 @@ var midiplayer;
 var tempobar;
 var playerbar;
 var highlightbar;
+var tutorial;
 
 // computed values
 
@@ -25,6 +26,7 @@ function mouseClick(event) {
 	if (current.className.indexOf("grid_square") == 0 || current.parentNode.className.indexOf("grid_square") == 0) { 
 		var instrument = selector.currentInstrument;
 		if (instrument) {
+			tutorial.updateTutorialView("addRemoveNotes");
 			current = current.className.indexOf("grid_square") == 0 ? current : current.parentNode;
 			grid.gridClick(current, selector.currentInstrument);
 		} else {
@@ -34,18 +36,20 @@ function mouseClick(event) {
 	} else if (current.id == "extender") {
 		grid.extendGrid(current);
 	} else if (current.className == "instrumentContainer") {
-	
 		selector.setActiveInstrument(current.id);
+		tutorial.updateTutorialView("selectInstrument");
 		grid.updateMainImage(selector.currentInstrument.instrumentName);
-	} else if (current.id == "stopbutton") { // 
+	} else if (current.id == "stopbutton") { 
 		midiplayer.onStopClick();
 	} else if (current.id == "playpausebutton") {
+		tutorial.updateTutorialView("hearPlayback");
 		midiplayer.onPlayPauseClick(grid.numColumns);
 	} else if (current.id == "getlinkbutton") {
-		// TODO put this code somewhere else...
+		tutorial.updateTutorialView("getLink");
 		var notegrid = grid.serialize();
 		sendNoteGrid(notegrid, "SaveSession.php");
 	} else if (current.className == "column_button") {
+		tutorial.updateTutorialView("setHighlightBar");
 		var c = parseInt(current.id);
 		highlightbar.move(c);
 		applet.setSongPosition(c);
@@ -103,7 +107,7 @@ function loadUI() {
 	// create Grid, multiple of 16
 	grid = new NoteGrid("grid", initialNumColumns, instrumentsList, midiplayer);
 	highlightbar = new HighlightBar(0, "#CC6666");
-	
+	tutorial = new Tutorial();
 	applet = document.getElementById('javaApplet');
     //tempobar = new Slider("tempo", 190, 10, "slider");
 	//playerbar = new Slider("player", 800, 10, "");
