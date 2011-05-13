@@ -30,7 +30,7 @@ InstrumentSelector.prototype.createInstrumentView = function (index) {
 InstrumentSelector.prototype.updateInstrumentView = function () {
 	var bar = document.getElementById("instrumentBar");
 	// first clear all the children.
-	var len = bar.children.length; 
+	var len = bar.children.length;
 	for (var a=0; a<len; a++) {
 		bar.removeChild(bar.children[a]);
 	}
