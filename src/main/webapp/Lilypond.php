@@ -8,7 +8,7 @@
  * USAGE:   Pass the composition data to this php file
  *          using the POST variable 'data'.
  *          
- *          Saves to /songs/filename.ly
+ *          Saves to songs/filename.ly
  *          
  *          Returns the link on success or displays an error message:
  *              CANNOT OPEN FILE: file cannot be open to write
@@ -30,7 +30,7 @@ define("WEBSITE_URL", "http://students.washington.edu/jclement/Cloud-Composer/")
 /**
  * Directory to save new file (and look up old files)
  */
-define("SAVE_DIRECTORY", "/songs/");
+define("SAVE_DIRECTORY", "songs/");
 
 /**
  * File extension type
@@ -41,6 +41,21 @@ define("FILE_EXTENSION", ".ly");
  * POST parameter to pass data to this php file.
  */
 define("DATA_PARAM", "data");
+
+// }}}
+// {{{ variables/functions for instruments
+
+$instruments = array(   "PIANO"     => "piano",
+                        "VIOLIN"    => "violin",
+                        "GUITAR"    => "guitar",
+                        "TRUMPET"   => "trumpet",
+                        "DRUM"      => "drum" );
+
+define("COL_NAME", "c");
+
+define("FIRST_COL", 0);
+
+define("SIXTEENTH_NOTES_PER_MEASURE", 16);
 
 // }}}
 // {{{ functions
