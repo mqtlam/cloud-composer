@@ -14,11 +14,38 @@ function sendNoteGrid(notegrid, dest) {
 	}
 	xmlhttp.open("POST", dest, true);
 	xmlhttp.send("data="+notegrid);
-	
+	//displayLinkURL("TEST SERVER RESPOND");	// TEST
 }
 
 function displayLinkURL(linkURL) {
 	// TODO change me... just checking if it works.
-	alert("in display link url");
-	alert(linkURL);
+	copyToClipboard(linkURL);
+	alert("PermaLink: " + linkURL + "\n" + "PermaLink has been copied to your clipboard!!");
+}
+
+/* called by LinkURL box */
+/* copies given text */
+function copyToClipboard(linkURL) {  
+if (window.clipboardData)   
+     window.clipboardData.setData("Text", linkURL);  
+	else if (window.netscape) {  
+	     netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');  
+	     var clip = Components.classes['@mozilla.org/widget/clipboard;1'].createInstance(Components.interfaces.nsIClipboard);  
+	     if (!clip)  
+	          return false;  
+	     var trans = Components.classes['@mozilla.org/widget/transferable;1'].createInstance(Components.interfaces.nsITransferable);  
+	     if (!trans)  
+	          return false;  
+	     trans.addDataFlavor('text/unicode');  
+	     var str = new Object();  
+	     var len = new Object();  
+	     var str = Components.classes["@mozilla.org/supports-string;1"].createInstance(Components.interfaces.nsISupportsString);  
+	     str.data=linkURL;  
+	     trans.setTransferData("text/unicode",str,linkURL.length*2);  
+	     var clipid=Components.interfaces.nsIClipboard;  
+	     if (!clipid)  
+	          return false;  
+	     clip.setData(trans,null,clipid.kGlobalClipboard);  
+	}  
+	return false;  
 }
