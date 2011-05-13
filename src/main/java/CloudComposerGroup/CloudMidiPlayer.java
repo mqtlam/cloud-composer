@@ -18,7 +18,7 @@ public class CloudMidiPlayer
 	private static final int OCTAVES = 2;
 	private static final int DEFAULTBPM = 120;
 	
-	private static float ticksPerSecond;
+	private static final float ticksPerFrame = 4;
 	private Sequencer seq;
 	private Synthesizer synth;
 	
@@ -84,7 +84,6 @@ public class CloudMidiPlayer
 	
 	public void playNote(SequenceInst inst, int pitch) throws InvalidMidiDataException 
 	{
-		System.out.println(INSTRUMENTS[inst.value]);
 		pause();
 		seq.setSequence(noteSequences[inst.value][pitch]);
 		seq.start();
@@ -155,12 +154,15 @@ public class CloudMidiPlayer
 		Track t = s.getTracks()[inst.value];
 		ShortMessage m = new ShortMessage();
 		int realPitch = pitch / SCALENOTES * 12 + SCALE[pitch % SCALENOTES];
+		System.out.println(pitch + " " + realPitch);
 		m.setMessage(ShortMessage.NOTE_ON, pitch, realPitch, 100);
 		t.add(new MidiEvent(m, startPos));//startTick));
 		
 		ShortMessage m2 = new ShortMessage();
 		m2.setMessage(ShortMessage.NOTE_OFF, pitch, realPitch, 100);
 		t.add(new MidiEvent(m2, stopPos));//stopTick));
+		
+		//System.out.println(inst.value + " " + pitch + " " + realPitch + " " + startPos + " " + stopPos + " ");
 	}
 	
 	
@@ -189,13 +191,14 @@ public class CloudMidiPlayer
 		//int ticksPerFrame = getTicksPerFrame();
 		for (SequenceInst inst : SequenceInst.values()) {
 			for (int pitch = 0; pitch < SCALENOTES * OCTAVES; pitch++) {
-				Sequence s = new Sequence(Sequence.PPQ, 4);
+				Sequence s = new Sequence(Sequence.PPQ, (int) ticksPerFrame);
 				ShortMessage m = new ShortMessage();
 				m.setMessage(ShortMessage.PROGRAM_CHANGE, pitch, INSTRUMENTS[inst.value], 0);
 				while (s.getTracks().length < 5)
 					s.createTrack();
 				Track t = s.getTracks()[inst.value];
 				t.add(new MidiEvent(m, 0));//startTick));
+				System.out.println(pitch + " " + inst.name());
 				addNote(s, inst, pitch, 0, 4);
 				noteSequences[inst.value][pitch] = s;
 			}
