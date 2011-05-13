@@ -6,6 +6,8 @@
 
 //package CloudComposerGroup;
 
+import java.io.File;
+
 import javax.sound.midi.*;
 
 public class CloudMidiPlayer 
@@ -120,6 +122,12 @@ public class CloudMidiPlayer
 	{
 		int currentTick = (int) seq.getTickPosition();
 		return (int) (currentTick / (ticksPerSecond / 16));
+	}
+	
+	// TODO: Write MIDI file
+	public void writeToFile(String location)
+	{
+		
 	}
 	
 	// Adds a note to the sequence provided with the provided details.
