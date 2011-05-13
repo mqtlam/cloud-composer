@@ -233,6 +233,7 @@ NoteGrid.prototype.gridClick = function (evt, instrument) {
 	// should add the note if not already there, otherwise remove
 	if (index == -1) {
 		this.notes.addNote(column, note);
+//		applet.playNote(0, this.pitches*this.octaves - note.pitch - 1);
 		square.className = square.className + " " + instrument.instrumentName;
 		square.style.backgroundImage = "url('images/thumbnail_"+instrument.instrumentName+".png')";
 	} else {
@@ -240,7 +241,7 @@ NoteGrid.prototype.gridClick = function (evt, instrument) {
 		square.style.backgroundImage = "none";
 		square.className = square.className.replace(" " + instrument.instrumentName, "");
 	}
-	alert(this.serialize());
+//	alert(this.serialize());
 	this.updateDisplay(column, pitch);
 }
 
