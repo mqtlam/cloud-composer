@@ -19,7 +19,7 @@ public class CloudMidiPlayer
 	private static final int OCTAVES = 2;
 	private static final int DEFAULTBPM = 120;
 	
-	public static final float ticksPerFrame = 4;
+	public static final float TICKSPERFRAME = 4;
 	
 	private Sequencer seq;
 	private Synthesizer synth;
@@ -170,7 +170,7 @@ public class CloudMidiPlayer
 	
 	public static Sequence basicSequence() throws InvalidMidiDataException 
 	{
-		Sequence s = new Sequence(Sequence.PPQ, (int) ticksPerFrame);
+		Sequence s = new Sequence(Sequence.PPQ, (int) TICKSPERFRAME);
 		s.createTrack();
 		for (SequenceInst inst : SequenceInst.values())
 			setInstrument(s, inst);
@@ -210,7 +210,7 @@ public class CloudMidiPlayer
 		//int ticksPerFrame = getTicksPerFrame();
 		for (SequenceInst inst : SequenceInst.values()) {
 			for (int pitch = 0; pitch < SCALENOTES * OCTAVES; pitch++) {
-				Sequence s = new Sequence(Sequence.PPQ, (int) ticksPerFrame);
+				Sequence s = new Sequence(Sequence.PPQ, (int) TICKSPERFRAME);
 				s.createTrack();
 				setInstrument(s, inst);
 //				while (s.getTracks().length < SequenceInst.values().length)
@@ -218,7 +218,7 @@ public class CloudMidiPlayer
 //				Track t = s.getTracks()[inst.value];
 				
 				//System.out.println(pitch + " " + inst.name());
-				addNote(s, inst, pitch, 0, (int) ticksPerFrame);
+				addNote(s, inst, pitch, 0, (int) TICKSPERFRAME);
 				noteSequences[inst.value][pitch] = s;
 			}
 		}
