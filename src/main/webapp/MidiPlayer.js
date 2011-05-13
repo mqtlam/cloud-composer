@@ -5,6 +5,8 @@ function MidiPlayer(inst, num) {
 	this.maxValue = num-1;
 	this.intervalID = 0;
 	this.intervalSpeend = 150;
+	this.positionTracker = 1;
+	this.basePosition = 0;
 	
 	createTempoSlider(80);
 	createPlayerSlider(0);
@@ -19,6 +21,10 @@ MidiPlayer.prototype.onPlayPauseClick = function (numColumns) {
 		this.inPlayMode = true;
 		// actually play
 		applet.play();
+			
+		//var g = document.getElementById('grid');
+		//var b = document.getElementsByClassName('highlightbar')[0];
+		//g.scrollLeft = b.offsetLeft;
 		this.intervalID = setInterval("updateSongPosition()", this.intervalSpeend);
 	} else {
 		playPauseButton.src = "images/Play-Disabled-icon.png";
@@ -30,17 +36,19 @@ MidiPlayer.prototype.onPlayPauseClick = function (numColumns) {
 }
 
 MidiPlayer.prototype.onStopClick = function () {
-	
+	var g = document.getElementById('grid');
+	g.scrollLeft = 0;
 	applet.stop();
-	this.reset();
+	this.reset(0);
 }
 
-MidiPlayer.prototype.reset = function () {
-	$('#playbackSlider').slider('option', 'value', 0);
-	highlightbar.move(0);
+MidiPlayer.prototype.reset = function (to) {
+	$('#playbackSlider').slider('option', 'value', to);
+	highlightbar.move(to);
 	clearInterval(this.intervalID);
 	document.getElementById("playpausebutton").src = "images/Play-Disabled-icon.png";
 	this.inPlayMode = false;
+	this.setSongPosition(to);
 }
 
 MidiPlayer.prototype.addToPlayer = function (column, note) {
@@ -57,25 +65,32 @@ MidiPlayer.prototype.removeFromPlayer = function (column, note) {
 	applet.removeNote([i, p, column, column + note.length]);
 }
 
+MidiPlayer.prototype.setSongPosition = function(pos) {
+	this.notePosition = pos-1;
+	var column = document.getElementById('column'+pos);
+	var g = document.getElementById('grid');
+	this.positionTracker = Math.floor(column.offsetLeft/g.offsetWidth)+1;
+	applet.setSongPosition(pos);
+	this.basePosition = pos;
+}
 
-var positionTracker = 1;
 function updateSongPosition() {
 	var g = document.getElementById('grid');
 	var b = document.getElementsByClassName('highlightbar')[0];
 	var p = applet.currentSongPosition();
 	if (p == midiplayer.maxValue || p == midiplayer.notePosition) {
-		midiplayer.reset();
-		g.scrollLeft = "0px";
+		midiplayer.reset(midiplayer.basePosition);
+		g.scrollLeft = midiplayer.baseScroll;
+		
 	} else {
 		$('#playbackSlider').slider('option', 'value', p);	
 		highlightbar.move(p);
-		if (positionTracker == Math.floor(b.offsetLeft/g.offsetWidth)) {
+		if (midiplayer.positionTracker == Math.floor(b.offsetLeft/g.offsetWidth)) {
 			g.scrollLeft = b.offsetLeft;
-			positionTracker++;
+			midiplayer.positionTracker++;
 		}
+		midiplayer.notePosition = p;
 	}
-	
-	midiplayer.notePosition = p;
 }
 
 MidiPlayer.prototype.updatePlayback = function (numColumn) {
