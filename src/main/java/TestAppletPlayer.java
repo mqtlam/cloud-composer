@@ -1,3 +1,6 @@
+
+package CloudComposerGroup;
+
 import java.applet.*;
 import java.awt.Button;
 import java.awt.Color;

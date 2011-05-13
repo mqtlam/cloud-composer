@@ -8,6 +8,8 @@
 // We will probably want to make this more modular so it can interact
 // with the webpage and not simply play once it is loaded.
 
+package CloudComposerGroup;
+
 import java.io.File;
 import java.io.IOException;
 
