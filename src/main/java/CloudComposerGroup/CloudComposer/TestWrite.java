@@ -1,4 +1,4 @@
-package CloudComposerGroup;
+package CloudComposer;
 
 // Cloud Composer: testwrite.java
 // James Vaughan
