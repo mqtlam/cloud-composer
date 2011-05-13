@@ -6,9 +6,11 @@ public class Test {
 		c.init();
 		//for (int i = 0; i < 5; i++) {
 		//	for (int j = 0; j < 10; j++) {
-		int[] i = {0, 4, 0, 4};
-		c.addNote(i);
-				//Thread.sleep(1000);
+		for (int i = 0; i < 10; i++) {
+			int[] j = {0, i, 0, 24};
+			c.addNote(j);
+		}
+		c.play();
 		//	}
 		//}
 		System.out.println();

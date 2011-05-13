@@ -2,6 +2,7 @@
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.Sequence;
@@ -40,7 +41,7 @@ public class SongSequence {
 	 */
 	public Sequence getSequence() throws InvalidMidiDataException {
 		Sequence sequence = CloudMidiPlayer.basicSequence();
-		List<Integer> columns = grid.getColumns();
+		Set<Integer> columns = grid.getColumns();
 		for (int column : columns) {
 			List<Note> columnNotes = grid.getNotes(column);
 			for (Note n : columnNotes) {

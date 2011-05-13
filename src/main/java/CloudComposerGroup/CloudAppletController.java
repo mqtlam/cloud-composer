@@ -49,9 +49,9 @@ public class CloudAppletController extends Applet { //implements ActionListener 
 		int length = noteData[3] - noteData[2];
 		//for (int i = 0; i < length; i++)
 		if (add)
-			grid.add(new Note(1, noteData[0], noteData[1]), noteData[2]);	
+			grid.add(new Note(length, noteData[0], noteData[1]), noteData[2]);	
 		else
-			grid.remove(new Note(1, noteData[0], noteData[1]), noteData[2]);
+			grid.remove(new Note(length, noteData[0], noteData[1]), noteData[2]);
 	}
 	
 	public String[] getInstruments() {
