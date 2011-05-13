@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * This class is for creating a note grid to contain
@@ -90,9 +91,9 @@ public class NoteGrid {
 	 * Returns a list of integers that represents the columns of the note grid
 	 */
 	@SuppressWarnings("unchecked")
-	public List<Integer> getColumns() {
-		List<Integer> columns = (List<Integer>) grid.keySet();
-		Collections.sort(columns);
+	public Set<Integer> getColumns() {
+		
+		Set<Integer> columns = grid.keySet();
 		return columns;
 	}
 		
