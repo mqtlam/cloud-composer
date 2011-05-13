@@ -123,5 +123,6 @@ public class NoteGrid {
 	 */
 	public void clear() {
 		grid.clear();
+		size = 0;
 	}
 }
