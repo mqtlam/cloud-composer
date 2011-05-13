@@ -8,12 +8,14 @@
 // We will probably want to make this more modular so it can interact
 // with the webpage and not simply play once it is loaded.
 
+package CloudComposerGroup;
+
 import java.io.File;
 import java.io.IOException;
 
 import javax.sound.midi.*;
 
-public class testwrite {
+public class TestWrite {
 	public static void main(String[] args) 
 	throws InvalidMidiDataException, MidiUnavailableException, IOException {
 		Sequence s = new Sequence(Sequence.SMPTE_30, 10);

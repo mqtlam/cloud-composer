@@ -1,3 +1,6 @@
+
+package CloudComposerGroup;
+
 import java.applet.*;
 import java.awt.Button;
 import java.awt.Color;
@@ -8,7 +11,7 @@ import java.awt.event.ActionListener;
 import javax.sound.midi.*;
 //import java.awt.*;
 
-public class testappletplayer extends Applet implements ActionListener {
+public class TestAppletPlayer extends Applet implements ActionListener {
 	Sequencer seq;
 	Button playBtn;
 	Button stopBtn;

@@ -1,3 +1,5 @@
+package CloudComposerGroup;
+
 public class Note {
 	public int length;
 	public int instrument;
