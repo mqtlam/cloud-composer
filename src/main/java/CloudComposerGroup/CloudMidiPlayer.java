@@ -18,7 +18,8 @@ public class CloudMidiPlayer
 	private static final int OCTAVES = 2;
 	private static final int DEFAULTBPM = 120;
 	
-	private static final float ticksPerFrame = 4;
+	public static final float ticksPerFrame = 4;
+	
 	private Sequencer seq;
 	private Synthesizer synth;
 	
@@ -154,7 +155,7 @@ public class CloudMidiPlayer
 		Track t = s.getTracks()[inst.value];
 		ShortMessage m = new ShortMessage();
 		int realPitch = pitch / SCALENOTES * 12 + SCALE[pitch % SCALENOTES];
-		System.out.println(pitch + " " + realPitch);
+		//System.out.println(pitch + " " + realPitch);
 		m.setMessage(ShortMessage.NOTE_ON, pitch, realPitch, 100);
 		t.add(new MidiEvent(m, startPos));//startTick));
 		
