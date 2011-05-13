@@ -29,12 +29,17 @@ define("WEBSITE_URL", "http://students.washington.edu/jclement/Cloud-Composer/")
 /**
  * Directory to save new file (and look up old files)
  */
-define("SAVE_DIRECTORY", "./saved_data/");
+define("SAVE_DIRECTORY", "/songs/");
 
 /**
  * File extension type
  */
-define("FILE_EXTENSION", ".dat");
+define("FILE_EXTENSION", ".xml");
+
+/**
+ * POST parameter to pass data to this php file.
+ */
+define("DATA_PARAM", "data");
 
 // }}}
 // {{{ functions
@@ -106,7 +111,7 @@ function displayLink($filename)
 // }}}
 // {{{ SAVE SESSION AND DISPLAY LINK
 
-$data = $_POST["data"];
+$data = $_POST[DATA_PARAM];
 $filename = generateFileName();
 saveSession($data, $filename);
 displayLink($filename);
