@@ -13,6 +13,8 @@ import javax.sound.midi.Sequence;
 //the Java model of the grid, the NoteGrid to MIDI Sequence converter
 //and the Midi Player itself.
 public class CloudAppletController extends Applet { //implements ActionListener {
+
+	private static final long serialVersionUID = 1L;
 	public CloudMidiPlayer player;
 	private SongSequence sequencer;
 	private NoteGrid grid;

@@ -87,6 +87,7 @@ public class CloudMidiPlayer
 	{
 		pause();
 		seq.setSequence(noteSequences[inst.value][pitch]);
+		seq.setTickPosition(0);
 		seq.start();
 	}
 	

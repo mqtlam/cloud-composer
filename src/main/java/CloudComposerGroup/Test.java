@@ -6,7 +6,11 @@ public class Test {
 		c.init();
 		//for (int i = 0; i < 5; i++) {
 		//	for (int j = 0; j < 10; j++) {
-		c.playNote(0, 9);
+		c.playNote(0, 5);
+		Thread.sleep(1000);
+		c.playNote(0, 5);
+		Thread.sleep(1000);
+		c.playNote(0, 5);
 				//Thread.sleep(1000);
 		//	}
 		//}
