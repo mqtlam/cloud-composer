@@ -150,25 +150,41 @@ public class CloudMidiPlayer
 	{
 		//int startTick = (int) (startPos * ticksPerSecond / 16);
 		//int stopTick = (int) (stopPos * ticksPerSecond / 16);
-		while (s.getTracks().length < 5) {
-			s.createTrack();
-		}
-		Track t = s.getTracks()[inst.value];
+		//while (s.getTracks().length < 5) {
+		//	s.createTrack();
+		//}
+		Track t = s.getTracks()[0];
 		ShortMessage m = new ShortMessage();
 		int realPitch = pitch / SCALENOTES * 12 + SCALE[pitch % SCALENOTES];
 		//System.out.println(pitch + " " + realPitch);
-		m.setMessage(ShortMessage.NOTE_ON, pitch, realPitch, 100);
+		m.setMessage(ShortMessage.NOTE_ON, inst.value, realPitch, 100);
 		t.add(new MidiEvent(m, startPos));//startTick));
 		
 		ShortMessage m2 = new ShortMessage();
-		m2.setMessage(ShortMessage.NOTE_OFF, pitch, realPitch, 100);
+		m2.setMessage(ShortMessage.NOTE_OFF, inst.value, realPitch, 100);
 		t.add(new MidiEvent(m2, stopPos));//stopTick));
 		
 		//System.out.println(inst.value + " " + pitch + " " + realPitch + " " + startPos + " " + stopPos + " ");
 	}
 	
+	public static Sequence basicSequence() throws InvalidMidiDataException 
+	{
+		Sequence s = new Sequence(Sequence.PPQ, (int) ticksPerFrame);
+		s.createTrack();
+		for (SequenceInst inst : SequenceInst.values())
+			setInstrument(s, inst);
+		return s;
+	}
+	
 	
 // PRIVATE METHODS
+	
+	private static void setInstrument(Sequence s, SequenceInst inst) throws InvalidMidiDataException
+	{
+		ShortMessage m = new ShortMessage();
+		m.setMessage(ShortMessage.PROGRAM_CHANGE, inst.value, INSTRUMENTS[inst.value], 0);
+		s.getTracks()[0].add(new MidiEvent(m, 0));//startTick));
+	}
 	
 	// Prepares the Midi System for use.
 	private void loadMidiSystem() throws Exception 
@@ -194,14 +210,14 @@ public class CloudMidiPlayer
 		for (SequenceInst inst : SequenceInst.values()) {
 			for (int pitch = 0; pitch < SCALENOTES * OCTAVES; pitch++) {
 				Sequence s = new Sequence(Sequence.PPQ, (int) ticksPerFrame);
-				ShortMessage m = new ShortMessage();
-				m.setMessage(ShortMessage.PROGRAM_CHANGE, pitch, INSTRUMENTS[inst.value], 0);
-				while (s.getTracks().length < 5)
-					s.createTrack();
-				Track t = s.getTracks()[inst.value];
-				t.add(new MidiEvent(m, 0));//startTick));
-				System.out.println(pitch + " " + inst.name());
-				addNote(s, inst, pitch, 0, 4);
+				s.createTrack();
+				setInstrument(s, inst);
+//				while (s.getTracks().length < SequenceInst.values().length)
+//					s.createTrack();
+//				Track t = s.getTracks()[inst.value];
+				
+				//System.out.println(pitch + " " + inst.name());
+				addNote(s, inst, pitch, 0, (int) ticksPerFrame);
 				noteSequences[inst.value][pitch] = s;
 			}
 		}
