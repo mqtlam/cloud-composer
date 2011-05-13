@@ -3,7 +3,7 @@
 // the Java model of the grid, the NoteGrid to MIDI Sequence converter
 // and the Midi Player itself.
 
-package CloudComposerGroup;
+//package CloudComposerGroup;
 
 import java.applet.Applet;
 
@@ -52,6 +52,14 @@ public class CloudAppletController extends Applet { //implements ActionListener 
 				grid.add(new Note(1, noteData[0], noteData[1]), noteData[2] + i);	
 			else
 				grid.remove(new Note(1, noteData[0], noteData[1]), noteData[2] + i);
+	}
+	
+	public String[] getInstruments() {
+		String[] list = new String[5];
+		for (int i = 0; i < 5; i++) {
+			list[i] = player.instruments[i].name();
+		}
+		return list;
 	}
 	
 	// Checks if the song has changed since it last played.
