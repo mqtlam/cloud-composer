@@ -1,6 +1,3 @@
-
-package CloudComposerGroup;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -13,7 +10,8 @@ import java.util.Map;
  */
 public class NoteGrid {
 	/** note grid that contains instrument notes **/
-	private Map<Integer, HashMap<Integer, ArrayList<Note>>> grid;
+	//private Map<Integer, HashMap<Integer, ArrayList<Note>>> grid;
+	private Map<Integer, ArrayList<Note>> grid;
 	/** the number of instrument notes on note grid **/
 	private int size;
 	
@@ -21,7 +19,8 @@ public class NoteGrid {
 	 * Constructs a NoteGrid object
 	 */
 	public NoteGrid() {
-		grid = new HashMap<Integer, HashMap<Integer, ArrayList<Note>>>();
+		//grid = new HashMap<Integer, HashMap<Integer, ArrayList<Note>>>();
+		grid = new HashMap<Integer, ArrayList<Note>>();
 		size = 0;
 	}
 	
@@ -34,12 +33,17 @@ public class NoteGrid {
 	 * @modifies this
 	 */
 	public void add(Note note, int column) {
-		Map<Integer, ArrayList<Note>> columns = grid.get(column);
-		if (columns == null) {
-			Map<Integer, ArrayList<Note>> newColumn = new HashMap<Integer, ArrayList<Note>>();
-			ArrayList<Note> newRow = new ArrayList<Note>();
-			newRow.add(note);
-			newColumn.put(note.pitch, newRow);
+		//Map<Integer, ArrayList<Note>> columns = grid.get(column);
+		ArrayList<Note> columnNotes = grid.get(column);
+		//if (column == null) {
+		if (columnNotes == null) {
+			//HashMap<Integer, ArrayList<Note>> newColumn = new HashMap<Integer, ArrayList<Note>>();
+			ArrayList<Note> newColumn = new ArrayList<Note>();
+			//ArrayList<Note> newRow = new ArrayList<Note>();
+			//newRow.add(note);
+			//newColumn.put(note.pitch, newRow);
+			
+			grid.put(column, newColumn);
 		} else {
 			ArrayList<Note> row = columns.get(columns);
 			if (row == null) {
