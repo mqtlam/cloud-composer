@@ -1,3 +1,5 @@
+package CloudComposerGroup;
+
 // Cloud Composer: testwrite.java
 // James Vaughan
 // Apologies for the bad name.  This file is the test file for generating
@@ -23,6 +25,9 @@ public class TestWrite {
 		Track[] t = s.getTracks();
 		//byte[] mdata = {(byte) ShortMessage.NOTE_ON, (byte) 80, (byte) 20};
 		
+		ShortMessage m3 = new ShortMessage();
+		m3.setMessage(ShortMessage.PROGRAM_CHANGE, 0, 0, 0);
+		
 		int[] fib = new int[40];
 		fib[0] = 1;
 		fib[1] = 1;
@@ -30,14 +35,14 @@ public class TestWrite {
 			fib[i] = fib[i-2] + fib[i-1];
 		}
 		
-		for (int i = 0; i < 40; i++) {
+		//for (int i = 0; i < 40; i++) {
 			ShortMessage m = new ShortMessage();
-			m.setMessage(ShortMessage.NOTE_ON, 2, fib[i] % 128, 100);
-			t[0].add(new MidiEvent(m, i*80));
+			m.setMessage(ShortMessage.NOTE_ON, 2, 81, 100);
+			t[0].add(new MidiEvent(m, 0));
 			ShortMessage m2 = new ShortMessage();
-			m2.setMessage(ShortMessage.NOTE_OFF, 2, fib[i] % 128, 100);
-			t[0].add(new MidiEvent(m2, i*80+79));
-		}
+			m2.setMessage(ShortMessage.NOTE_OFF, 2, 81, 100);
+			t[0].add(new MidiEvent(m2, 5));
+//		}
 		
 		Sequencer seq;
 		// Get default sequencer.
