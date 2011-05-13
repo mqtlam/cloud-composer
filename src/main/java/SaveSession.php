@@ -7,7 +7,7 @@
  * USAGE:   Pass the composition data to this php file
  *          using the POST variable 'data'.
  *          
- *          Saves to ./saved_data/filename.dat
+ *          Saves to /songs/filename.xml
  *          
  *          Returns the link on success or displays an error message:
  *              CANNOT OPEN FILE: file cannot be open to write
@@ -29,12 +29,17 @@ define("WEBSITE_URL", "http://students.washington.edu/jclement/Cloud-Composer/")
 /**
  * Directory to save new file (and look up old files)
  */
-define("SAVE_DIRECTORY", "./saved_data/");
+define("SAVE_DIRECTORY", "/songs/");
 
 /**
  * File extension type
  */
-define("FILE_EXTENSION", ".dat");
+define("FILE_EXTENSION", ".xml");
+
+/**
+ * POST parameter to pass data to this php file.
+ */
+define("DATA_PARAM", "data");
 
 // }}}
 // {{{ functions
@@ -106,7 +111,7 @@ function displayLink($filename)
 // }}}
 // {{{ SAVE SESSION AND DISPLAY LINK
 
-$data = $_POST["data"];
+$data = $_POST[DATA_PARAM];
 $filename = generateFileName();
 saveSession($data, $filename);
 displayLink($filename);
