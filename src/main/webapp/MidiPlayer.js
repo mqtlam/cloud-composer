@@ -4,6 +4,7 @@ function MidiPlayer(inst, num) {
 	this.instruments = inst;
 	this.maxValue = num-1;
 	this.intervalID = 0;
+	this.intervalSpeend = 150;
 	
 	createTempoSlider(80);
 	createPlayerSlider(0);
@@ -18,25 +19,29 @@ MidiPlayer.prototype.onPlayPauseClick = function (numColumns) {
 		this.inPlayMode = true;
 		// actually play
 		applet.play();
-		this.intervalID = setInterval("updateSongPosition()", 200);
+		this.intervalID = setInterval("updateSongPosition()", this.intervalSpeend);
 	} else {
 		playPauseButton.src = "images/Play-Disabled-icon.png";
 		this.inPlayMode = false;
 		applet.pause();
+		clearInterval(this.intervalID);
 		// actually pause
 	}
 }
 
 MidiPlayer.prototype.onStopClick = function () {
-	//
+	
 	applet.stop();
-	clearInterval(this.intervalID);
+	this.reset();
+}
+
+MidiPlayer.prototype.reset = function () {
 	$('#playbackSlider').slider('option', 'value', 0);
 	highlightbar.move(0);
+	clearInterval(this.intervalID);
 	document.getElementById("playpausebutton").src = "images/Play-Disabled-icon.png";
 	this.inPlayMode = false;
 }
-
 
 MidiPlayer.prototype.addToPlayer = function (column, note) {
 	var i = this.instruments.indexOf(note.instrument);
@@ -53,19 +58,24 @@ MidiPlayer.prototype.removeFromPlayer = function (column, note) {
 }
 
 
+var positionTracker = 1;
 function updateSongPosition() {
+	var g = document.getElementById('grid');
+	var b = document.getElementsByClassName('highlightbar')[0];
 	var p = applet.currentSongPosition();
-	if (p == midiplayer.maxValue || p == this.notePosition) {
-		$('#playbackSlider').slider('option', 'value', 0);	
-		clearInterval(this.intervalID);
-		highlightbar.move(0);
+	if (p == midiplayer.maxValue || p == midiplayer.notePosition) {
+		midiplayer.reset();
+		g.scrollLeft = "0px";
 	} else {
 		$('#playbackSlider').slider('option', 'value', p);	
 		highlightbar.move(p);
+		if (positionTracker == Math.floor(b.offsetLeft/g.offsetWidth)) {
+			g.scrollLeft = b.offsetLeft;
+			positionTracker++;
+		}
 	}
 	
-	this.notePosition = p;
-	
+	midiplayer.notePosition = p;
 }
 
 MidiPlayer.prototype.updatePlayback = function (numColumn) {
