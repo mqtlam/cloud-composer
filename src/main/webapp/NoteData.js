@@ -165,15 +165,15 @@ NoteData.prototype.serializeInstrument = function (column, instr) {
 
 
 NoteData.prototype.hasAnyInstruments = function(column) {
-	if (this.data[column]["piano"]) {
+	if (this.data[column]["piano"] && this.data[column]["piano"].length > 0) {
 		return true;
-	} else if (this.data[column]["trumpet"]) {
+	} else if (this.data[column]["trumpet"] && this.data[column]["trumpet"].length > 0) {
 		return true;
-	} else if (this.data[column]["violin"]) {
+	} else if (this.data[column]["violin"] && this.data[column]["violin"].length > 0) {
 		return true;
-	} else if (this.data[column]["drum"]) {
+	} else if (this.data[column]["drum"] && this.data[column]["drum"].length > 0) {
 		return true;
-	} else if (this.data[column]["guitar"]) {
+	} else if (this.data[column]["guitar"] && this.data[column]["guitar"].length > 0) {
 		return true;
 	}
 	return false;
