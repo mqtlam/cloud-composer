@@ -25,7 +25,8 @@
 /**
  * URL of website for displaying to user
  */
-define("WEBSITE_URL", "http://students.washington.edu/jclement/Cloud-Composer/");
+//define("WEBSITE_URL", "http://students.washington.edu/jclement/Cloud-Composer/");
+define("WEBSITE_URL", "http://students.washington.edu/eui/403/");
 
 /**
  * Directory to save new file (and look up old files)
@@ -42,63 +43,89 @@ define("FILE_EXTENSION", ".ly");
  */
 define("DATA_PARAM", "data");
 
-// }}}
-// {{{ variables/functions for instruments
-
-$instruments = array(   "PIANO"     => "piano",
+/**
+ * All instruments here. TODO: abstract out along with other files?
+ */
+const $instruments = array(   "PIANO"     => "piano",
                         "VIOLIN"    => "violin",
                         "GUITAR"    => "guitar",
                         "TRUMPET"   => "trumpet",
                         "DRUM"      => "drum" );
 
-$pitches = array(   0   => "c",  // c4 = 60
-                    1   => "d",
-                    2   => "e",
-                    3   => "a",
-                    4   => "g",
-                    5   => "c'",
-                    6   => "d'",
-                    7   => "e'",
-                    8   => "a'",
-                    9   => "g'"   );
+/**
+ * All pitches here. TODO: abstract out along with other files?
+ */
+const $pitches = array(   0   => "c'",  // c4 = 60
+                    1   => "d'",
+                    2   => "e'",
+                    3   => "a'",
+                    4   => "g'",
+                    5   => "c''",
+                    6   => "d''",
+                    7   => "e''",
+                    8   => "a''",
+                    9   => "g''"   );
 
+/**
+ * Column tag name.
+ */
 define("COL_NAME", "c");
 
+/**
+ * Index of first column in note grid.
+ */
 define("FIRST_COL", 0);
 
+/**
+ * How many sixteenth notes per measure, used for time signature calculation.
+ * (Time signature assumes a beat is a quarter note.)
+ */
 define("SIXTEENTH_NOTES_PER_MEASURE", 16);
 
 // }}}
-// {{{ xml functions
+// {{{ global variables (for maintaining state with sax parser)
 
-// TODO: implement startElemHandler and endElemHandler
+$currentColumn = 0;
+$currentInstrument = $instruments['PIANO'];
+
+$newData = "";
+
+// }}}
+// {{{ xml functions
+/*
 function startElemHandler($parser, $name, $attribs) {
-    /*if (strcasecmp($name, COL_NAME) == 0) {
-        echo "<div id='linksList'>\n";
+    if (strcasecmp($name, COL_NAME) == 0) {
+        // <c id="num"> detected
+        $currentColumn = $attribs["id"]
     }
-    if (strcasecmp($name, "category") == 0) {
-        $desc = $attribs["desc"];
-        echo "<p>$desc</p>\n<ul>\n";
+    if (strcasecmp($name, $instruments['PIANO']) == 0) {
+        // <piano> detected
+        $currentInstrument = $instruments['PIANO'];
     }
-    if (strcasecmp($name, "link") == 0) {
-        $linkRef = $attribs["url"];
-        $desc = $attribs["desc"];
-        if ($desc == "")
-          echo "\t<li><a href='$linkRef' target='_blank'>$linkRef</a></li>\n";
-        else
-          echo "\t<li><a href='$linkRef' target='_blank'>$desc</a></li>\n";
-    }*/
 }
 
 function endElemHandler($parser, $name) {
-/*    if (strcasecmp($name, COL_NAME) == 0) {
-        echo "</div>\n";
+    if (strcasecmp($name, COL_NAME) == 0) {
+        // </c> detected
     }
-    if (strcasecmp($name, "category") == 0) {
-        echo "</ul>\n";
+    if (strcasecmp($name, $instruments['PIANO']) == 0) {
+        // </piano> detected
     }
-*/
+
 }
+
+function characterData($parser, $data) {
+    // text data detected
+    global $newData;
+    
+    // TODO
+    // get first {} pair
+    // extract length and pitch
+    $pitch = 0;
+    $length = 1;
+    
+    // based on current column and length, determine what note type and ties if appropriate
+}*/
 
 // }}}
 // {{{ functions
@@ -152,28 +179,31 @@ function generateFileName() {
  */
 function interpretData($data)
 {
+    global $newData;
+    
     $timeSignatureNumerator = SIXTEENTH_NOTES_PER_MEASURE / 4;
-    $header = "\n\t\\time $timeSignatureNumerator/4\n\t\\clef treble";
+    $header = "\new Staff\n{\n\t\\set Staff.instrumentName = #\"{$instruments['PIANO']}\""
+              . "\n\t\\clef treble\n\t\\time $timeSignatureNumerator/4\n\t";
     
     // create file
-    $newdata = "";
-    $newdata .= "{ $header";
-    
+    $newData = $header;
+    /*
     // new xml parser object
-    $xml_parser = xml_parser_create();
-    //xml_set_element_handler($parser, startElemHandler, endElemHandler);
-    xml_parser_set_option($xml_parser, XML_OPTION_CASE_FOLDING, 0);
+    $xmlParser = xml_parser_create() or die("XML SAX NOT SUPPORTED");
+    xml_set_element_handler($xmlParser, "startElemHandler", "endElemHandler");
+    xml_set_character_data_handler($xmlParser, "characterData");
+    xml_parser_set_option($xmlParser, XML_OPTION_CASE_FOLDING, 0);
     
     // parse xml
-    xml_parse($xml_parser, $data);
+    xml_parse($xmlParser, $data);
     
     // close xml
-    xml_parser_free($xml_parser);
-    
+    xml_parser_free($xmlParser);
+    */
     // end new data
-    $newdata .= "\n}";
+    $newData .= "\n}";
     
-    return $newdata;
+    return $newData;
 }
 
 /**
