@@ -25,7 +25,7 @@ public class CloudMidiPlayer
 	private Sequence[][] noteSequences;
 	private Sequence song;
 	
-	private SequenceInst[] instruments;
+	//private SequenceInst[] instruments;
 	
 	// Set of enum values for the list of instruments Cloud Composer supports.
 	public enum SequenceInst 
@@ -42,9 +42,9 @@ public class CloudMidiPlayer
 	// Constructs a cloudMidiPlayer with the default BPM.
 	public CloudMidiPlayer() throws Exception 
 	{
-		instruments = SequenceInst.values();
+//		instruments = SequenceInst.values();
 		loadMidiSystem();
-		noteSequences = new Sequence[instruments.length][SCALENOTES * OCTAVES];
+		noteSequences = new Sequence[getInstruments().length][SCALENOTES * OCTAVES];
 		setTempo(DEFAULTBPM);
 	}
 	
