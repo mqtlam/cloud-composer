@@ -26,7 +26,7 @@ public class CloudAppletController extends Applet { //implements ActionListener 
 		try {
 			grid = new NoteGrid();
 			player = new CloudMidiPlayer();
-			sequencer = new SongSequence(grid);//, (int) player.ticksPerFrame, player.getInstruments().length);
+			sequencer = new SongSequence(grid);
 			changed = false;
 		} catch (Exception e) {
 			e.printStackTrace();
