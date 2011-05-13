@@ -1,9 +1,4 @@
-// CloudAppletController.java
-// This file is the applet used to interact between the UI,
-// the Java model of the grid, the NoteGrid to MIDI Sequence converter
-// and the Midi Player itself.
-
-//package CloudComposerGroup;
+package CloudComposerGroup;
 
 import java.applet.Applet;
 
@@ -13,7 +8,10 @@ import javax.sound.midi.Sequence;
 //import java.awt.event.ActionEvent;
 //import java.awt.event.ActionListener;
 
-
+//CloudAppletController.java
+//This file is the applet used to interact between the UI,
+//the Java model of the grid, the NoteGrid to MIDI Sequence converter
+//and the Midi Player itself.
 public class CloudAppletController extends Applet { //implements ActionListener {
 	private CloudMidiPlayer player;
 	//private SongSequence sequencer;
