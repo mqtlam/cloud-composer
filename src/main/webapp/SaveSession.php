@@ -24,8 +24,8 @@
 /**
  * URL of website for displaying to user
  */
-define("WEBSITE_URL", "http://students.washington.edu/jclement/Cloud-Composer/");
-
+//define("WEBSITE_URL", "http://students.washington.edu/jclement/Cloud-Composer/");
+define("WEBSITE_URL", "http://students.washington.edu/eui/403/");
 /**
  * Directory to save new file (and look up old files)
  */
@@ -105,13 +105,13 @@ function saveSession($data, $filename)
  */
 function displayLink($filename)
 {
-    echo WEBSITE_URL . $filename;
+    echo WEBSITE_URL . SAVE_DIRECTORY . $filename .FILE_EXTENSION;
 }
 
 // }}}
 // {{{ SAVE SESSION AND DISPLAY LINK
 
-$data = $_POST[DATA_PARAM];
+$data = $_POST['data'];
 $filename = generateFileName();
 saveSession($data, $filename);
 displayLink($filename);

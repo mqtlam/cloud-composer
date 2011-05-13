@@ -5,25 +5,27 @@ function sendNoteGrid(notegrid, dest) {
 	if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
 		xmlhttp=new XMLHttpRequest();
 	}
+	xmlhttp.open("POST", dest, true);
 	xmlhttp.onreadystatechange = function() {		
 		if (xmlhttp.readyState==4 && xmlhttp.status==200) {
 			displayLinkURL(xmlhttp.responseText);
-			alert("got response from server");
 		}
 	}
-	xmlhttp.open("POST", dest, true);
+	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	xmlhttp.send("data="+notegrid);
 	//displayLinkURL("TEST SERVER RESPOND");	// TEST
 }
 
 function displayLinkURL(linkURL) {
 	// TODO change me... just checking if it works.
-	copyToClipboard(linkURL);
-	alert("PermaLink: " + linkURL + "\n" + "PermaLink has been copied to your clipboard!!");
+//	copyToClipboard(linkURL);
+	alert("PermaLink:\n" + linkURL);// + "\n" + "PermaLink has been copied to your clipboard!!");
 }
+
 
 /* called by LinkURL box */
 /* copies given text */
+/*
 function copyToClipboard(linkURL) {  
 if (window.clipboardData)   
      window.clipboardData.setData("Text", linkURL);  
@@ -48,3 +50,4 @@ if (window.clipboardData)
 	}  
 	return false;  
 }
+*/
