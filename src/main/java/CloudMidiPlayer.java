@@ -79,7 +79,7 @@ public class CloudMidiPlayer
 	{
 		pause();
 		seq.setSequence(noteSequences[inst.value][pitch]);
-		play();
+		seq.start();
 	}
 	
 	// Sets the song to the provided sequence and plays the it.
