@@ -25,7 +25,7 @@ public class CloudAppletController extends Applet { //implements ActionListener 
 		try {
 			grid = new NoteGrid();
 			player = new CloudMidiPlayer();
-			sequencer = new SongSequence(grid, player.getTicksPerFrame(), player.instruments.length);
+			sequencer = new SongSequence(grid, player.getTicksPerFrame(), player.getInstruments().length);
 			changed = false;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -57,7 +57,7 @@ public class CloudAppletController extends Applet { //implements ActionListener 
 	public String[] getInstruments() {
 		String[] list = new String[5];
 		for (int i = 0; i < 5; i++) {
-			list[i] = player.instruments[i].name();
+			list[i] = player.getInstruments()[i].name();
 		}
 		return list;
 	}
@@ -81,7 +81,7 @@ public class CloudAppletController extends Applet { //implements ActionListener 
 	// Plays the note indicated by the instrument and the pitch.
 	public void playNote(int instrument, int pitch) throws InvalidMidiDataException 
 	{
-		player.playNote(player.instruments[instrument], pitch);
+		player.playNote(player.getInstruments()[instrument], pitch);
 	}
 	
 	// Stops the song, moving its playback position to the beginning.
