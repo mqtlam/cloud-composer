@@ -4,7 +4,7 @@
 // It also generates and holds individual note pitch data for playing
 // whenever a note is pressed on the user interface.
 
-package CloudComposerGroup;
+//package CloudComposerGroup;
 
 import javax.sound.midi.*;
 
@@ -23,7 +23,7 @@ public class CloudMidiPlayer
 	private Sequence[][] noteSequences;
 	private Sequence song;
 	
-	public final SequenceInst[] instruments = SequenceInst.values();
+	private SequenceInst[] instruments;
 	
 	// Set of enum values for the list of instruments Cloud Composer supports.
 	public enum SequenceInst 
@@ -40,9 +40,15 @@ public class CloudMidiPlayer
 	// Constructs a cloudMidiPlayer with the default BPM.
 	public CloudMidiPlayer() throws Exception 
 	{
+		instruments = SequenceInst.values();
 		loadMidiSystem();
 		noteSequences = new Sequence[instruments.length][SCALENOTES * OCTAVES];
 		setTempo(DEFAULTBPM);
+	}
+	
+	public SequenceInst[] getInstruments() 
+	{
+		return SequenceInst.values();
 	}
 	
 	// Sets the tempo of the song using the provided BPM. 
@@ -126,6 +132,10 @@ public class CloudMidiPlayer
 	{
 		int startTick = (int) (startPos * ticksPerSecond / 16);
 		int stopTick = (int) (stopPos * ticksPerSecond / 16);
+		Track[] tracks = s.getTracks();
+		while (tracks.length < 5) {
+			s.createTrack();
+		}
 		Track t = s.getTracks()[inst.value];
 		ShortMessage m = new ShortMessage();
 		int realPitch = pitch / SCALENOTES * 12 + SCALE[pitch % SCALENOTES];
@@ -164,6 +174,9 @@ public class CloudMidiPlayer
 		for (SequenceInst inst : SequenceInst.values()) {
 			for (int pitch = 0; pitch < SCALENOTES * OCTAVES; pitch++) {
 				Sequence s = new Sequence(Sequence.SMPTE_30, ticksPerFrame);
+				for (int i = 0; i < 5; i++) {
+					s.createTrack();
+				}
 				addNote(s, inst, pitch, 0, 4);
 				noteSequences[inst.value][pitch] = s;
 			}
