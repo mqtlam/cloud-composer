@@ -109,13 +109,21 @@ function generateFileName() {
  */
 function interpretData($data)
 {
-    // TODO: do actual interpretation
-    // current generates a blank template
+    $timeSignatureNumerator = SIXTEENTH_NOTES_PER_MEASURE / 4;
+    $header = "\n\t\\time $timeSignatureNumerator/4\n\t\\clef treble";
     
+    // new xml parser object
+    $xml_parser = xml_parser_create();
+    
+    // create file
     $newdata = "";
+    $newdata .= "{ $header";
     
-    $newdata .= "{\n\t\\time 4/4\n\t\\clef treble";
+    // end new data
     $newdata .= "\n}";
+    
+    // close xml
+    xml_parser_free($xml_parser);
     
     return $newdata;
 }
