@@ -2,8 +2,8 @@ function MidiPlayer(inst, num) {
 	this.inPlayMode = false; 
 	this.notePosition = 0; // where song is during playback
 	this.instruments = inst;
-	this.maxValue = num;
-	this.intervalID;
+	this.maxValue = num-1;
+	this.intervalID = 0;
 	
 	createTempoSlider(80);
 	createPlayerSlider(0);
@@ -18,8 +18,7 @@ MidiPlayer.prototype.onPlayPauseClick = function (numColumns) {
 		this.inPlayMode = true;
 		// actually play
 		applet.play();
-		
-		this.intervalID = setInterval("updateSongPosition()", 1000);
+		this.intervalID = setInterval("updateSongPosition()", 200);
 	} else {
 		playPauseButton.src = "images/Play-Disabled-icon.png";
 		this.inPlayMode = false;
@@ -33,6 +32,7 @@ MidiPlayer.prototype.onStopClick = function () {
 	applet.stop();
 	clearInterval(this.intervalID);
 	$('#playbackSlider').slider('option', 'value', 0);
+	highlightbar.move(0);
 	document.getElementById("playpausebutton").src = "images/Play-Disabled-icon.png";
 	this.inPlayMode = false;
 }
@@ -54,15 +54,17 @@ MidiPlayer.prototype.removeFromPlayer = function (column, note) {
 
 
 function updateSongPosition() {
-	var p = midiplayer.getPosition();
-	//var pos = applet.currentSongPosition();
-	if (p == midiplayer.maxValue) {
-		clearInterval(this.intervalID);
+	var p = applet.currentSongPosition();
+	if (p == midiplayer.maxValue || p == this.notePosition) {
 		$('#playbackSlider').slider('option', 'value', 0);	
+		clearInterval(this.intervalID);
+		highlightbar.move(0);
 	} else {
-		$('#playbackSlider').slider('option', 'value', midiplayer.getPosition());	
+		$('#playbackSlider').slider('option', 'value', p);	
+		highlightbar.move(p);
 	}
 	
+	this.notePosition = p;
 	
 }
 
@@ -70,11 +72,6 @@ MidiPlayer.prototype.updatePlayback = function (numColumn) {
 	this.maxValue = numColumn;
 	$('#playbackSlider').slider('option', 'max', numColumn);
 }
-
-MidiPlayer.prototype.getPosition = function () {
-	return this.notePosition++;
-}
-
 
 function createTempoSlider(initialValue) {
 	$("#tempo").slider({

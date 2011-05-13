@@ -20,10 +20,8 @@ function setEvents() {
 //	document.body.addEventListener("mouseout", rollOut, false);
 }
 
-var a;
 function mouseClick(event) {
 	var current = event.target;
-	a = current;
 	if (current.className.indexOf("grid_square") == 0 || current.parentNode.className.indexOf("grid_square") == 0) { 
 		var instrument = selector.currentInstrument;
 		if (instrument) {
@@ -48,7 +46,9 @@ function mouseClick(event) {
 		var notegrid = grid.serialize();
 		sendNoteGrid(notegrid, "SaveSession.php");
 	} else if (current.className == "column_button") {
-		highlightbar.move(current.id);
+		var c = parseInt(current.id);
+		highlightbar.move(c);
+		applet.setSongPosition(c);
 	}
 
 }
