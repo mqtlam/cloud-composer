@@ -46,7 +46,7 @@ function mouseClick(event) {
 	} else if (current.id == "getlinkbutton") {
 		// TODO put this code somewhere else...
 		var notegrid = grid.serialize();
-		sendNoteGrid(notegrid, "savesession.php");
+		sendNoteGrid(notegrid, "SaveSession.php");
 	} else if (current.className == "column_button") {
 		highlightbar.move(current.id);
 	}

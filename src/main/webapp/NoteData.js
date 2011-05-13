@@ -134,11 +134,11 @@ NoteData.prototype.serializeColumn = function (column) {
 	var columnstring = "";
 	
 	if (this.hasAnyInstruments(column)) {
-		columnstring += "<c" + " \"id=" + column + "\" >";	
+		columnstring += "<column" + " id=\"" + column + "\">";	
 		for (var instr in this.data[column]) {
 			columnstring += this.serializeInstrument(column, instr);
 		}
-		columnstring += "</c>";
+		columnstring += "</column>";
 	}
 	
 	return columnstring;
