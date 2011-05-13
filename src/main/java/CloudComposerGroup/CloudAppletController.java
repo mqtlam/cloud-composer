@@ -103,9 +103,9 @@ public class CloudAppletController extends Applet { //implements ActionListener 
 	}
 	
 	// Sets the current position of the song in the player.
-	public void setSongPosition(float percent) 
+	public void setSongPosition(int column) 
 	{
-		player.setPlayTime(percent);
+		player.setPlayTime(column);
 	}
 	
 	// Gets the current song position.

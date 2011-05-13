@@ -120,10 +120,10 @@ public class CloudMidiPlayer
 	}
 	
 	// Sets the current place in the song based on a percentage of the song length.
-	public void setPlayTime(float percent) 
+	public void setPlayTime(int column) 
 	{
-		long songLength = seq.getTickLength();
-		seq.setTickPosition((long) (songLength * percent));
+		//long songLength = seq.getTickLength();
+		seq.setTickPosition((long) column);
 	}
 	
 	// Returns the column of the playback bar.
