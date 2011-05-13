@@ -240,7 +240,7 @@ NoteGrid.prototype.gridClick = function (evt, instrument) {
 		square.style.backgroundImage = "none";
 		square.className = square.className.replace(" " + instrument.instrumentName, "");
 	}
-	
+	alert(this.serialize());
 	this.updateDisplay(column, pitch);
 }
 

@@ -130,15 +130,15 @@ NoteData.prototype.output = function () {
 }
 
 /* returns a string version of the current column of the grid */
-NoteData.prototype.serializeColumn = function (column) {	
+NoteData.prototype.serializeColumn = function (column) {		
 	var columnstring = "";
 	
-	if (this.data[column]) { // TODO why doesn't this.data[column].length > 0 work here?
-		columnstring += "<c" + column + " >";	
+	if (this.hasAnyInstruments(column)) {
+		columnstring += "<c" + " \"id=\"" + column + " >";	
 		for (var instr in this.data[column]) {
 			columnstring += this.serializeInstrument(column, instr);
 		}
-		columnstring += "</c" + column + " >";
+		columnstring += "</c>";
 	}
 	
 	return columnstring;
@@ -161,4 +161,20 @@ NoteData.prototype.serializeInstrument = function (column, instr) {
 	}
 	
 	return instrumentstring;
+}
+
+
+NoteData.prototype.hasAnyInstruments = function(column) {
+	if (this.data[column]["piano"]) {
+		return true;
+	} else if (this.data[column]["trumpet"]) {
+		return true;
+	} else if (this.data[column]["violin"]) {
+		return true;
+	} else if (this.data[column]["drum"]) {
+		return true;
+	} else if (this.data[column]["guitar"]) {
+		return true;
+	}
+	return false;
 }
