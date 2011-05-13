@@ -44,16 +44,7 @@ public class SongSequence {
 		for (int column : columns) {
 			List<Note> columnNotes = grid.getNotes(column);
 			for (Note n : columnNotes) {
-				if (n.instrument == 0)
-					CloudMidiPlayer.addNote(sequence, CloudMidiPlayer.SequenceInst.PIANO, n.pitch, column, column + n.length);
-				else if (n.instrument == 1)
-					CloudMidiPlayer.addNote(sequence, CloudMidiPlayer.SequenceInst.GUITAR, n.pitch, column, column + n.length);
-				else if (n.instrument == 2)
-					CloudMidiPlayer.addNote(sequence, CloudMidiPlayer.SequenceInst.DRUM, n.pitch, column, column + n.length);
-				else if (n.instrument == 3)
-					CloudMidiPlayer.addNote(sequence, CloudMidiPlayer.SequenceInst.TRUMPET, n.pitch, column, column + n.length);
-				else
-					CloudMidiPlayer.addNote(sequence, CloudMidiPlayer.SequenceInst.VIOLIN, n.pitch, column, column + n.length);					
+				CloudMidiPlayer.addNote(sequence, CloudMidiPlayer.SequenceInst.values()[n.instrument], n.pitch, column, column + n.length);
 			}
 		}
 		return sequence;
