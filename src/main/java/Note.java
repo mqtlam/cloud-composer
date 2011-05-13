@@ -1,4 +1,4 @@
-package CloudComposerGroup;
+//package CloudComposerGroup;
 
 public class Note {
 	public int length;
