@@ -1,9 +1,6 @@
+package CloudComposerGroup;
 
-//package CloudComposerGroup;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.Sequence;
@@ -13,17 +10,18 @@ import javax.sound.midi.Sequence;
  * saving them to sequence, and generating it.
  */
 public class SongSequence {
-	private int instruments;
-	
+	private int instruments;	// the number of instruments
 	private NoteGrid grid;		// note grid that contains all the notes
 	private Sequence sequence;  // sequence of song to be generated
-	private int ticksPerFrame;
+	private int ticksPerFrame;  // duration of sequence
 		
 	/**
 	 * Constructs a SongSequence object
 	 * 
 	 * @param grid, NoteGrid object that contains all the notes
-	 * @requires grid != null
+	 * @param ticksPerFrame, integer that represents duration of sequence
+	 * @param instruments, integer that represents the number of instruments
+	 * @requires grid != null && ticksPerFrame > 0 && instruments > 0
 	 * @throws InvalidMidiDataException if it cannot create a sequence object
 	 */
 	public SongSequence(NoteGrid grid, int ticksPerFrame, int instruments) throws InvalidMidiDataException {
@@ -45,21 +43,18 @@ public class SongSequence {
 			sequence.createTrack();
 		List<Integer> columns = grid.getColumns();
 		for (int column : columns) {
-			Map<Integer, ArrayList<Note>> pitches = grid.getPitches(column);
-			for (int pitch : pitches.keySet()) {
-				ArrayList<Note> notes = pitches.get(pitch);
-				for (Note n : notes) {
-					if (n.instrument == 0)
-						CloudMidiPlayer.addNote(sequence, CloudMidiPlayer.SequenceInst.PIANO, pitch, column, column + n.length);
-					else if (n.instrument == 1)
-						CloudMidiPlayer.addNote(sequence, CloudMidiPlayer.SequenceInst.GUITAR, pitch, column, column + n.length);
-					else if (n.instrument == 2)
-						CloudMidiPlayer.addNote(sequence, CloudMidiPlayer.SequenceInst.DRUM, pitch, column, column + n.length);
-					else if (n.instrument == 3)
-						CloudMidiPlayer.addNote(sequence, CloudMidiPlayer.SequenceInst.TRUMPET, pitch, column, column + n.length);
-					else
-						CloudMidiPlayer.addNote(sequence, CloudMidiPlayer.SequenceInst.VIOLIN, pitch, column, column + n.length);					
-				}
+			List<Note> columnNotes = grid.getNotes(column);
+			for (Note n : columnNotes) {
+				if (n.instrument == 0)
+					CloudMidiPlayer.addNote(sequence, CloudMidiPlayer.SequenceInst.PIANO, n.pitch, column, column + n.length);
+				else if (n.instrument == 1)
+					CloudMidiPlayer.addNote(sequence, CloudMidiPlayer.SequenceInst.GUITAR, n.pitch, column, column + n.length);
+				else if (n.instrument == 2)
+					CloudMidiPlayer.addNote(sequence, CloudMidiPlayer.SequenceInst.DRUM, n.pitch, column, column + n.length);
+				else if (n.instrument == 3)
+					CloudMidiPlayer.addNote(sequence, CloudMidiPlayer.SequenceInst.TRUMPET, n.pitch, column, column + n.length);
+				else
+					CloudMidiPlayer.addNote(sequence, CloudMidiPlayer.SequenceInst.VIOLIN, n.pitch, column, column + n.length);					
 			}
 		}
 		return sequence;
