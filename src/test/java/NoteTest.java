@@ -9,12 +9,16 @@ import static org.junit.matchers.JUnitMatchers.*;
 import CloudComposerGroup.*;
 
 public class NoteTest  {
-	@Test
 	
+	@Test
 	public void testNote() {
+		
+		// test the constructor
 		Note n = new CloudComposerGroup.Note(3, 7, 12);
 		assertEquals(3, n.length, 0);
 		assertEquals(7, n.instrument, 0);
 		assertEquals(12, n.pitch, 0);
-		}
+
 	}
+	
+}
