@@ -13,6 +13,7 @@ import javax.sound.midi.*;
 public class CloudMidiPlayer 
 {
 	private static final int[] SCALE = {60, 62, 64, 67, 69};
+	private static final int[] INSTRUMENTS = {0, 30, 114, 56, 40};
 	//private static final int INSTRUMENTS = 5;
 	private static final int SCALENOTES = 5;
 	private static final int OCTAVES = 2;
@@ -24,6 +25,8 @@ public class CloudMidiPlayer
 	
 	private Sequence[][] noteSequences;
 	private Sequence song;
+	
+	public String earlySetString;
 	
 	//private SequenceInst[] instruments;
 	
@@ -42,10 +45,15 @@ public class CloudMidiPlayer
 	// Constructs a cloudMidiPlayer with the default BPM.
 	public CloudMidiPlayer() throws Exception 
 	{
+		earlySetString = "";
+		try {
 //		instruments = SequenceInst.values();
 		loadMidiSystem();
 		noteSequences = new Sequence[getInstruments().length][SCALENOTES * OCTAVES];
 		setTempo(DEFAULTBPM);
+		} catch (Exception e) {
+			earlySetString = e.getMessage();
+		}
 	}
 	
 	public SequenceInst[] getInstruments() 
@@ -58,14 +66,14 @@ public class CloudMidiPlayer
 	{
 		pause();
 		seq.setTempoInBPM(bpm);
-		ticksPerSecond = 1800 * bpm;
+		//ticksPerSecond = bpm / 1800;
 		generateNotes();
 	}
 	
-	public int getTicksPerFrame() 
-	{
-		return (int) ticksPerSecond * 30;
-	}
+	//public int getTicksPerFrame() 
+	//{
+//		return (int) ticksPerSecond;
+//	}
 
 	// Plays the sequence previously loaded.
 	public void play() throws InvalidMidiDataException 
@@ -77,6 +85,7 @@ public class CloudMidiPlayer
 	
 	public void playNote(SequenceInst inst, int pitch) throws InvalidMidiDataException 
 	{
+		System.out.println(INSTRUMENTS[inst.value]);
 		pause();
 		seq.setSequence(noteSequences[inst.value][pitch]);
 		seq.start();
@@ -120,8 +129,9 @@ public class CloudMidiPlayer
 	// Returns the column of the playback bar.
 	public int playbackBarColumn() 
 	{
-		int currentTick = (int) seq.getTickPosition();
-		return (int) (currentTick / (ticksPerSecond / 16));
+		return (int) seq.getTickPosition();
+		//int currentTick = (int) seq.getTickPosition();
+		//return (int) (currentTick / (ticksPerSecond / 16));
 	}
 	
 	// TODO: Write MIDI file
@@ -138,21 +148,20 @@ public class CloudMidiPlayer
 						 int pitch, int startPos, int stopPos) 
 						 throws InvalidMidiDataException 
 	{
-		int startTick = (int) (startPos * ticksPerSecond / 16);
-		int stopTick = (int) (stopPos * ticksPerSecond / 16);
-		Track[] tracks = s.getTracks();
-		while (tracks.length < 5) {
+		//int startTick = (int) (startPos * ticksPerSecond / 16);
+		//int stopTick = (int) (stopPos * ticksPerSecond / 16);
+		while (s.getTracks().length < 5) {
 			s.createTrack();
 		}
 		Track t = s.getTracks()[inst.value];
 		ShortMessage m = new ShortMessage();
 		int realPitch = pitch / SCALENOTES * 12 + SCALE[pitch % SCALENOTES];
-		m.setMessage(ShortMessage.NOTE_ON, 0, realPitch, 100);
-		t.add(new MidiEvent(m, startTick));
+		m.setMessage(ShortMessage.NOTE_ON, pitch, realPitch, 100);
+		t.add(new MidiEvent(m, startPos));//startTick));
 		
 		ShortMessage m2 = new ShortMessage();
-		m2.setMessage(ShortMessage.NOTE_OFF, 0, realPitch, 100);
-		t.add(new MidiEvent(m, stopTick));
+		m2.setMessage(ShortMessage.NOTE_OFF, pitch, realPitch, 100);
+		t.add(new MidiEvent(m2, stopPos));//stopTick));
 	}
 	
 	
@@ -178,13 +187,16 @@ public class CloudMidiPlayer
 	// Generates the Sequences required for single note playback.
 	private void generateNotes() throws InvalidMidiDataException 
 	{
-		int ticksPerFrame = getTicksPerFrame();
+		//int ticksPerFrame = getTicksPerFrame();
 		for (SequenceInst inst : SequenceInst.values()) {
 			for (int pitch = 0; pitch < SCALENOTES * OCTAVES; pitch++) {
-				Sequence s = new Sequence(Sequence.SMPTE_30, ticksPerFrame);
-				for (int i = 0; i < 5; i++) {
+				Sequence s = new Sequence(Sequence.PPQ, 4);
+				ShortMessage m = new ShortMessage();
+				m.setMessage(ShortMessage.PROGRAM_CHANGE, pitch, INSTRUMENTS[inst.value], 0);
+				while (s.getTracks().length < 5)
 					s.createTrack();
-				}
+				Track t = s.getTracks()[inst.value];
+				t.add(new MidiEvent(m, 0));//startTick));
 				addNote(s, inst, pitch, 0, 4);
 				noteSequences[inst.value][pitch] = s;
 			}
