@@ -91,6 +91,11 @@ body > div
 	margin-left:4px;
 }
 
+.highlightbar
+{
+	background-color:#CC6666;
+}
+
 #midiplayer
 {
 	border:2px solid white;

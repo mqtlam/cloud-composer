@@ -70,7 +70,10 @@ NoteGrid.prototype.createColumn = function (loc_x) {
 	column.style.height = this.octaveMargin + this.h + "px";
 	
 	// create selector bar
-	column.appendChild(document.createElement("button"));
+	var columnbutton = document.createElement("button");
+	columnbutton.className = "column_button";
+	columnbutton.id = loc_x;
+	column.appendChild(columnbutton);
 
 	for (var i=0; i<this.octaves; i++) {
 		column.appendChild(this.createOctave(i));
@@ -240,7 +243,7 @@ NoteGrid.prototype.gridClick = function (evt, instrument) {
 		square.style.backgroundImage = "none";
 		square.className = square.className.replace(" " + instrument.instrumentName, "");
 	}
-	alert(this.serialize());
+	
 	this.updateDisplay(column, pitch);
 }
 

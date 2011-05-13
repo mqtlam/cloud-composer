@@ -9,6 +9,7 @@ var selector;
 var midiplayer;
 var tempobar;
 var playerbar;
+var highlightbar;
 
 // computed values
 
@@ -42,10 +43,11 @@ function mouseClick(event) {
 	} else if (current.id == "playpausebutton") {
 		midiplayer.onPlayPauseClick();
 	} else if (current.id == "getlinkbutton") {
-		alert("HELLO WORLD");
 		// TODO put this code somewhere else...
 		var notegrid = grid.serialize();
 		sendNoteGrid(notegrid, "savesession.php");
+	} else if (current.className == "column_button") {
+		highlightbar.move(current.id);
 	}
 
 }
@@ -95,7 +97,8 @@ function loadUI() {
 			
 	selector = new InstrumentSelector(instrumentsList);		
 	// create Grid, multiple of 16
-	grid = new NoteGrid("grid", 112, instrumentsList);		//
+	grid = new NoteGrid("grid", 112, instrumentsList);
+	highlightbar = new HighlightBar(0, "#CC6666");
 	midiplayer = new MidiPlayer();
     //tempobar = new Slider("tempo", 190, 10, "slider");
 	//playerbar = new Slider("player", 800, 10, "");

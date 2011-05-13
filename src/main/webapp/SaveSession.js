@@ -1,6 +1,5 @@
 // called when user clicks save session button
 function sendNoteGrid(notegrid, dest) {
-	alert("IN SEND NOTE GRID");
 	var xmlhttp;
 	var linkURL;
 	if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
