@@ -4,7 +4,7 @@
  * This class is for creating a Note object that
  * contains note data: length, instrument, and pitch
  */
-public class Note {
+public class Note implements Comparable<Note> {
 	/** to represent length of note **/
 	public int length;
 	/**	to represent a type of instrument **/
@@ -23,5 +23,14 @@ public class Note {
 		this.length = length;
 		this.instrument = instrument;
 		this.pitch = pitch;
+	}
+
+	public int compareTo(Note n) {
+		if (length != n.length)
+			return n.length - length;
+		else if (instrument != n.instrument)
+			return n.instrument - instrument;
+		else
+			return n.pitch - pitch;
 	}
 }

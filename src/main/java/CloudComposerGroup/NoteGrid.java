@@ -58,8 +58,16 @@ public class NoteGrid {
 	 */
 	public void remove(Note note, int column) {
 		List<Note> columnNotes = grid.get(column);
-		columnNotes.remove(note);
-		size--;
+		if (columnNotes != null) {
+			for (Note n : columnNotes) {
+				if (note.compareTo(n) == 0) {
+					columnNotes.remove(n);
+					size--;
+					break;
+				}
+				
+			}
+		}
 	}
 	
 	/**
