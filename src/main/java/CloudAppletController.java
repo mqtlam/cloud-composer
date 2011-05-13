@@ -16,16 +16,16 @@ import javax.sound.midi.Sequence;
 
 public class CloudAppletController extends Applet { //implements ActionListener {
 	private CloudMidiPlayer player;
-	private SongSequence sequencer;
-	private NoteGrid grid;
+	//private SongSequence sequencer;
+	//private NoteGrid grid;
 	private boolean changed;
 	
 	// Initializes the Applet and its components.
 	public void init() {
 		try {
-			grid = new NoteGrid();
+//			grid = new NoteGrid();
 			player = new CloudMidiPlayer();
-			sequencer = new SongSequence(grid, player.getTicksPerFrame(), player.getInstruments().length);
+//			sequencer = new SongSequence(grid, player.getTicksPerFrame(), player.getInstruments().length);
 			changed = false;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -47,11 +47,11 @@ public class CloudAppletController extends Applet { //implements ActionListener 
 	private void addRemoveHelper(int[] noteData, boolean add) {
 		changed = true;
 		int length = noteData[3] - noteData[2] + 1;
-		for (int i = 0; i < length; i++)
-			if (add)
-				grid.add(new Note(1, noteData[0], noteData[1]), noteData[2] + i);	
-			else
-				grid.remove(new Note(1, noteData[0], noteData[1]), noteData[2] + i);
+	//	for (int i = 0; i < length; i++)
+	//		if (add)
+	//			grid.add(new Note(1, noteData[0], noteData[1]), noteData[2] + i);	
+	//		else
+	//			grid.remove(new Note(1, noteData[0], noteData[1]), noteData[2] + i);
 	}
 	
 	public String[] getInstruments() {
@@ -70,8 +70,8 @@ public class CloudAppletController extends Applet { //implements ActionListener 
 		if (changed)
 		{
 			changed = false;
-			Sequence s = sequencer.getSequence();
-			player.playSong(s);
+	//		Sequence s = sequencer.getSequence();
+//			player.playSong(s);
 		} else
 		{
 			player.play();
