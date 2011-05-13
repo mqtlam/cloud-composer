@@ -1,4 +1,3 @@
-
 package CloudComposerGroup;
 
 import java.applet.*;

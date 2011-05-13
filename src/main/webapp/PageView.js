@@ -20,13 +20,14 @@ function setEvents() {
 //	document.body.addEventListener("mouseout", rollOut, false);
 }
 
-
+var a;
 function mouseClick(event) {
 	var current = event.target;
-	
+	a = current;
 	if (current.className.indexOf("grid_square") == 0 || current.parentNode.className.indexOf("grid_square") == 0) { 
 		var instrument = selector.currentInstrument;
 		if (instrument) {
+			current = current.className.indexOf("grid_square") == 0 ? current : current.parentNode;
 			grid.gridClick(current, selector.currentInstrument);
 		} else {
 			alert("you must select an instrument");
@@ -100,6 +101,7 @@ function loadUI() {
 	grid = new NoteGrid("grid", 112, instrumentsList);
 	highlightbar = new HighlightBar(0, "#CC6666");
 	midiplayer = new MidiPlayer();
+	applet = document.getElementById('javaApplet');
     //tempobar = new Slider("tempo", 190, 10, "slider");
 	//playerbar = new Slider("player", 800, 10, "");
 	createTempoSlider(80);

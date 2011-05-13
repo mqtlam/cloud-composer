@@ -51,11 +51,54 @@ $instruments = array(   "PIANO"     => "piano",
                         "TRUMPET"   => "trumpet",
                         "DRUM"      => "drum" );
 
+$pitches = array(   0   => "c",  // c4 = 60
+                    1   => "d",
+                    2   => "e",
+                    3   => "a",
+                    4   => "g",
+                    5   => "c'",
+                    6   => "d'",
+                    7   => "e'",
+                    8   => "a'",
+                    9   => "g'"   );
+
 define("COL_NAME", "c");
 
 define("FIRST_COL", 0);
 
 define("SIXTEENTH_NOTES_PER_MEASURE", 16);
+
+// }}}
+// {{{ xml functions
+
+// TODO: implement startElemHandler and endElemHandler
+function startElemHandler($parser, $name, $attribs) {
+    /*if (strcasecmp($name, COL_NAME) == 0) {
+        echo "<div id='linksList'>\n";
+    }
+    if (strcasecmp($name, "category") == 0) {
+        $desc = $attribs["desc"];
+        echo "<p>$desc</p>\n<ul>\n";
+    }
+    if (strcasecmp($name, "link") == 0) {
+        $linkRef = $attribs["url"];
+        $desc = $attribs["desc"];
+        if ($desc == "")
+          echo "\t<li><a href='$linkRef' target='_blank'>$linkRef</a></li>\n";
+        else
+          echo "\t<li><a href='$linkRef' target='_blank'>$desc</a></li>\n";
+    }*/
+}
+
+function endElemHandler($parser, $name) {
+/*    if (strcasecmp($name, COL_NAME) == 0) {
+        echo "</div>\n";
+    }
+    if (strcasecmp($name, "category") == 0) {
+        echo "</ul>\n";
+    }
+*/
+}
 
 // }}}
 // {{{ functions
@@ -109,12 +152,25 @@ function generateFileName() {
  */
 function interpretData($data)
 {
-    // TODO: do actual interpretation
-    // current generates a blank template
+    $timeSignatureNumerator = SIXTEENTH_NOTES_PER_MEASURE / 4;
+    $header = "\n\t\\time $timeSignatureNumerator/4\n\t\\clef treble";
     
+    // create file
     $newdata = "";
+    $newdata .= "{ $header";
     
-    $newdata .= "{\n\t\\time 4/4\n\t\\clef treble";
+    // new xml parser object
+    $xml_parser = xml_parser_create();
+    //xml_set_element_handler($parser, startElemHandler, endElemHandler);
+    xml_parser_set_option($xml_parser, XML_OPTION_CASE_FOLDING, 0);
+    
+    // parse xml
+    xml_parse($xml_parser, $data);
+    
+    // close xml
+    xml_parser_free($xml_parser);
+    
+    // end new data
     $newdata .= "\n}";
     
     return $newdata;

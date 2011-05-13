@@ -1,15 +1,14 @@
-// cloudMidiPlayer.java
-
-// This file provides a class for storing and playing a song.
-// It also generates and holds individual note pitch data for playing
-// whenever a note is pressed on the user interface.
-
-//package CloudComposerGroup;
+package CloudComposerGroup;
 
 import java.io.File;
 
 import javax.sound.midi.*;
 
+//cloudMidiPlayer.jav
+
+//This file provides a class for storing and playing a song.
+//It also generates and holds individual note pitch data for playing
+//whenever a note is pressed on the user interface.
 public class CloudMidiPlayer 
 {
 	private static final int[] SCALE = {60, 62, 64, 67, 69};
