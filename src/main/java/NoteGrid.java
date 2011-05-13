@@ -1,6 +1,3 @@
-
-package CloudComposerGroup;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -42,9 +39,10 @@ public class NoteGrid {
 		if (columnNotes == null) {
 			//HashMap<Integer, ArrayList<Note>> newColumn = new HashMap<Integer, ArrayList<Note>>();
 			ArrayList<Note> newColumn = new ArrayList<Note>();
-			ArrayList<Note> newRow = new ArrayList<Note>();
-			newRow.add(note);
-			newColumn.put(note.pitch, newRow);
+			//ArrayList<Note> newRow = new ArrayList<Note>();
+			//newRow.add(note);
+			//newColumn.put(note.pitch, newRow);
+			
 			grid.put(column, newColumn);
 		} else {
 			ArrayList<Note> row = columns.get(columns);
