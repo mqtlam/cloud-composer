@@ -1,4 +1,4 @@
-package CloudComposerGroup;
+
 
 /**
  * This class is for creating a Note object that

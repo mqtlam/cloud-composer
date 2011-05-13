@@ -1,4 +1,4 @@
-package CloudComposerGroup;
+
 
 import java.applet.Applet;
 
