@@ -4,6 +4,8 @@
 // It also generates and holds individual note pitch data for playing
 // whenever a note is pressed on the user interface.
 
+package CloudComposerGroup;
+
 import javax.sound.midi.*;
 
 public class CloudMidiPlayer 
