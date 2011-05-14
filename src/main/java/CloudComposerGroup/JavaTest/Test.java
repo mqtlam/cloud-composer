@@ -1,4 +1,6 @@
-package CloudComposer;
+package JavaTest;
+
+import CloudComposer.CloudAppletController;
 
 
 public class Test {
