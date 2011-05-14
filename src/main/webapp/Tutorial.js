@@ -50,6 +50,8 @@ Tutorial.prototype.updateTutorialView = function(elementID) {
 			this.createBubble(bubble, this.elementIDList[n], this.textList[n],
 							this.bubblePositionList[n], this.topList[n], this.leftList[n]);
 			this.listeningElement = bubble;
+		} else {
+			this.listeningElement = null;
 		}
 	}
 	

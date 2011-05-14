@@ -250,7 +250,9 @@ NoteGrid.prototype.gridClick = function (evt, instrument) {
 		
 		this.updateDisplay(column, pitch);
 	} else {
-		alert("I am sorry, but your hardware does not support midi playback");
+		alert("I am sorry, but your platform does not support Midi Playback.\n"
+			+ "For Possible Resolution visit the following link:\n"
+			+"http://publicstaticdroid.com/cloudcomposer/Issues.html");
 	}
 }
 
