@@ -1,4 +1,4 @@
-package CloudComposer;
+package JavaTest;
 
 
 import java.applet.*;
