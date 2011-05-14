@@ -12,12 +12,12 @@ import javax.sound.midi.*;
 //whenever a note is pressed on the user interface.
 public class CloudMidiPlayer 
 {
-	private static final int[] SCALE = {60, 62, 64, 67, 69};
-	private static final int[] INSTRUMENTS = {0, 30, 114, 56, 40};
+	public static final int[] SCALE = {60, 62, 64, 67, 69};
+	public static final int[] INSTRUMENTS = {0, 30, 114, 56, 40};
 	//private static final int INSTRUMENTS = 5;
-	private static final int SCALENOTES = 5;
-	private static final int OCTAVES = 2;
-	private static final int DEFAULTBPM = 120;
+	//public static final int SCALENOTES = 5;
+	public static final int OCTAVES = 2;
+	public static final int DEFAULTBPM = 120;
 	
 	public static final float TICKSPERFRAME = 4;
 	
@@ -36,7 +36,7 @@ public class CloudMidiPlayer
 	{
 		PIANO(0), GUITAR(1), DRUM(2), TRUMPET(3), VIOLIN(4);
 		
-		final int value;
+		public final int value;
 		SequenceInst(int value) {
 			this.value = value;
 		}
@@ -50,7 +50,7 @@ public class CloudMidiPlayer
 		try {
 //		instruments = SequenceInst.values();
 		loadMidiSystem();
-		noteSequences = new Sequence[getInstruments().length][SCALENOTES * OCTAVES];
+		noteSequences = new Sequence[getInstruments().length][SCALE.length * OCTAVES];
 		setTempo(DEFAULTBPM);
 		} catch (Exception e) {
 			earlySetString = e.getMessage();
@@ -107,6 +107,10 @@ public class CloudMidiPlayer
 		seq.setSequence(song);
 	}
 	
+	public Sequence getSequence() {
+		return song;
+	}
+	
 	// Pauses the song.
 	public void pause() 
 	{
@@ -156,7 +160,7 @@ public class CloudMidiPlayer
 		//}
 		Track t = s.getTracks()[0];
 		ShortMessage m = new ShortMessage();
-		int realPitch = pitch / SCALENOTES * 12 + SCALE[pitch % SCALENOTES];
+		int realPitch = pitch / SCALE.length * 12 + SCALE[pitch % SCALE.length];
 		//System.out.println(pitch + " " + realPitch);
 		m.setMessage(ShortMessage.NOTE_ON, inst.value, realPitch, 100);
 		t.add(new MidiEvent(m, startPos));//startTick));
@@ -209,7 +213,7 @@ public class CloudMidiPlayer
 	{
 		//int ticksPerFrame = getTicksPerFrame();
 		for (SequenceInst inst : SequenceInst.values()) {
-			for (int pitch = 0; pitch < SCALENOTES * OCTAVES; pitch++) {
+			for (int pitch = 0; pitch < SCALE.length * OCTAVES; pitch++) {
 				Sequence s = new Sequence(Sequence.PPQ, (int) TICKSPERFRAME);
 				s.createTrack();
 				setInstrument(s, inst);

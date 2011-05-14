@@ -121,6 +121,10 @@ public class CloudAppletController extends Applet { //implements ActionListener 
 		player.setTempo(bpm);
 	}
 	
+	public Sequence getSongSequence() {
+		return player.getSequence();
+	}
+	
 	
 	
 	/*@Override
