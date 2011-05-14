@@ -51,8 +51,8 @@ Tutorial.prototype.updateTutorialView = function(elementID) {
 							this.bubblePositionList[n], this.topList[n], this.leftList[n]);
 			this.listeningElement = bubble;
 		} else {
-            this.listeningElement = null;
-        }
+			this.listeningElement = null;
+		}
 	}
 	
 
