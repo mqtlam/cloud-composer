@@ -69,7 +69,7 @@ $pitches = array(   0   => "c'",  // c4 = 60
 /**
  * Column tag name.
  */
-define("COL_NAME", "c");
+define("COL_NAME", "column");
 
 /**
  * Index of first column in note grid.
