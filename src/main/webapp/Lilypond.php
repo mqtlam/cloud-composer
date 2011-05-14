@@ -87,16 +87,21 @@ define("SIXTEENTH_NOTES_PER_MEASURE", 16);
 
 $currentColumn = 0;
 $currentInstrument = $instruments['PIANO'];
+$remainingRhythm = 0;
 
 $newData = "";
 
 // }}}
 // {{{ xml functions
-/*
+
 function startElemHandler($parser, $name, $attribs) {
+    global $instruments;
+    global $currentColumn;
+    global $currentInstrument;
+    
     if (strcasecmp($name, COL_NAME) == 0) {
         // <c id="num"> detected
-        $currentColumn = $attribs["id"]
+        $currentColumn = $attribs["id"];
     }
     if (strcasecmp($name, $instruments['PIANO']) == 0) {
         // <piano> detected
@@ -104,28 +109,39 @@ function startElemHandler($parser, $name, $attribs) {
     }
 }
 
-function endElemHandler($parser, $name) {
+function endElemHandler($parser, $name) {    
     if (strcasecmp($name, COL_NAME) == 0) {
         // </c> detected
     }
     if (strcasecmp($name, $instruments['PIANO']) == 0) {
         // </piano> detected
     }
-
 }
 
+// TODO:
+//    1) Rhythms are notated, and notated correctly
+//    2) Multiple notes per column are handled, and handled gracefully
 function characterData($parser, $data) {
     // text data detected
+    global $pitches;
+    global $currentColumn;
+    global $currentInstrument;
     global $newData;
     
-    // TODO
-    // get first {} pair
-    // extract length and pitch
-    $pitch = 0;
-    $length = 1;
+    if (strpos($data, "{") === false)
+      return;
+    
+    // get all {} pairs
+    $processed = $data;
+    $processed = preg_replace(array("/^\s*{/", "/}\s*$/", "/\s+/"), array("","",""), $processed);
+    $columns = explode("}{", $processed);
+    
+    // (TODO) for now, get first pair and extract
+    list($length, $pitch) = explode(",", $columns[0]);
     
     // based on current column and length, determine what note type and ties if appropriate
-}*/
+    $newData .= "{$pitches[$pitch]} ";
+}
 
 // }}}
 // {{{ functions
@@ -189,7 +205,7 @@ function interpretData($data)
     
     // create file
     $newData = $header;
-    /*
+    
     // new xml parser object
     $xmlParser = xml_parser_create() or die("XML SAX NOT SUPPORTED");
     xml_set_element_handler($xmlParser, "startElemHandler", "endElemHandler");
@@ -201,11 +217,11 @@ function interpretData($data)
     
     // close xml
     xml_parser_free($xmlParser);
-    */
+    
     
     // BETA FEATURE: print out canonical scale, that's it
     // TODO: actually analyze xml file
-    $newData .= "c'4 d'4 e'4 g'1";
+    //$newData .= "c'4 d'4 e'4 g'1";
     
     // end new data
     $newData .= "\n}";
@@ -239,6 +255,13 @@ function displayLink($filename)
 
 // }}}
 // {{{ SAVE SESSION AND DISPLAY LINK
+
+// for debug
+/*$myFile = "lilytest.xml";
+$fh = fopen($myFile, 'r');
+$data = fread($fh, 10000000);
+fclose($fh);*/
+// end debug
 
 $data = $_POST[DATA_PARAM];
 $lilydata = interpretData($data);
