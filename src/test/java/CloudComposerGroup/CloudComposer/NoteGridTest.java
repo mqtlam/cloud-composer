@@ -14,6 +14,8 @@ public class NoteGridTest  {
 	
 	private NoteGrid grid;
 	
+	private NoteGrid grid1;
+	
 	private Note n0;
 	private Note n1;
 	private Note n2;
@@ -25,7 +27,6 @@ public class NoteGridTest  {
 	private Note n8;
 	private Note n9;
 	
-	
 	private Note n10;
 
 	/**
@@ -34,6 +35,8 @@ public class NoteGridTest  {
 	@Before
 	public void setUp() {
 		grid = new NoteGrid();
+		grid1 = new NoteGrid();
+		
 		n0 = new Note(1, 0, 0);
 		n1 = new Note(1, 1, 1);  //length, instrument, pitch
 		n2 = new Note(1, 2, 2);
@@ -43,7 +46,7 @@ public class NoteGridTest  {
 		n6 = new Note(1, 4, 6);
 		n7 = new Note(1, 3, 7);
 		n8 = new Note(1, 0, 8);
-		n9 = new Note(1, 2, 9);
+		n9 = new Note(1, 2, 9);		
 	}
 	
 	/**
@@ -57,7 +60,7 @@ public class NoteGridTest  {
 		grid.add(n3, 0);
 		grid.add(n4, 0);
 
-		addingHelper(grid.getNote(0));
+		testAddHelper(grid.getNote(0));
 	}
 
 	/**
@@ -71,7 +74,7 @@ public class NoteGridTest  {
 		grid.add(n3, 1);
 		grid.add(n4, 1);
 
-		addingHeler(grid.getNotes(1));
+		testAddHelper(grid.getNotes(1));
 	}
 
 	/**
@@ -85,17 +88,54 @@ public class NoteGridTest  {
 		grid.add(n3, 2);
 		grid.add(n4, 2);
 		
-		addingHelper(grid.getNotes(2));		
+		testAddHelper(grid.getNotes(2));		
 	}
 	
 	/**
 	 * This is to help test for adding
 	 */
-	private void addingHelper(List<Note> list, int c) {
+	private void testAddHelper(List<Note> list, int c) {
 		for (Note n : list) {
 			assertTrue(grid.contains(n, c));
 		}
 	}
+	
+	/**
+	 * Test if note grid removes note objects in a column correctly or not
+	 */
+	@Test
+	public void testNoteGridRemove01() {
+		grid.add(n0, 1);		
+		grid.remove(n0, 1);
+		assertFalse(grid.contains(n0, 1));
+	}
+
+	/**
+	 * Test if note grid removes note objects in a column correctly or not
+	 */
+	@Test
+	public void testNoteGridRemove02() {
+		grid.add(n0, 1);
+		grid.add(n1, 1);
+		grid.remove(n0, 1);
+		grid.remove(n1, 1);
+		assertFalse(grid.contains(n0, 1));
+		assertFalse(grid.contains(n1, 1));
+	}
+
+	/**
+	 * Test if note grid removes note objects in a column correctly or not
+	 */
+	@Test
+	public void testNoteGridRemove03() {
+		grid.add(n0, 2);
+		grid.add(n1, 2);
+		grid.remove(n0, 2);
+		grid.remove(n1, 2);
+		assertFalse(grid.contains(n0, 2));
+		assertFalse(grid.contains(n1, 2));
+	}
+
 	
 	
 	
