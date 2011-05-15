@@ -1,4 +1,6 @@
-package JavaTest;
+/*
+ * package CloudComposerGroup.JavaTest;
+ */
 
 // Cloud Composer: testwrite.java
 // James Vaughan
@@ -12,10 +14,12 @@ package JavaTest;
 
 //package CloudComposerGroup;
 
+/*
 import java.io.File;
 import java.io.IOException;
 
 import javax.sound.midi.*;
+import CloudComposerGroup.CloudComposer.*;
 
 public class TestWrite {
 	public static void main(String[] args) 
@@ -64,6 +68,7 @@ public class TestWrite {
 		/*File f = new File("/Users/crombrodin/fib.midi");
 		MidiSystem.write(seq.getSequence(), 1, f);
 		System.out.println("Done");*/
-	}
+//	}
 	
-}
+//}
+//*/

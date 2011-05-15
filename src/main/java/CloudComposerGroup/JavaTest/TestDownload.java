@@ -1,12 +1,11 @@
-package JavaTest;
+/*package CloudComposerGroup.JavaTest;
 
 import java.io.File;
 import java.io.IOException;
 
 import javax.sound.midi.*;
 
-import CloudComposer.*;
-import CloudComposer.CloudMidiPlayer.SequenceInst;
+import CloudComposerGroup.CloudComposer.*;
 
 public class TestDownload {
 	
@@ -53,3 +52,4 @@ public class TestDownload {
 		
 	}
 }
+*/

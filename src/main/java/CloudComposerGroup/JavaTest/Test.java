@@ -1,6 +1,8 @@
-package JavaTest;
+/*
 
-import CloudComposer.CloudAppletController;
+package CloudComposerGroup.JavaTest;
+
+import CloudComposerGroup.CloudComposer.*;
 
 
 public class Test {
@@ -21,3 +23,5 @@ public class Test {
 		System.out.println();
 	}
 }
+
+*/

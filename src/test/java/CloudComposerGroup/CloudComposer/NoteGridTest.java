@@ -6,15 +6,16 @@ import org.junit.*;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.matchers.JUnitMatchers.*;
-import CloudComposerGroup.*;
+import CloudComposerGroup.CloudComposer.*;
+
 
 public class NoteGridTest  {
 	
 	@Test
 	public void testNoteGridAdd() {
 
-		NoteGrid grid = new CloudComposerGroup.NoteGrid();
-		Note note = new CloudComposerGroup.Note(1, 2, 3);
+		NoteGrid grid = new NoteGrid();
+		Note note = new Note(1, 2, 3);
 
 		// Test the add & size functions
 		grid.add(note, 3);
@@ -27,12 +28,10 @@ public class NoteGridTest  {
 		assertEquals(4, grid.size(), 0);
 	}
 
-/* Last run: FAILED.  Uncomment and build to re-test.
- * @Test
 	public void testNoteGridContains() {
 
-		NoteGrid grid = new CloudComposerGroup.NoteGrid();
-		Note note = new CloudComposerGroup.Note(1, 2, 3);
+		NoteGrid grid = new NoteGrid();
+		Note note = new Note(1, 2, 3);
 
 		// Test the add & contains functions
 		grid.add(note, 3);
@@ -44,6 +43,5 @@ public class NoteGridTest  {
 		assertTrue(grid.contains(note, 7));
 		assertTrue(grid.contains(note, 100));
 	}
-*/
-	
+
 }
