@@ -47,9 +47,9 @@ public class CloudAppletController extends Applet { //implements ActionListener 
 	
 	private void addRemoveHelper(int[] noteData, boolean add) {
 		changed = true;
-		int length = noteData[3] - noteData[2];
-		//for (int i = 0; i < length; i++)
-		if (add)
+		int length = noteData[3] - noteData[2];       
+		//for (int i = 0; i < length; i++)             //  Note: The reason I used a loop is that I wanted to put the same note except length
+		if (add) 								       //  in the columns for the extension of a note. -June
 			grid.add(new Note(length, noteData[0], noteData[1]), noteData[2]);	
 		else
 			grid.remove(new Note(length, noteData[0], noteData[1]), noteData[2]);
