@@ -34,39 +34,34 @@ password=$2
 #files=$toDir/*
 
 for ff in $toDir/*; do
+file=${ff#*/*/}
 ftp -n $server <<END_SCRIPT
 quote USER $username
 quote PASS $password
-bin
-put $ff
+binary
+put $ff $file
 quit
 END_SCRIPT
 done
 
 for ff in $toDir/include/*; do
+file=${ff#*/*/*/}
 ftp -n $server <<END_SCRIPT
 quote USER $username
 quote PASS $password
-bin
-put $ff
+binary
+put $ff $file
 quit
 END_SCRIPT
 done
 
 for ff in $toDir/images/*; do
+file=${ff#*/*/*/}
 ftp -n $server <<END_SCRIPT
 quote USER $username
 quote PASS $password
-bin
-put $ff
+binary
+put $ff $file
 quit
 END_SCRIPT
 done
-
-#	echo "
-#		verbose
-# open $server
-# USER $username $password
-# put ${files}
-# bye
-#" > ftp -n > ftp_$$.log
