@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 /**
  * This class is for creating a note grid to contain
  * all the notes of a song
@@ -71,18 +70,18 @@ public class NoteGrid {
 		}
 	}
 	
-	/**
-	 * Returns true if it removes all the notes of a particular column.
-	 * Otherwise, false.
-	 * 
-	 * @param column, integer that represents a column of the note grid
-	 * @requires column >= 0
-	 * @modifies this
-	 */
-	public boolean removeAllNotes(int column) {
-		size -= grid.get(column).size();
-		return grid.remove(column) != null;
-	}
+//	/**
+//	 * Returns true if it removes all the notes of a particular column.
+//	 * Otherwise, false.
+//	 * 
+//	 * @param column, integer that represents a column of the note grid
+//	 * @requires column >= 0
+//	 * @modifies this
+//	 */
+//	public boolean removeAllNotes(int column) {
+//		size -= grid.get(column).size();
+//		return grid.remove(column) != null;
+//	}
 	
 	/**
 	 * Returns a copy of a list of notes of given column
@@ -93,13 +92,15 @@ public class NoteGrid {
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public List<Note> getNotes(int column) {
-		return new ArrayList(grid.get(column));
+		if (grid.get(column) == null)
+			return null;
+		else
+			return new ArrayList(grid.get(column));
 	}
 	
 	/**
 	 * Returns a list of integers that represents the columns of the note grid
 	 */
-	@SuppressWarnings("unchecked")
 	public Set<Integer> getColumns() {
 		
 		Set<Integer> columns = grid.keySet();
