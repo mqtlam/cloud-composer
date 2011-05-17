@@ -1,9 +1,9 @@
 function Tutorial() {
 	var bubble = document.createElement("div");
-	this.createBubble(bubble, "selectInstrument", "Please select the instrument you would like to work with.", "left", 75, 100);
+	this.createBubble(bubble, "instrumentContainer", "Please select the instrument you would like to work with.", "left", 75, 100);
 
 	this.listeningElement = bubble;
-	this.elementIDList = ["selectInstrument", "addRemoveNotes", "setHighlightBar", "hearPlayback", "getLink"];
+	this.elementIDList = ["instrumentContainer", "grid_square", "column_button", "playpausebutton", "getlinkbutton"];
 	this.textList = ["Please select the instrument you would like to work with.",
 						"Click anywhere on the grid to add a note. To remove, just click again.",
 						"To hear your current song, you need to first position the highlight bar at the top to where you want to start listening from.",
