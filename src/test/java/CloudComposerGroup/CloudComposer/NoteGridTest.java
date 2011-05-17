@@ -10,10 +10,16 @@ import static org.junit.matchers.JUnitMatchers.*;
 import CloudComposerGroup.CloudComposer.*;
 import java.util.*;
 
+/**
+ * This is for testing whether NoteGrid object works correct as it 
+ * is supposed to without any bugs.
+ */
 public class NoteGridTest  {
 	
+	/** NoteGrid object   **/
 	private NoteGrid grid;
 	
+	/** Note objects of different instruments and pitches **/
 	private Note n0;
 	private Note n1;
 	private Note n2;
@@ -49,7 +55,7 @@ public class NoteGridTest  {
 	 * Test the add & contains functions
 	 */
 	@Test
-	public void testNoteGridAdd00() {
+	public void testNoteGridAddContains00() {
 		grid.add(n0, 0);
 
 		assertTrue(grid.contains(n0, 0));
@@ -60,7 +66,7 @@ public class NoteGridTest  {
 	 * Test the add & contains functions
 	 */
 	@Test
-	public void testNoteGridAdd01() {
+	public void testNoteGridAddContains01() {
 		grid.add(n0, 0);
 		grid.add(n1, 1);
 
@@ -73,7 +79,7 @@ public class NoteGridTest  {
 	 * Test the add & contains functions
 	 */
 	@Test
-	public void testNoteGridAdd02() {
+	public void testNoteGridAddContains02() {
 		grid.add(n0, 9);
 
 		assertTrue(grid.contains(n0, 9));
@@ -84,7 +90,7 @@ public class NoteGridTest  {
 	 * Test the add & contains functions
 	 */
 	@Test
-	public void testNoteGridAdd03() {
+	public void testNoteGridAddContains03() {
 		grid.add(n0, 9);
 
 		assertTrue(grid.contains(n0, 9));
@@ -95,7 +101,7 @@ public class NoteGridTest  {
 	 * Test the add & contains functions
 	 */
 	@Test
-	public void testNoteGridAdd04() {
+	public void testNoteGridAddContains04() {
 		grid.add(n5, 8);
 		grid.add(n6, 9);
 
@@ -109,7 +115,7 @@ public class NoteGridTest  {
 	 * Test the add & contains functions
 	 */
 	@Test
-	public void testNoteGridAdd05() {
+	public void testNoteGridAddContains05() {
 		grid.add(n0, 0);
 		grid.add(n1, 1);
 		grid.add(n2, 2);
@@ -128,7 +134,7 @@ public class NoteGridTest  {
 	 * Test the add & contains functions
 	 */
 	@Test
-	public void testNoteGridAdd06() {
+	public void testNoteGridAddContains06() {
 		grid.add(n0, 5);
 		grid.add(n1, 6);
 		grid.add(n2, 7);
@@ -140,6 +146,35 @@ public class NoteGridTest  {
 		assertTrue(grid.contains(n2, 7));
 		assertTrue(grid.contains(n3, 8));
 		assertTrue(grid.contains(n4, 9));
+	}
+	
+	/**
+	 * Test if note grid adds note objects in a column correctly or not
+	 * Test the add & contains functions
+	 */
+	@Test
+	public void testNoteGridAddContains07() {
+		grid.add(n0, 0);
+		grid.add(n1, 1);
+		grid.add(n2, 2);
+		grid.add(n3, 3);
+		grid.add(n4, 4);
+		grid.add(n5, 5);
+		grid.add(n6, 6);
+		grid.add(n7, 7);
+		grid.add(n8, 8);
+		grid.add(n9, 9);
+
+		assertTrue(grid.contains(n0, 0));
+		assertTrue(grid.contains(n1, 1));
+		assertTrue(grid.contains(n2, 2));
+		assertTrue(grid.contains(n3, 3));
+		assertTrue(grid.contains(n4, 4));
+		assertTrue(grid.contains(n5, 5));
+		assertTrue(grid.contains(n6, 6));
+		assertTrue(grid.contains(n7, 7));
+		assertTrue(grid.contains(n8, 8));
+		assertTrue(grid.contains(n9, 9));
 	}
 		
 	/**
@@ -505,6 +540,50 @@ public class NoteGridTest  {
 		
 		assertEquals(expected, actual);
 	}
+	
+	/**
+	 * Test if note grid contains notes correctly or not
+	 * 
+	 * grid should not contain a note that is not added
+	 */
+	@Test
+	public void testNoteGridContains01() {
+		assertFalse(grid.contains(n0, 0));
+		assertFalse(grid.contains(n0, 9));
+	}
+	
+	/**
+	 * Test if note grid contains notes correctly or not
+	 * 
+	 * grid should not contain a note that is not added
+	 */
+	@Test
+	public void testNoteGridContains02() {
+		assertFalse(grid.contains(n0, 0));
+		assertFalse(grid.contains(n0, 1));
+		assertFalse(grid.contains(n0, 8));
+		assertFalse(grid.contains(n0, 9));
+	}
+	
+	/**
+	 * Test if note grid contains notes correctly or not
+	 * 
+	 * grid should not contain a note that is not added
+	 */
+	@Test
+	public void testNoteGridContains03() {
+		assertFalse(grid.contains(n0, 0));
+		assertFalse(grid.contains(n1, 1));
+		assertFalse(grid.contains(n2, 2));
+		assertFalse(grid.contains(n3, 3));
+		assertFalse(grid.contains(n4, 4));
+		assertFalse(grid.contains(n5, 5));
+		assertFalse(grid.contains(n6, 6));
+		assertFalse(grid.contains(n7, 7));
+		assertFalse(grid.contains(n6, 8));
+		assertFalse(grid.contains(n7, 9));
+	}
+	
 	
 	/**
 	 * Test if note grid returns its size correctly or not
