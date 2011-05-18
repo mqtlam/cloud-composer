@@ -3,8 +3,8 @@
 // During, Disable Java mode, playback does not work.
 
 // Set Disable Tutorial to true in order to skip tutorials
-var DISABLE_JAVA = false;
-var DISABLE_TUTORIAL = false;
+var DISABLE_JAVA = true;
+var DISABLE_TUTORIAL = true;
 
 // reference to the grid object
 var grid;
@@ -18,10 +18,19 @@ var applet;
 
 // computed values
 
+/// disables Firefox's dragging
+$(document).bind("dragstart", function() {
+     return false;
+});
+
+
 // call this onload
 function setEvents() {
 	document.body.addEventListener("click", mouseClick, false);
-//	document.body.addEventListener("mouseover", rollOver, false);
+	document.body.addEventListener("mousedown", mouseDown, false);
+	document.body.addEventListener("mouseup", mouseUp, true);
+	document.body.addEventListener("mouseover", mouseOver, false);
+//	document.body.addEventListener("mouseover", d, false);
 //	document.body.addEventListener("mouseout", rollOut, false);
 }
 
@@ -30,11 +39,11 @@ function mouseClick(event) {
 	var tutorialChecker = current.className == "" ? current.id : current.className;
 	tutorial.updateTutorialView(tutorialChecker);
 
-	if (current.className.indexOf("grid_square") == 0 || current.parentNode.className.indexOf("grid_square") == 0) { 
+	var chk = grid.isSquare(current);
+	if (chk) {
 		var instrument = selector.currentInstrument;
 		if (instrument) {
-			current = current.className.indexOf("grid_square") == 0 ? current : current.parentNode;
-			grid.gridClick(current, selector.currentInstrument);
+			grid.gridClick(chk, selector.currentInstrument);
 		} else {
 			alert("you must select an instrument");
 		}
@@ -58,6 +67,37 @@ function mouseClick(event) {
 		midiplayer.setSongPosition(c);
 	}
 
+}
+
+
+// Setting note length
+function mouseDown(event) {
+	event.preventDefault();
+	if (selector.currentInstrument) {		
+		var current = event.target;
+		var chk = grid.isSquare(current);
+		if (chk) {
+			grid.setStartingNote(chk, selector.currentInstrument);
+		}
+	}
+}
+
+function mouseUp(event) {
+	var current = event.target;
+	var chk = grid.isSquare(current);
+	if (chk) {
+		grid.setEndingNote(chk, selector.currentInstrument);		
+	} else {
+		grid.resetNote();
+	}
+}
+
+function mouseOver(event) {
+	var current = event.target;
+	var chk = grid.isSquare(current);
+	if (chk) {
+		grid.setIntermediateNote(chk, selector.currentInstrument);
+	}
 }
 
 function rollOver(event) {
