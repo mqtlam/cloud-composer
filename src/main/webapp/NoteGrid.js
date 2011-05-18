@@ -2,19 +2,22 @@
 
 function NoteGrid(id, cols, instr, midiplayer) {
 	// initiated values
-	this.numColumns = 0;					// current number of columns
+	this.numColumns = 0;								// current number of columns
 	this.notes = new NoteData(this.numColumns);			// array that contains all the notes
 	this.instruments = instr;
 	this.java = midiplayer;
 	
+	this.dragNote;
+	
 	// constants for the grid	
 	// must change is css
 	this.raw_size = 40;					// Size of a square
-	this.margin = 1;						// Margin for the square
-	this.border = 1;						// border of a square
+	this.margin = 1;					// Margin for the square
+	this.border = 1;					// border of a square
 	this.measureSeparation = 4;			// gap between measures in pixels	
 
 	// just constants
+	this.maxLength = 4;
 	this.pitches = 5;					// number of pitches (squares) in a column
 	this.octaves = 2;					// number of octaves
 	this.octaveMargin = 4;
@@ -36,7 +39,7 @@ function NoteGrid(id, cols, instr, midiplayer) {
 
 ////////////////// create the grid and then add it to the child
 /// adjust columns to become multiple of 16
-	grid = document.getElementById(id);
+	var grid = document.getElementById(id);
 	grid.style.height = this.scrollbarOffsets + this.h + "px";
 	grid.appendChild(this.createGrid(cols));	// must be multiple of 16
 }
@@ -167,18 +170,18 @@ NoteGrid.prototype.updateColumnNumber = function (addition) {
 	// update the Notedata
 }
 
-NoteGrid.prototype.updateDisplay = function(column, pitch) {
+NoteGrid.prototype.updateDisplay = function() {	// column, pitch
+	var column = this.dragNote[2];
+	var pitch = this.dragNote[1];
+	
 	var instrumentsToDisplay = this.getInstruments(this.notes.getInstruments(column, pitch));
-	var column = document.getElementById("column"+column);
-	var square = column.getElementsByClassName("grid_square")[this.reversePitch(pitch)];
+	var square = this.getSquare(column, pitch);
 	
 	this.updateIndicator(square, instrumentsToDisplay);
 }
 
 NoteGrid.prototype.updateIndicator = function(square, instrumentsList) {
-	while (square.children.length) {
-		square.removeChild(square.children[0]);
-	}
+	square.innerHTML = "";	// removes all children
 	square.appendChild(this.createInstrumentIndicator(instrumentsList));
 }
 
@@ -195,6 +198,7 @@ NoteGrid.prototype.updateMainImage = function(instrumentName) {
 	}
 }
 
+
 NoteGrid.prototype.createInstrumentIndicator = function (instrs) {
 	var len = this.instruments.length;
 	var side = Math.floor((this.raw_size-3)/len) - 1;
@@ -208,6 +212,8 @@ NoteGrid.prototype.createInstrumentIndicator = function (instrs) {
 		span.style.width = side + "px";
 		span.style.height = side + "px";
 		span.style.backgroundColor = instrs[i].color;
+		span.style.position = "absolute";
+		span.style.marginLeft = (1+((side+1)*this.instruments.indexOf(instrs[i]))) + "px";
 		holder.appendChild(span);
 	}
 	return holder;
@@ -226,12 +232,13 @@ NoteGrid.prototype.createInstrumentImg = function (instrumnet) {
 }
 
 NoteGrid.prototype.gridClick = function (evt, instrument) {
+/*
 	var square = evt;
 	
 	var pitch = parseInt(this.getInt(square.id));
 	var column = parseInt(this.getInt(square.parentNode.parentNode.id));
 	
-	var note = new Note(1, instrument, pitch);			/// construct note from input
+	var note = new Note(1, instrument, pitch);
 	var index = this.notes.getIndex(column, note);
 
 	if (applet.player.earlySetString == "") {
@@ -253,6 +260,141 @@ NoteGrid.prototype.gridClick = function (evt, instrument) {
 		alert("I am sorry, but your platform does not support Midi Playback.\n"
 			+ "For Possible Resolution visit the following link:\n"
 			+"http://publicstaticdroid.com/cloudcomposer/Issues.html");
+	}
+*/
+}
+
+/////////////////////// Note Length
+NoteGrid.prototype.setStartingNote = function(evt, instrument) {
+	var square = evt;
+	
+	var pitch = parseInt(this.getInt(square.id));
+	var column = parseInt(this.getInt(square.parentNode.parentNode.id));
+	
+	var note = new Note(1, instrument, pitch);
+	var index = this.notes.getIndex(column, note);
+
+	if (applet.player.earlySetString == "") {
+		// should add the note if not already there, otherwise remove
+		if (index == -1) {
+			this.dragNote = [instrument, pitch, column, column];
+			square.style.backgroundImage = "url('images/thumbnail_gray_"+instrument.instrumentName+".png')";
+		} else {
+			this.dragNote = [instrument, pitch, column, -1];
+		}
+		
+	} else {
+		alert("I am sorry, but your platform does not support Midi Playback.\n"
+			+ "For Possible Resolution visit the following link:\n"
+			+"http://publicstaticdroid.com/cloudcomposer/Issues.html");
+	}
+}
+
+NoteGrid.prototype.setIntermediateNote = function(evt, instrument) {
+	if (this.dragNote) {
+		var square = evt;
+	
+		var pitch = parseInt(this.getInt(square.id));
+		var column = parseInt(this.getInt(square.parentNode.parentNode.id));
+		// check if it's a valid intermediate note
+		
+		if (pitch == this.dragNote[1]) {
+			var diff = column - this.dragNote[3];
+			if (diff == 1 && this.dragNote[3]-this.dragNote[2] + 1 < this.maxLength) {
+				// add
+				this.dragNote[3] += 1;
+				square.style.backgroundImage = "url('images/thumbnail_gray_"+instrument.instrumentName+".png')";
+			} else if (diff == -1 && column >= this.dragNote[2]) {
+				// remove
+				this.dragNote[3] -= 1;
+				var oldSquare = this.getSquare(column+1, pitch);
+				
+				oldSquare.style.backgroundImage = "none";
+			}
+		}
+	}
+}
+
+
+
+NoteGrid.prototype.setEndingNote = function(evt, instrument) {
+	if (this.dragNote) {
+		var square = evt;
+		var pitch = parseInt(this.getInt(square.id));
+		var column = parseInt(this.getInt(square.parentNode.parentNode.id));
+
+		var note = new Note(this.dragNote[3]-this.dragNote[2] + 1, this.dragNote[0], this.dragNote[1]);	
+		
+		if (this.dragNote[3] == -1) {
+			if (this.dragNote[2] == column) {	
+				var removedNote = this.notes.removeNote(column, note);
+				this.java.removeFromPlayer(column, removedNote);
+				
+				this.dragNote[3] = column + removedNote.noteLength;
+				this.clearBackImage();
+				square.className = square.className.replace(" " + instrument.instrumentName, "");
+			}
+			
+		} else {	
+			// has same pitch & has acceptable length
+			// move always updates this.dragNote[3] before up event
+			// So just checking if the column is the same as this.dragNote[3] is sufficient for checking the length
+			if (this.dragNote[1] == pitch && this.dragNote[3] == column) {
+				//this.notes.changeNoteLength(column, new Note(1, instrument, pitch), len);
+				// must visually update as well
+
+				this.notes.addNote(this.dragNote[2], note);
+				this.java.addToPlayer(this.dragNote[2], note);
+				
+				var mainSquare = this.getSquare(this.dragNote[2], this.dragNote[1]);
+				mainSquare.className = mainSquare.className + " " + this.dragNote[0].instrumentName;
+				mainSquare.style.backgroundImage = "url('images/thumbnail_"+this.dragNote[0].instrumentName+".png')";
+				
+				var endSquare = this.getSquare(this.dragNote[3], this.dragNote[1]);
+//				endSquare.className = 
+				
+			} else {
+				// removes all the background
+				this.clearBackImage();	
+			}
+	
+			// consume the event
+		}
+		
+		this.updateDisplay();
+		this.dragNote = undefined;
+	}
+}
+
+
+
+
+
+NoteGrid.prototype.resetNote = function() {
+	if (this.dragNote) {
+		// reset background Image and then remove dragNote
+		this.clearBackImage();
+		this.dragNote = undefined;
+	}
+}
+
+NoteGrid.prototype.clearBackImage = function() {
+	if (this.dragNote) {
+		// reset background Image and then remove dragNote
+		for (var i=this.dragNote[2]; i<=this.dragNote[3]; i++) {
+			var square = this.getSquare(i, this.dragNote[1]);
+			square.style.backgroundImage = "none";
+		}
+	}
+}
+
+NoteGrid.prototype.addBackImage = function() {
+	if (this.dragNote) {
+		// reset background Image and then remove dragNote
+		for (var i=this.dragNote[2]; i<=this.dragNote[3]; i++) {
+			var square = this.getSquare(i, this.dragNote[1]);
+			square.style.backgroundImage = "none";
+		}
 	}
 }
 
@@ -295,6 +437,23 @@ NoteGrid.prototype.checkNote = function (a, b) {
 		}
 	}
 	return -1;
+}
+
+NoteGrid.prototype.getSquare = function(column, pitch) {
+	var col = document.getElementById("column"+column);
+	var square = col.getElementsByClassName("grid_square")[this.reversePitch(pitch)];
+	
+	return square;
+}
+
+NoteGrid.prototype.isSquare = function(current) {
+	if (current.className.indexOf("grid_square") == 0) {
+		return current;
+	} else if (current.parentNode.className.indexOf("grid_square") == 0) {
+		return current.parentNode;
+	} else {
+		return false;
+	}
 }
 
 /* returns a string version of the current grid (used for submitting form to PHP) */
