@@ -12,6 +12,7 @@
  *          
  *          Returns the link on success or displays an error message:
  *              CANNOT OPEN FILE: file cannot be open to write
+ *              PDF GENERATION FAILED: shell execution for lilypond failed
  * 
  * PHP version 5
  *
@@ -252,6 +253,18 @@ function saveFile($data, $filename)
 }
 
 /**
+ * Generates the PDF using Lilypond.
+ * Assumes the lily file is already created.
+ */
+function generatePDF($filename)
+{
+  $output = shell_exec('lilypond ' + $filename)
+    or die("PDF GENERATION FAILED");
+  
+  //echo '<pre>'.$output.'</pre>';
+}
+
+/**
  * Displays the permalink.
  */
 function displayLink($filename)
@@ -275,6 +288,7 @@ $lilydata = interpretData($data);
 $filename = generateFileName();
 saveFile($lilydata, $filename);
 
+//generatePDF($filename);
 displayLink($filename);
 
 // }}}
