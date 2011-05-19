@@ -12,6 +12,7 @@
  *
  *          Returns the link on success or displays an error message:
  *              CANNOT OPEN FILE: file cannot be open to write
+ *              XML SAX NOT SUPPORTED: XML SAX extension not enabled on server
  *              PDF GENERATION FAILED: shell execution for lilypond failed
  *
  * PHP version 5
