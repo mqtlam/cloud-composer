@@ -88,8 +88,8 @@ define("SIXTEENTH_NOTES_PER_MEASURE", 16);
 // {{{ global variables (for maintaining state with sax parser)
 
 $currentColumn = 0;
+$rhythmBuffer = 0;
 $currentInstrument = $instruments['PIANO'];
-$remainingRhythm = 0;
 
 $newData = "";
 
@@ -148,12 +148,78 @@ function characterData($parser, $data) {
     // text data detected
     global $pitches;
     global $currentColumn;
+    global $rhythmBuffer;
     global $currentInstrument;
     global $newDataPerInstrument;
 
     if (strpos($data, "{") === false)
       return;
 
+    // {{{ add rests if necessary
+    
+    echo "<p>TEST $currentColumn | $rhythmBuffer TEST</p>";
+    
+    if ($rhythmBuffer < $currentColumn)
+    {
+      $restDuration = $currentColumn - $rhythmBuffer;
+      
+      
+      // handles durations longer than whole note
+      $remainingDuration = $restDuration;
+      while ($remainingDuration > 0)
+      {
+
+        // consider the current duration as whole note tops
+        $currentDuration = min(SIXTEENTH_NOTES_PER_MEASURE, $remainingDuration);
+
+        // if any remaining duration left after the (possible) whole note,
+        // use it up in the next iteration of the loop
+        $remainingDuration -= $currentDuration;
+
+        $numQuarterNotes = (int) ($currentDuration / 4);
+        $remainingSixteenthNotes = $currentDuration % 4;
+
+        // {{{ for very specific notation cases
+        if ($numQuarterNotes == 1 && $remainingSixteenthNotes == 2)
+        {
+          // write out the dotted quarter note
+          $newDataPerInstrument[$currentInstrument] .= "r4.";
+        }
+        else
+        {
+          // }}}
+          // {{{ for general notation case
+
+          if ($numQuarterNotes == 1)
+            $newDataPerInstrument[$currentInstrument] .= "r4";
+          else if ($numQuarterNotes == 2)
+            $newDataPerInstrument[$currentInstrument] .= "r2";
+          else if ($numQuarterNotes == 3)
+            $newDataPerInstrument[$currentInstrument] .= "r2.";
+          else if ($numQuarterNotes == 4)
+            $newDataPerInstrument[$currentInstrument] .= "r1";
+          //else if ($numQuarterNotes > 4)
+          //  $newData .= "{$chord}1 ~";
+
+          if ($remainingSixteenthNotes > 0 && $numQuarterNotes > 0)
+            $newDataPerInstrument[$currentInstrument] .= " ";
+
+          if ($remainingSixteenthNotes == 1)
+            $newDataPerInstrument[$currentInstrument] .= "r16";
+          else if ($remainingSixteenthNotes == 2)
+            $newDataPerInstrument[$currentInstrument] .= "r8";
+          else if ($remainingSixteenthNotes == 3)
+            $newDataPerInstrument[$currentInstrument] .= "r8.";
+
+          // }}}
+        }
+      }
+      
+      
+      $rhythmBuffer = $currentColumn;
+    }
+    
+    // }}
     // {{{ collect simultaneous pitches in a column into a chord
     
     // put all {} pairs into an array
@@ -184,10 +250,11 @@ function characterData($parser, $data) {
 
       // consider the current duration as whole note tops
       $currentDuration = min(SIXTEENTH_NOTES_PER_MEASURE, $remainingDuration);
+      $rhythmBuffer += $currentDuration;
 
       // if any remaining duration left after the (possible) whole note,
       // use it up in the next iteration of the loop
-      $remainingDuration = $remainingDuration - $currentDuration;
+      $remainingDuration -= $currentDuration;
 
       $numQuarterNotes = (int) ($currentDuration / 4);
       $remainingSixteenthNotes = $currentDuration % 4;
@@ -368,12 +435,12 @@ function displayLink($filename)
 // for debug
 /*$myFile = "lilytest.xml";
 $fh = fopen($myFile, 'r');
-$data = fread($fh, 10000000);
-fclose($fh);*/
+$data = fread($fh, 10000000);*/
+fclose($fh);
 // end debug
 
-$data = $_POST[DATA_PARAM];
-$lilydata = interpretData($data);
+//$data = $_POST[DATA_PARAM];
+//$lilydata = interpretData($data);
 
 $filename = generateFileName();
 saveFile($lilydata, $filename);
