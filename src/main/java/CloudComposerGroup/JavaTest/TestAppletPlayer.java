@@ -1,4 +1,5 @@
-package JavaTest;
+/*
+package CloudComposerGroup.JavaTest;
 
 
 import java.applet.*;
@@ -10,6 +11,8 @@ import java.awt.event.ActionListener;
 
 import javax.sound.midi.*;
 //import java.awt.*;
+import CloudComposerGroup.CloudComposer.*;
+
 
 public class TestAppletPlayer extends Applet implements ActionListener {
 	Sequencer seq;
@@ -109,3 +112,4 @@ public class TestAppletPlayer extends Applet implements ActionListener {
 	}
 	
 }
+*/

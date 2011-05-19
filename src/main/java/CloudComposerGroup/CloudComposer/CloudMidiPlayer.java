@@ -1,4 +1,4 @@
-//package CloudComposer;
+package CloudComposerGroup.CloudComposer;
 
 
 import java.io.File;
@@ -65,10 +65,14 @@ public class CloudMidiPlayer
 	// Sets the tempo of the song using the provided BPM. 
 	public void setTempo(float bpm) throws InvalidMidiDataException 
 	{
-		pause();
 		seq.setTempoInBPM(bpm);
 		//ticksPerSecond = bpm / 1800;
 		generateNotes();
+	}
+	
+	// Returns the tempo of the song using the provided BPM.
+	public float getTempo() {
+		return seq.getTempoInBPM();
 	}
 	
 	//public int getTicksPerFrame() 
@@ -137,6 +141,11 @@ public class CloudMidiPlayer
 		return (int) seq.getTickPosition();
 		//int currentTick = (int) seq.getTickPosition();
 		//return (int) (currentTick / (ticksPerSecond / 16));
+	}
+	
+	public boolean isPlaying()
+	{
+		return seq.isRunning();
 	}
 	
 	// TODO: Write MIDI file

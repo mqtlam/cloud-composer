@@ -1,7 +1,10 @@
+// Developer options:
+// set Diable Java to true to disable midiplayer (for linux environment)
+// During, Disable Java mode, playback does not work.
 
-////////// CONSTANTS
-// These constants must be changed in CSS as well
-
+// Set Disable Tutorial to true in order to skip tutorials
+var DISABLE_JAVA = true;
+var DISABLE_TUTORIAL = true;
 
 // reference to the grid object
 var grid;
@@ -11,24 +14,36 @@ var tempobar;
 var playerbar;
 var highlightbar;
 var tutorial;
+var applet;
 
 // computed values
+
+/// disables Firefox's dragging
+$(document).bind("dragstart", function() {
+     return false;
+});
+
 
 // call this onload
 function setEvents() {
 	document.body.addEventListener("click", mouseClick, false);
-//	document.body.addEventListener("mouseover", rollOver, false);
+	document.body.addEventListener("mousedown", mouseDown, false);
+	document.body.addEventListener("mouseup", mouseUp, true);
+	document.body.addEventListener("mouseover", mouseOver, false);
+//	document.body.addEventListener("mouseover", d, false);
 //	document.body.addEventListener("mouseout", rollOut, false);
 }
 
 function mouseClick(event) {
 	var current = event.target;
-	if (current.className.indexOf("grid_square") == 0 || current.parentNode.className.indexOf("grid_square") == 0) { 
+	var tutorialChecker = current.className == "" ? current.id : current.className;
+	tutorial.updateTutorialView(tutorialChecker);
+
+	var chk = grid.isSquare(current);
+	if (chk) {
 		var instrument = selector.currentInstrument;
 		if (instrument) {
-			tutorial.updateTutorialView("addRemoveNotes");
-			current = current.className.indexOf("grid_square") == 0 ? current : current.parentNode;
-			grid.gridClick(current, selector.currentInstrument);
+			grid.gridClick(chk, selector.currentInstrument);
 		} else {
 			alert("you must select an instrument");
 		}
@@ -36,26 +51,53 @@ function mouseClick(event) {
 	} else if (current.id == "extender") {
 		grid.extendGrid(current);
 	} else if (current.className == "instrumentContainer") {
-		tutorial.updateTutorialView("selectInstrument");
 		selector.setActiveInstrument(current.id);
 		grid.updateMainImage(selector.currentInstrument.instrumentName);
 	} else if (current.id == "stopbutton") { // 
 		midiplayer.onStopClick();
 	} else if (current.id == "playpausebutton") {
-		tutorial.updateTutorialView("hearPlayback");
 		midiplayer.onPlayPauseClick(grid.numColumns);
 	} else if (current.id == "getlinkbutton") {
-		tutorial.updateTutorialView("getLink");
 		// TODO put this code somewhere else...
 		var notegrid = grid.serialize();
 		sendNoteGrid(notegrid, "SaveSession.php");
 	} else if (current.className == "column_button") {
-		tutorial.updateTutorialView("setHighlightBar");
 		var c = parseInt(current.id);
 		highlightbar.move(c);
 		midiplayer.setSongPosition(c);
 	}
 
+}
+
+
+// Setting note length
+function mouseDown(event) {
+	event.preventDefault();
+	if (selector.currentInstrument) {		
+		var current = event.target;
+		var chk = grid.isSquare(current);
+		if (chk) {
+			grid.setStartingNote(chk, selector.currentInstrument);
+		}
+	}
+}
+
+function mouseUp(event) {
+	var current = event.target;
+	var chk = grid.isSquare(current);
+	if (chk) {
+		grid.setEndingNote(chk, selector.currentInstrument);		
+	} else {
+		grid.resetNote();
+	}
+}
+
+function mouseOver(event) {
+	var current = event.target;
+	var chk = grid.isSquare(current);
+	if (chk) {
+		grid.setIntermediateNote(chk, selector.currentInstrument);
+	}
 }
 
 function rollOver(event) {
@@ -109,8 +151,8 @@ function loadUI() {
 	grid = new NoteGrid("grid", initialNumColumns, instrumentsList, midiplayer);
 	highlightbar = new HighlightBar(0, "#CC6666");
 	
-	applet = document.getElementById('javaApplet');
-	tutorial = new Tutorial();
+	applet = DISABLE_JAVA ? new Dummy() : document.getElementById('javaApplet');
+	tutorial = DISABLE_TUTORIAL ? new Dummy() : new Tutorial();
     //tempobar = new Slider("tempo", 190, 10, "slider");
 	//playerbar = new Slider("player", 800, 10, "");
 }

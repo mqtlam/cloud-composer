@@ -60,13 +60,14 @@ NoteData.prototype.removeNote = function (column, note) {
 		
 	} else {
 		// remove the note
+		var temp = this.data[column][note.instrument.instrumentName][index];
 		this.data[column][note.instrument.instrumentName].splice(index, 1);
-		return true;
+		return temp;
 	}
 }
 
 NoteData.prototype.changeNoteLength = function (column, note, len) {
-	var index = getIndex(column, note);
+	var index = this.getIndex(column, note);
 	this.data[column][note.instrument.instrumentName][index].changeLength(len);
 }
 

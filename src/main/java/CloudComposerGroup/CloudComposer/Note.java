@@ -1,4 +1,4 @@
-//package CloudComposer;
+package CloudComposerGroup.CloudComposer;
 
 
 /**
@@ -19,6 +19,7 @@ public class Note implements Comparable<Note> {
 	 * @param length, integer to represent length of note 
 	 * @param instrument, integer to represent a type of instrument
 	 * @param pitch, integer to represent pitch of note
+	 * @requires length > 0 && 0 <= instrument <= 4 && 0 <= pitch <= 9 
 	 */
 	public Note(int length, int instrument, int pitch) {
 		this.length = length;
@@ -26,6 +27,13 @@ public class Note implements Comparable<Note> {
 		this.pitch = pitch;
 	}
 
+	/**
+	 * Returns an integer by comparing with another Note object.
+	 * Notes are in increasing order
+	 * 
+	 * @param n, another Note object to compare
+	 * @requires n != null
+	 */
 	public int compareTo(Note n) {
 		if (length != n.length)
 			return n.length - length;
