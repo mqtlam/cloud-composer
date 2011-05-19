@@ -3,10 +3,10 @@ if [ $# -lt 2 ]; then
 	echo "Usage: ./moveToRelease.bash <version number> <ftp password>"
 	exit 1
 fi
-release="beta"
+release="featurecomplete"
 versionNum=$1
 workingDir="src/main/java/CloudComposerGroup/CloudComposer"
-toDir="release/${release}_${versionNum}"
+toDir="test/${release}_${versionNum}"
 `mkdir -p $toDir`
 `mkdir "${toDir}/include"`
 `mkdir "${toDir}/images"`
