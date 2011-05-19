@@ -35,7 +35,7 @@ public class NoteGridTest  {
 	 * sets NoteGrid and Note objects every single time it runs a test
 	 */
 	@Before
-	public void setUp() {
+	public void setUp() throws Exception {
 		grid = new NoteGrid();
 		
 		n0 = new Note(1, 0, 0);
