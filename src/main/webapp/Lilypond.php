@@ -7,13 +7,13 @@
  *
  * USAGE:   Pass the composition data to this php file
  *          using the POST variable 'data'.
- *          
+ *
  *          Saves to songs/filename.ly
- *          
+ *
  *          Returns the link on success or displays an error message:
  *              CANNOT OPEN FILE: file cannot be open to write
  *              PDF GENERATION FAILED: shell execution for lilypond failed
- * 
+ *
  * PHP version 5
  *
  * @author     Michael Lam <mqtlam@cs.washington.edu>
@@ -59,13 +59,13 @@ $instruments = array(   "PIANO"     => "piano",
 $pitches = array(   0   => "c'",  // c4 = 60
                     1   => "d'",
                     2   => "e'",
-                    3   => "a'",
-                    4   => "g'",
+                    3   => "g'",
+                    4   => "a'",
                     5   => "c''",
                     6   => "d''",
                     7   => "e''",
-                    8   => "a''",
-                    9   => "g''"   );
+                    8   => "g''",
+                    9   => "a''"   );
 
 /**
  * Column tag name.
@@ -92,6 +92,10 @@ $remainingRhythm = 0;
 
 $newData = "";
 
+$newDataPerInstrument = array();
+foreach ($instruments as $instrument => $name)
+  $newDataPerInstrument[$instrument] = "";
+
 // }}}
 // {{{ xml functions
 
@@ -99,23 +103,30 @@ function startElemHandler($parser, $name, $attribs) {
     global $instruments;
     global $currentColumn;
     global $currentInstrument;
-    
+
     if (strcasecmp($name, COL_NAME) == 0) {
         // <c id="num"> detected
         $currentColumn = $attribs["id"];
     }
-    if (strcasecmp($name, $instruments['PIANO']) == 0) {
-        // <piano> detected
-        $currentInstrument = $instruments['PIANO'];
+
+    foreach ($instruments as $instr => $instrName)
+    {
+        if (strcasecmp($name, $instrName) == 0) {
+          // <name> detected
+          $currentInstrument = $instr;
+        }
     }
 }
 
-function endElemHandler($parser, $name) {    
+function endElemHandler($parser, $name) {
     if (strcasecmp($name, COL_NAME) == 0) {
         // </c> detected
     }
-    if (strcasecmp($name, $instruments['PIANO']) == 0) {
-        // </piano> detected
+    foreach ($instruments as $instr => $instrName)
+    {
+        if (strcasecmp($name, $instrName) == 0) {
+          // <name> detected
+        }
     }
 }
 
@@ -127,88 +138,88 @@ function characterData($parser, $data) {
     global $pitches;
     global $currentColumn;
     global $currentInstrument;
-    global $newData;
-    
+    global $newDataPerInstrument;
+
     if (strpos($data, "{") === false)
       return;
-    
+
     // put all {} pairs into an array
     $processed = $data;
     $processed = preg_replace(array("/^\s*{/", "/}\s*$/", "/\s+/"), array("","",""), $processed);
     $columns = explode("}{", $processed);
-    
+
     // {{{ collect simultaneous pitches in a column into a chord
     $chord = "< ";
     $duration = 0;
-    
+
     foreach ($columns as $col) {
       list($length, $pitch) = explode(",", $col);
       $duration = intval($length);
-      
+
       // construct the chord
       $chord .= "{$pitches[$pitch]} ";
     }
-    
+
     $chord .= ">";
-    
+
     // }}}
     // {{{ transcribe rhythm
-    
+
     // handles durations longer than whole note
     $remainingDuration = $duration;
     while ($remainingDuration > 0)
     {
-      
+
       // consider the current duration as whole note tops
-      $currentDuration = min(16, $remainingDuration);
-      
+      $currentDuration = min(SIXTEENTH_NOTES_PER_MEASURE, $remainingDuration);
+
       // if any remaining duration left after the (possible) whole note,
       // use it up in the next iteration of the loop
       $remainingDuration = $remainingDuration - $currentDuration;
-      
+
       $numQuarterNotes = (int) ($currentDuration / 4);
       $remainingSixteenthNotes = $currentDuration % 4;
-      
+
       // {{{ for very specific notation cases
       if ($numQuarterNotes == 1 && $remainingSixteenthNotes == 2)
       {
         // write out the dotted quarter note
-        $newData .= "{$chord}4.";
+        $newDataPerInstrument[$currentInstrument] .= "{$chord}4.";
       }
       else
       {
         // }}}
         // {{{ for general notation case
-          
+
         if ($numQuarterNotes == 1)
-          $newData .= "{$chord}4";
+          $newDataPerInstrument[$currentInstrument] .= "{$chord}4";
         else if ($numQuarterNotes == 2)
-          $newData .= "{$chord}2";
+          $newDataPerInstrument[$currentInstrument] .= "{$chord}2";
         else if ($numQuarterNotes == 3)
-          $newData .= "{$chord}2.";
+          $newDataPerInstrument[$currentInstrument] .= "{$chord}2.";
         else if ($numQuarterNotes == 4)
-          $newData .= "{$chord}1";
+          $newDataPerInstrument[$currentInstrument] .= "{$chord}1";
         //else if ($numQuarterNotes > 4)
         //  $newData .= "{$chord}1 ~";
-        
+
         if ($remainingSixteenthNotes > 0 && $numQuarterNotes > 0)
-          $newData .= " ~ ";
-        
+          $newDataPerInstrument[$currentInstrument] .= " ~ ";
+
         if ($remainingSixteenthNotes == 1)
-          $newData .= "{$chord}16";
+          $newDataPerInstrument[$currentInstrument] .= "{$chord}16";
         else if ($remainingSixteenthNotes == 2)
-          $newData .= "{$chord}8";
+          $newDataPerInstrument[$currentInstrument] .= "{$chord}8";
         else if ($remainingSixteenthNotes == 3)
-          $newData .= "{$chord}8.";
-          
+          $newDataPerInstrument[$currentInstrument] .= "{$chord}8.";
+
         // }}}
       }
-      
+
       if ($remainingDuration > 0)
-        $newData .= " ~ ";
-    
+        $newDataPerInstrument[$currentInstrument] .= " ~ ";
+
     }
-    
+
     // }}}
 }
 
@@ -216,42 +227,42 @@ function characterData($parser, $data) {
 // {{{ functions
 
 /**
- * Returns a randomly generated file name, 
+ * Returns a randomly generated file name,
  * which does not already exist on the server.
- * 
+ *
  * @return file name
  */
 function generateFileName() {
     // {{{ get existing file names
-    
+
     $existingFileNames = array();
     $handler = opendir(SAVE_DIRECTORY);
-    
+
     while ($file = readdir($handler)) {
         if ($file != "." && $file != "..") {
             $existingFileNames[] = $file;
         }
     }
-    
+
     closedir($handler);
-    
+
     // }}}
     // {{{ generate new file name
-    
+
     $filename = "";
-    
+
     while (empty($filename)) // note: could go on forever theoretically
     {
         $filename = rand(1000000000, 9999999999);
-        
+
         if (array_search($filename . FILE_EXTENSION,
             $existingFileNames)) {
             $filename = "";
         }
     }
-    
+
     // }}}
-    
+
     return $filename;
 }
 
@@ -265,31 +276,41 @@ function generateFileName() {
 function interpretData($data)
 {
     global $newData;
+    global $newDataPerInstrument;
     global $instruments;
     global $pitches;
-    
+
     $timeSignatureNumerator = SIXTEENTH_NOTES_PER_MEASURE / 4;
-    $header = "\\new Staff\n{\n\t\\set Staff.instrumentName = #\"{$instruments["PIANO"]}\""
-              . "\n\t\\clef treble\n\t\\time $timeSignatureNumerator/4\n\t";
-    
-    // create file
-    $newData = $header;
-    
+
+    // {{{ parse XML
+
     // new xml parser object
     $xmlParser = xml_parser_create() or die("XML SAX NOT SUPPORTED");
     xml_set_element_handler($xmlParser, "startElemHandler", "endElemHandler");
     xml_set_character_data_handler($xmlParser, "characterData");
     xml_parser_set_option($xmlParser, XML_OPTION_CASE_FOLDING, 0);
-    
+
     // parse xml
     xml_parse($xmlParser, $data);
-    
+
     // close xml
     xml_parser_free($xmlParser);
-    
-    // end new data
-    $newData .= "\n}";
-    
+
+    // }}}
+    // {{{ create file
+
+    $newData = "";
+
+    // add data for each instrument
+    foreach ($newDataPerInstrument as $instr => $instrumentData)
+    {
+      $newData .= "\\new Staff\n{\n\t\\set Staff.instrumentName = #\"{$instruments[$instr]}\""
+              . "\n\t\\clef treble\n\t\\time $timeSignatureNumerator/4\n\t";
+      $newData .= $instrumentData . "\n}\n\n";
+    }
+
+    // }}}
+
     return $newData;
 }
 
@@ -317,7 +338,7 @@ function generatePDF($filename)
 {
   $output = shell_exec('lilypond ' + $filename)
     or die("PDF GENERATION FAILED");
-  
+
   //echo '<pre>'.$output.'</pre>';
 }
 
