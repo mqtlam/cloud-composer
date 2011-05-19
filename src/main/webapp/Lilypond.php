@@ -157,7 +157,10 @@ function characterData($parser, $data) {
 
     // {{{ add rests if necessary
     
-    echo "<p>TEST $currentColumn | $rhythmBuffer TEST</p>";
+    // This describes a state where there is a start to polyphony.
+    // We ignore it for now, i.e. don't trascribe it.
+    if ($rhythmBuffer > $currentColumn)
+      return;
     
     if ($rhythmBuffer < $currentColumn)
     {
