@@ -99,6 +99,11 @@ foreach ($instruments as $instrument => $name)
 // }}}
 // {{{ xml functions
 
+/**
+ * Called whenever SAX parser encounters a start tag,
+ * e.g. <start>. $name stores the tag name and 
+ * $attribs is an array of attributes.
+ */
 function startElemHandler($parser, $name, $attribs) {
     global $instruments;
     global $currentColumn;
@@ -118,6 +123,10 @@ function startElemHandler($parser, $name, $attribs) {
     }
 }
 
+/**
+ * Called whenever SAX parser encounters an end tag,
+ * e.g. </start>. $name stores the tag name.
+ */
 function endElemHandler($parser, $name) {
     if (strcasecmp($name, COL_NAME) == 0) {
         // </c> detected
@@ -130,9 +139,10 @@ function endElemHandler($parser, $name) {
     }
 }
 
-// TODO:
-//    1) Rhythms are notated, and notated correctly
-//    2) Multiple notes per column are handled, and handled gracefully
+/**
+ * Called whenever SAX parser encounters text data between tags,
+ * e.g. <start>DATA</end>, where DATA would be stored in $data.
+ */
 function characterData($parser, $data) {
     // text data detected
     global $pitches;
