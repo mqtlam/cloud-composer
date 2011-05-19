@@ -141,7 +141,7 @@ function characterData($parser, $data) {
     $newData .= "< ";
     $duration = 0;
     
-    foreach ($columns as $col){
+    foreach ($columns as $col) {
       list($length, $pitch) = explode(",", $col);
       $duration = $length;
       
@@ -152,7 +152,23 @@ function characterData($parser, $data) {
     $newData .= ">";
     
     // transcribe rhythm
-    $remainingRhythm;
+    
+    // zero if can be constructed w/o subdivisions of quarter note
+    if ($duration % 4 == 0) {
+      $numQuarterNotes = $duration / 4;
+      
+      if ($numQuarterNotes == 1)
+        $newData .= "4";
+      else if ($numQuarterNotes == 2)
+        $newData .= "2";
+      else if ($numQuarterNotes == 3)
+        $newData .= "2.";
+      else if ($numQuarterNotes == 4)
+        $newData .= "1";
+      else if ($numQuarterNotes > 4)
+        $newData .= "1 ~";
+    }
+    //$remainingRhythm;
 }
 
 // }}}
