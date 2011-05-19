@@ -131,16 +131,27 @@ function characterData($parser, $data) {
     if (strpos($data, "{") === false)
       return;
     
-    // get all {} pairs
+    // put all {} pairs into an array
     $processed = $data;
     $processed = preg_replace(array("/^\s*{/", "/}\s*$/", "/\s+/"), array("","",""), $processed);
     $columns = explode("}{", $processed);
     
-    // (TODO) for now, get first pair and extract
-    list($length, $pitch) = explode(",", $columns[0]);
+    // collect simultaneous pitches in a column into a chord
+    $newData .= "< ";
+    $duration = 0;
     
-    // based on current column and length, determine what note type and ties if appropriate
-    $newData .= "{$pitches[$pitch]} ";
+    foreach ($columns as $col){
+      list($length, $pitch) = explode(",", $col);
+      $duration = $length;
+      
+      // based on current column and length, determine what note type and ties if appropriate
+      $newData .= "{$pitches[$pitch]} ";
+    }
+    
+    $newData .= ">";
+    
+    // transcribe rhythm
+    $remainingRhythm;
 }
 
 // }}}
@@ -217,11 +228,6 @@ function interpretData($data)
     
     // close xml
     xml_parser_free($xmlParser);
-    
-    
-    // BETA FEATURE: print out canonical scale, that's it
-    // TODO: actually analyze xml file
-    //$newData .= "c'4 d'4 e'4 g'1";
     
     // end new data
     $newData .= "\n}";
