@@ -45,6 +45,7 @@ public class CloudAppletController extends Applet { //implements ActionListener 
 		addRemoveHelper(noteData, false);
 	}
 	
+	// noteData format: [instrument, pitch, startPos, stopPos]
 	private void addRemoveHelper(int[] noteData, boolean add) {
 		changed = true;
 		int length = noteData[3] - noteData[2] + 1;    // for example, starting column is 2 and ending column is 5. 5 - 2 + 1 = 4: 2, 3, 4, 5 
@@ -125,6 +126,10 @@ public class CloudAppletController extends Applet { //implements ActionListener 
 	
 	public Sequence getSongSequence() {
 		return player.getSequence();
+	}
+	
+	public boolean isPlaying() {
+		return player.isPlaying();
 	}
 	
 	
