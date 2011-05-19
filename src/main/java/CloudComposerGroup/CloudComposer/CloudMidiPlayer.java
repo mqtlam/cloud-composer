@@ -71,6 +71,11 @@ public class CloudMidiPlayer
 		generateNotes();
 	}
 	
+	// Returns the tempo of the song using the provided BPM.
+	public float getTempo() {
+		return seq.getTempoInBPM();
+	}
+	
 	//public int getTicksPerFrame() 
 	//{
 //		return (int) ticksPerSecond;
