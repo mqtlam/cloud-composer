@@ -78,7 +78,8 @@ function updateSongPosition() {
 	var g = document.getElementById('grid');
 	var b = document.getElementsByClassName('highlightbar')[0];
 	var p = applet.currentSongPosition();
-	if (p == midiplayer.maxValue || p == midiplayer.notePosition) {
+	if (!applet.isPlaying) {
+    //if (p == midiplayer.maxValue || p == midiplayer.notePosition) {
 		midiplayer.reset(midiplayer.basePosition);
 		g.scrollLeft = midiplayer.baseScroll;
 		
