@@ -154,12 +154,14 @@ function characterData($parser, $data) {
     if (strpos($data, "{") === false)
       return;
 
+    // {{{ collect simultaneous pitches in a column into a chord
+    
     // put all {} pairs into an array
     $processed = $data;
     $processed = preg_replace(array("/^\s*{/", "/}\s*$/", "/\s+/"), array("","",""), $processed);
     $columns = explode("}{", $processed);
-
-    // {{{ collect simultaneous pitches in a column into a chord
+    
+    // construct the chord at this column
     $chord = "< ";
     $duration = 0;
 
@@ -167,7 +169,6 @@ function characterData($parser, $data) {
       list($length, $pitch) = explode(",", $col);
       $duration = intval($length);
 
-      // construct the chord
       $chord .= "{$pitches[$pitch]} ";
     }
 
