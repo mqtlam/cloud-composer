@@ -3,7 +3,7 @@ if [ $# -lt 2 ]; then
 	echo "Usage: ./moveToRelease.bash <version number> <ftp password>"
 	exit 1
 fi
-release="beta"
+release="featurecomplete"
 versionNum=$1
 workingDir="src/main/java/CloudComposerGroup/CloudComposer"
 toDir="release/${release}_${versionNum}"
@@ -45,7 +45,7 @@ END_SCRIPT
 done
 
 for ff in $toDir/include/*; do
-file=${ff#*/*/*/}
+file=${ff#*/*/}
 ftp -n $server <<END_SCRIPT
 quote USER $username
 quote PASS $password
@@ -56,7 +56,7 @@ END_SCRIPT
 done
 
 for ff in $toDir/images/*; do
-file=${ff#*/*/*/}
+file=${ff#*/*/}
 ftp -n $server <<END_SCRIPT
 quote USER $username
 quote PASS $password
