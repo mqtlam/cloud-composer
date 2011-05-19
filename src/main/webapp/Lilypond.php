@@ -137,38 +137,63 @@ function characterData($parser, $data) {
     $processed = preg_replace(array("/^\s*{/", "/}\s*$/", "/\s+/"), array("","",""), $processed);
     $columns = explode("}{", $processed);
     
-    // collect simultaneous pitches in a column into a chord
-    $newData .= "< ";
+    // {{{ collect simultaneous pitches in a column into a chord
+    $chord = "< ";
     $duration = 0;
     
     foreach ($columns as $col) {
       list($length, $pitch) = explode(",", $col);
-      $duration = $length;
+      $duration = intval($length);
       
-      // based on current column and length, determine what note type and ties if appropriate
-      $newData .= "{$pitches[$pitch]} ";
+      // construct the chord
+      $chord .= "{$pitches[$pitch]} ";
     }
     
-    $newData .= ">";
+    $chord .= ">";
     
-    // transcribe rhythm
+    // }}}
+    // {{{ transcribe rhythm
     
-    // zero if can be constructed w/o subdivisions of quarter note
-    if ($duration % 4 == 0) {
-      $numQuarterNotes = $duration / 4;
-      
+    $numQuarterNotes = (int) ($duration / 4);
+    $remainingSixteenthNotes = $duration % 4;
+    
+    // {{{ for very specific notation cases
+    if ($numQuarterNotes == 1 && $remainingSixteenthNotes == 2)
+    {
+      // write out the dotted quarter note
+      $newData .= "{$chord}4.";
+    }
+    else
+    {
+      // }}}
+      // {{{ for general notation case
+        
       if ($numQuarterNotes == 1)
-        $newData .= "4";
+        $newData .= "{$chord}4";
       else if ($numQuarterNotes == 2)
-        $newData .= "2";
+        $newData .= "{$chord}2";
       else if ($numQuarterNotes == 3)
-        $newData .= "2.";
+        $newData .= "{$chord}2.";
       else if ($numQuarterNotes == 4)
-        $newData .= "1";
-      else if ($numQuarterNotes > 4)
-        $newData .= "1 ~";
+        $newData .= "{$chord}1";
+      //else if ($numQuarterNotes > 4)
+      //  $newData .= "{$chord}1 ~";
+      
+      if ($remainingSixteenthNotes > 0 && $numQuarterNotes > 0)
+        $newData .= " ~ ";
+      
+      if ($remainingSixteenthNotes == 1)
+        $newData .= "{$chord}16";
+      else if ($remainingSixteenthNotes == 2)
+        $newData .= "{$chord}8";
+      else if ($remainingSixteenthNotes == 3)
+        $newData .= "{$chord}8.";
+        
+      // }}}
     }
-    //$remainingRhythm;
+      
+    
+    // }}}
 }
 
 // }}}
