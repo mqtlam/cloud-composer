@@ -518,7 +518,9 @@ NoteGrid.prototype.setAdjuster = function(obj, instrumentName) {
 				obj.appendChild(this.adjuster);
 			}
 		} else if (obj.className != "adjuster" && this.adjuster) {
-			this.adjuster.parentNode.removeChild(this.adjuster);
+			if (this.adjuster.parentNode) {
+				this.adjuster.parentNode.removeChild(this.adjuster);
+			}
 			this.adjuster = undefined;
 		}
 	}
