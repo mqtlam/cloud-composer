@@ -17,13 +17,22 @@ public class NoteGrid {
 	/** the number of instrument notes on note grid **/
 	private int size;
 	
+	public int biggestCol;
+	public int prevNoteLength;
+	public int prevNoteColumn;
+	
 	/**
 	 * Constructs a NoteGrid object
 	 */
 	public NoteGrid() {
 		grid = new HashMap<Integer, ArrayList<Note>>();
 		size = 0;
+		biggestCol = -1;
+		prevNoteLength = -1;
+		prevNoteColumn = -1;
 	}	
+	
+	
 	
 	/**
 	 * Adds a note in a proper position of note grid
@@ -35,6 +44,12 @@ public class NoteGrid {
 	 */
 	public void add(Note note, int column) {
 		List<Note> columnNotes = grid.get(column);
+		prevNoteLength = note.length;
+		prevNoteColumn = column;
+		if (biggestCol < note.length + column) {
+			biggestCol = note.length + column;
+			
+		}
 		if (columnNotes == null) {
 			columnNotes = new ArrayList<Note>();
 			columnNotes.add(note);
