@@ -2,7 +2,8 @@
  * Unit test for CloudComposerGroup.Note class!
  */
 
-import org.junit.*;
+import org.junit.Test;
+import org.junit.Before;
 
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
