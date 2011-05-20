@@ -15,12 +15,17 @@
  * USAGE:   Pass the composition data to this php file
  *          using the POST variable 'data'.
  *
+ *          Alternatively, for testing, pass the location of the 
+ *          XML test file using the GET variable 'testfile'.
+ *
  *          Saves to songs/filename.ly
+ *          Publishes the PDF to songs/filename.pdf
  *
  *          Returns the link on success or displays an error message:
  *              CANNOT OPEN FILE: file cannot be open to write
  *              XML SAX NOT SUPPORTED: XML SAX extension not enabled on server
  *              PDF GENERATION FAILED: shell execution for lilypond failed
+ *              CANNOT LOAD TEST FILE: unable to open test xml file
  *
  * PHP version 5
  *
@@ -40,17 +45,28 @@ define("WEBSITE_URL", "http://students.washington.edu/eui/403/");
 /**
  * Directory to save new file (and look up old files)
  */
-define("SAVE_DIRECTORY", "");
+define("SAVE_DIRECTORY", "songs/");
 
 /**
- * File extension type
+ * Lilypond file extension type
  */
-define("FILE_EXTENSION", ".ly");
+define("LILY_FILE_EXTENSION", ".ly");
+
+/**
+ * PDF file extension type
+ */
+define("PDF_FILE_EXTENSION", ".pdf");
 
 /**
  * POST parameter to pass data to this php file.
  */
 define("DATA_PARAM", "data");
+
+/**
+ * GET parameter. Value is the test XML file to load.
+ * It is also the output filename.
+ */
+define("TEST_PARAM", "testfile");
 
 /**
  * All instruments here. TODO: abstract out along with other files?
@@ -320,6 +336,9 @@ function characterData($parser, $data) {
     // }}}
 }
 
+/**
+ * Appends rests to the composition for the given duration.
+ */
 function restHelper($restDuration)
 {
     global $newDataPerInstrument;
@@ -372,10 +391,6 @@ function restHelper($restDuration)
 
         // }}}
       }
-      
-      //if ($remainingDuration > 0)
-        //$newDataPerInstrument[$currentInstrument] .= " ";
-      
     }
 }
 
@@ -412,7 +427,7 @@ function generateFileName()
     {
         $filename = rand(1000000000, 9999999999);
 
-        if (array_search($filename . FILE_EXTENSION,
+        if (array_search($filename . LILY_FILE_EXTENSION,
             $existingFileNames)) {
             $filename = "";
         }
@@ -484,7 +499,7 @@ function interpretData($data)
 function saveFile($data, $filename)
 {
     // write data
-    $fileHandler = fopen(SAVE_DIRECTORY . $filename . FILE_EXTENSION, 'w')
+    $fileHandler = fopen(SAVE_DIRECTORY . $filename . LILY_FILE_EXTENSION, 'w')
         or die("CANNOT OPEN FILE");
     $dataToWrite = $data;
     fwrite($fileHandler, $dataToWrite);
@@ -501,9 +516,7 @@ function generatePDF($filename)
     or die("PDF GENERATION FAILED");
 
   // check if generated file exists
-  
-  
-  //echo '<pre>'.$output.'</pre>';
+  return file_exists(SAVE_DIRECTORY . $filename . PDF_FILE_EXTENSION);
 }
 
 /**
@@ -517,20 +530,30 @@ function displayLink($filename)
 // }}}
 // {{{ SAVE SESSION AND DISPLAY LINK
 
-// for debug
-$myFile = "lilytest.xml";
-$fh = fopen($myFile, 'r');
-$data = fread($fh, 10000000);
-fclose($fh);
-// end debug
+$data = $_POST[DATA_PARAM];
+if (isset($_GET[TEST_PARAM])) {
+  $myFile = $_GET[TEST_PARAM];
+  $fh = fopen($myFile, 'r')
+    or die("CANNOT LOAD TEST FILE");
+  $data = fread($fh, 10000000);
+  fclose($fh);
+}
 
-//$data = $_POST[DATA_PARAM];
+// Interpret Data
 $lilydata = interpretData($data);
 
+// Generate Filename
 $filename = generateFileName();
+if (isset($_GET[TEST_PARAM]))
+  $filename = $_GET[TEST_PARAM];
+
+// Save .ly file
 saveFile($lilydata, $filename);
 
+// Generate PDF file from .ly file
 //generatePDF($filename);
+
+// Display the link
 displayLink($filename);
 
 // }}}

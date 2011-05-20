@@ -1,14 +1,13 @@
-import CloudComposerGroup.CloudComposer.*;
+import org.junit.Test;
+import org.junit.Before;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.matchers.JUnitMatchers.*;
+import CloudComposerGroup.CloudComposer.*;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.Sequence;
-
-import org.junit.Before;
-import org.junit.Test;
 
 
 public class CloudMidiPlayerTest {
@@ -36,6 +35,17 @@ public class CloudMidiPlayerTest {
 			actual += ", " + player.getInstruments()[i]; 
 		}
 		assertEquals("PIANO, GUITAR, DRUM, TRUMPET, VIOLIN", actual);
+	}
+
+	/**
+	 * Test if CloudMidiPlayer sets and returns tempo correctly or not
+	 * 
+	 * @throws InvalidMidiDataException 
+	 */
+	@Test
+	public void testSetGetTempo00() throws InvalidMidiDataException {
+		player.setTempo((float) 1);
+		assertEquals((float) 1, player.getTempo(), 0);
 	}
 	
 	/**
@@ -128,6 +138,71 @@ public class CloudMidiPlayerTest {
 		assertFalse(player.isPlaying());
 	}
 		
+	/**
+	 * Test if CloudMidiPlayer plays a note correctly or not
+	 * 
+	 * @throws InvalidMidiDataException
+	 */
+	@Test
+	public void testPlayNote02() throws InvalidMidiDataException {
+		c.player.playNote(CloudMidiPlayer.SequenceInst.GUITAR, 0);
+		assertTrue(c.player.isPlaying());
+	}
+
+	/**
+	 * Test if CloudMidiPlayer plays a note correctly or not
+	 * 
+	 * @throws InvalidMidiDataException
+	 */
+	@Test
+	public void testPlayNote03() throws InvalidMidiDataException {
+		c.player.playNote(CloudMidiPlayer.SequenceInst.PIANO, 0);
+		assertTrue(c.player.isPlaying());
+	}
+	
+	/**
+	 * Test if CloudMidiPlayer plays a note correctly or not
+	 * 
+	 * @throws InvalidMidiDataException
+	 */
+	@Test
+	public void testPlayNote04() throws InvalidMidiDataException {
+		c.player.playNote(CloudMidiPlayer.SequenceInst.DRUM, 2);
+		assertTrue(c.player.isPlaying());
+	}
+	
+	/**
+	 * Test if CloudMidiPlayer plays a note correctly or not
+	 * 
+	 * @throws InvalidMidiDataException
+	 */
+	@Test
+	public void testPlayNote05() throws InvalidMidiDataException {
+		c.player.playNote(CloudMidiPlayer.SequenceInst.GUITAR, 5);
+		assertTrue(c.player.isPlaying());
+	}
+
+	/**
+	 * Test if CloudMidiPlayer plays a note correctly or not
+	 * 
+	 * @throws InvalidMidiDataException
+	 */
+	@Test
+	public void testPlayNote06() throws InvalidMidiDataException {
+		c.player.playNote(CloudMidiPlayer.SequenceInst.PIANO, 9);
+		assertTrue(c.player.isPlaying());
+	}
+	
+	/**
+	 * Test if CloudMidiPlayer plays a note correctly or not
+	 * 
+	 * @throws InvalidMidiDataException
+	 */
+	@Test
+	public void testPlayNote07() throws InvalidMidiDataException {
+		assertFalse(c.player.isPlaying());
+	}
+	
 	/**
 	 * Test if CloudMidiPlayer sets and returns a sequence correctly or not 
 	 * 
