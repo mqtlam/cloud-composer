@@ -1,6 +1,7 @@
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.Sequence;
 
+import junit.framework.TestCase;
 import org.junit.Test;
 import org.junit.Before;
 
@@ -217,11 +218,14 @@ public class CloudAppletControllerTest extends TestCase {
 	/**
 	 * Test if CloudAppletController returns a list of strings of instruments correctly or not
 	 */
-	@SuppressWarnings("deprecation")
 	@Test
 	public void testGetInstrument01() {
-		String[] expected = {"PIANO", "GUITAR", "DRUM", "TRUMPET", "VIOLIN"};
-		String[] actual = c.getInstruments();
+		String expected = "PIANO, GUITAR, DRUM, TRUMPET, VIOLIN";
+		String[] inst = c.getInstruments();
+		String actual = "" + inst[0];
+		for (int i = 1; i < 5; i++) {
+			actual += ", " + inst[i];
+		}
 		assertEquals(expected, actual);
 	}
 	
@@ -230,8 +234,12 @@ public class CloudAppletControllerTest extends TestCase {
 	 */
 	@Test
 	public void testGetInstrument02() {
-		String[] expected = {"", "", "", "", ""};
-		String[] actual = c.getInstruments();
+		String expected = "";
+		String[] inst = c.getInstruments();
+		String actual = "" + inst[0];
+		for (int i = 1; i < 5; i++) {
+			actual += ", " + inst[i];
+		}
 		boolean result = expected.equals(actual);
 		assertFalse(result);
 	}
@@ -241,19 +249,27 @@ public class CloudAppletControllerTest extends TestCase {
 	 */
 	@Test
 	public void testGetInstrument03() {
-		String[] expected = {"PIANO", "GUITAR", "DRUMMM", "TRUMPET", "VIOLIN"};
-		String[] actual = c.getInstruments();
+		String expected = "PIANO, GUITAR, DRUMMM, TRUMPET, VIOLIN";
+		String[] inst = c.getInstruments();
+		String actual = "" + inst[0];
+		for (int i = 1; i < 5; i++) {
+			actual += ", " + inst[i];
+		}
 		boolean result = expected.equals(actual);
 		assertFalse(result);
 	}
-	
+
 	/**
 	 * Test if CloudAppletController returns a list of strings of instruments correctly or not
 	 */
 	@Test
 	public void testGetInstrument04() {
-		String[] expected = {"PIANOOOO", "GUITAR", "DRUMMM", "TRUMPET", "VIOLIN"};
-		String[] actual = c.getInstruments();
+		String expected = "PIANOOOO, GUITAR, DRUM, TRUMPET, VIOLIN";
+		String[] inst = c.getInstruments();
+		String actual = "" + inst[0];
+		for (int i = 1; i < 5; i++) {
+			actual += ", " + inst[i];
+		}
 		boolean result = expected.equals(actual);
 		assertFalse(result);
 	}

@@ -5,6 +5,7 @@
 import org.junit.Test;
 import org.junit.Before;
 
+import junit.framework.TestCase;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.matchers.JUnitMatchers.*;
