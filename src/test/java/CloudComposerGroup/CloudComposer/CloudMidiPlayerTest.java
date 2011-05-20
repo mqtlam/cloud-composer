@@ -1,6 +1,7 @@
 import CloudComposerGroup.CloudComposer.*;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import javax.sound.midi.InvalidMidiDataException;
@@ -65,15 +66,68 @@ public class CloudMidiPlayerTest {
 	 * @throws InvalidMidiDataException
 	 */
 	@Test
-	public void testPlay() throws InvalidMidiDataException {
+	public void testPlay01() throws InvalidMidiDataException {
+		player.setSequence(new Sequence(0, 0));
 		player.play();
 		assertTrue(player.isPlaying());
 	}
-
 	
+	/**
+	 * Test if CloudMidiPlayer plays a song correctly or not
+	 * 
+	 * @throws InvalidMidiDataException if it fails to run the player
+	 */
+	@Test
+	public void testPlay02() throws InvalidMidiDataException {
+		player.setSequence(new Sequence(Sequence.PPQ, 0));
+		player.play();
+		assertTrue(player.isPlaying());
+	}
 	
+	/**
+	 * Test if CloudMidiPlayer plays a song correctly or not
+	 * 
+	 * @throws InvalidMidiDataException if it fails to run the player
+	 */
+	@Test
+	public void testPlay03() throws InvalidMidiDataException {
+		player.setSequence(new Sequence(Sequence.SMPTE_24, 0));
+		player.play();
+		assertTrue(player.isPlaying());
+	}
 	
+	/**
+	 * Test if CloudMidiPlayer plays a song correctly or not
+	 * 
+	 * @throws InvalidMidiDataException if it fails to run the player
+	 */
+	@Test
+	public void testPlay04() throws InvalidMidiDataException {
+		player.setSequence(new Sequence(Sequence.SMPTE_30DROP, 0));
+		player.play();
+		assertTrue(player.isPlaying());
+	}
 	
+	/**
+	 * Test if CloudMidiPlayer plays a song correctly or not
+	 * 
+	 * Player is not suppose to play a song until it is requested. 
+	 */
+	@Test
+	public void testPlay05() {
+		assertFalse(player.isPlaying());
+	}
+	
+	/**
+	 * Test if CloudMidiPlayer plays a song correctly or not
+	 * 
+	 * Player is not suppose to play a song until it is requested. 
+	 */
+	@Test
+	public void testPlay06() {
+		assertFalse(player.isPlaying());
+	}
+		
 	/**
 	 * Test if CloudMidiPlayer sets and returns a sequence correctly or not 
 	 * 
