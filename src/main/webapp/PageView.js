@@ -70,7 +70,8 @@ function mouseClick(event) {
 		var notegrid = grid.serialize();
 		sendNoteGrid(notegrid, "SaveSession.php");
 	} else if (current.id == "getLinkButton") {
-		// trigger lilypond!
+		var notegrid = grid.serialize();
+		sendNoteGrid(notegrid, "LilyPond.php");
 	}
 	
 
