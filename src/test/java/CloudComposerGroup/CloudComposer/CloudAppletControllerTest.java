@@ -24,6 +24,7 @@ public class CloudAppletControllerTest extends TestCase {
 	public void setUp() throws Exception {
 		c = new CloudAppletController();
 		c.init();
+		c.player.setSequence(CloudMidiPlayer.basicSequence());
 	}
 
 	/**
