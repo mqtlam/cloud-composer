@@ -111,7 +111,7 @@ function displayLink($filename)
 // }}}
 // {{{ SAVE SESSION AND DISPLAY LINK
 
-$data = $_POST['data'];
+$data = stripslashes($_POST['data']);
 $filename = generateFileName();
 saveSession($data, $filename);
 displayLink($filename);
