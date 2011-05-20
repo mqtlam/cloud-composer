@@ -1,3 +1,6 @@
+import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.Sequence;
+
 import CloudComposerGroup.CloudComposer.*;
 
 import static org.junit.Assert.assertEquals;
@@ -244,5 +247,215 @@ public class CloudAppletControllerTest {
 		boolean result = expected.equals(actual);
 		assertFalse(result);
 	}
+	
+	/**
+	 * Test if CloudAppletController returns a list of strings of instruments correctly or not
+	 */
+	@Test
+	public void testGetInstrument04() {
+		String[] expected = {"PIANOOOO", "GUITAR", "DRUMMM", "TRUMPET", "VIOLIN"};
+		String[] actual = c.getInstruments();
+		boolean result = expected.equals(actual);
+		assertFalse(result);
+	}
+
+	/**
+	 * Test if CloudAppletController controls playing a song correctly or not
+	 * 
+	 * @throws InvalidMidiDataException
+	 */
+	@Test
+	public void testPlay01() throws InvalidMidiDataException {
+		c.player.setSequence(new Sequence(0, 0));
+		c.player.play();
+		assertTrue(c.player.isPlaying());
+	}
+	
+	/**
+	 * Test if CloudAppletController controls playing a song correctly or not
+	 * 
+	 * @throws InvalidMidiDataException if it fails to run the c.player
+	 */
+	@Test
+	public void testPlay02() throws InvalidMidiDataException {
+		c.player.setSequence(new Sequence(Sequence.PPQ, 0));
+		c.player.play();
+		assertTrue(c.player.isPlaying());
+	}
+	
+	/**
+	 * Test if CloudAppletController controls playing a song correctly or not
+	 * 
+	 * @throws InvalidMidiDataException if it fails to run the c.player
+	 */
+	@Test
+	public void testPlay03() throws InvalidMidiDataException {
+		c.player.setSequence(new Sequence(Sequence.SMPTE_24, 0));
+		c.player.play();
+		assertTrue(c.player.isPlaying());
+	}
+	
+	/**
+	 * Test if CloudAppletController controls playing a song correctly or not
+	 * 
+	 * @throws InvalidMidiDataException if it fails to run the c.player
+	 */
+	@Test
+	public void testPlay04() throws InvalidMidiDataException {
+		c.player.setSequence(new Sequence(Sequence.SMPTE_30DROP, 0));
+		c.player.play();
+		assertTrue(c.player.isPlaying());
+	}
+	
+	/**
+	 * Test if CloudAppletController controls playing a song correctly or not
+	 * 
+	 * Player is not suppose to play a song until it is requested. 
+	 */
+	@Test
+	public void testPlay05() {
+		assertFalse(c.player.isPlaying());
+	}
+	
+	/**
+	 * Test if CloudAppletController controls playing a song correctly or not
+	 * 
+	 * Player is not suppose to play a song until it is requested. 
+	 */
+	@Test
+	public void testPlay06() {
+		assertFalse(c.player.isPlaying());
+	}
+	
+	/**
+	 * Test if CloudAppletController controls stopping a song correctly or not
+	 * 
+	 * @throws InvalidMidiDataException if it fails to run c.player
+	 */
+	@Test
+	public void testStop01() throws InvalidMidiDataException {
+		c.player.setSequence(new Sequence(0, 0));
+		c.player.play();
+		c.player.stop();
+		assertFalse(c.player.isPlaying());
+	}
+	
+	/**
+	 * Test if CloudAppletController controls stopping a song correctly or not
+	 * 
+	 * @throws InvalidMidiDataException if it fails to run c.player
+	 */
+	@Test
+	public void testStop02() throws InvalidMidiDataException {
+		c.player.setSequence(new Sequence(Sequence.PPQ, 0));
+		c.player.play();
+		c.player.stop();
+		assertFalse(c.player.isPlaying());
+	}
+
+	/**
+	 * Test if CloudAppletController controls stopping a song correctly or not
+	 * 
+	 * @throws InvalidMidiDataException if it fails to run c.player
+	 */
+	@Test
+	public void testStop03() throws InvalidMidiDataException {
+		c.player.setSequence(new Sequence(Sequence.SMPTE_24, 0));
+		c.player.play();
+		c.player.stop();
+		assertFalse(c.player.isPlaying());
+	}
+	
+	/**
+	 * Test if CloudAppletController controls stopping a song correctly or not
+	 * 
+	 * @throws InvalidMidiDataException if it fails to run c.player
+	 */
+	@Test
+	public void testStop04() throws InvalidMidiDataException {
+		c.player.setSequence(new Sequence(Sequence.SMPTE_30, 0));
+		c.player.play();
+		c.player.stop();
+		assertFalse(c.player.isPlaying());
+	}
+
+	/**
+	 * Test if CloudAppletController controls stopping a song correctly or not
+	 * 
+	 * @throws InvalidMidiDataException if it fails to run c.player
+	 */
+	@Test
+	public void testStop05() throws InvalidMidiDataException {
+		c.player.setSequence(new Sequence(Sequence.SMPTE_30DROP, 0));
+		c.player.play();
+		c.player.stop();
+		assertFalse(c.player.isPlaying());
+	}
+
+	/**
+	 * Test if CloudAppletController controls pausing a song correctly or not
+	 * 
+	 * @throws InvalidMidiDataException if it fails to run c.player
+	 */
+	@Test
+	public void testPause01() throws InvalidMidiDataException {
+		c.player.setSequence(new Sequence(0, 0));
+		c.player.play();
+		c.player.stop();
+		assertFalse(c.player.isPlaying());
+	}
+	
+	/**
+	 * Test if CloudAppletController controls pausing a song correctly or not
+	 * 
+	 * @throws InvalidMidiDataException if it fails to run c.player
+	 */
+	@Test
+	public void testPause02() throws InvalidMidiDataException {
+		c.player.setSequence(new Sequence(Sequence.PPQ, 0));
+		c.player.play();
+		c.player.stop();
+		assertFalse(c.player.isPlaying());
+	}
+
+	/**
+	 * Test if CloudAppletController controls pausing a song correctly or not
+	 * 
+	 * @throws InvalidMidiDataException if it fails to run c.player
+	 */
+	@Test
+	public void testPause03() throws InvalidMidiDataException {
+		c.player.setSequence(new Sequence(Sequence.SMPTE_24, 0));
+		c.player.play();
+		c.player.stop();
+		assertFalse(c.player.isPlaying());
+	}
+	
+	/**
+	 * Test if CloudAppletController controls pausing a song correctly or not
+	 * 
+	 * @throws InvalidMidiDataException if it fails to run c.player
+	 */
+	@Test
+	public void testPause04() throws InvalidMidiDataException {
+		c.player.setSequence(new Sequence(Sequence.SMPTE_30, 0));
+		c.player.play();
+		c.player.stop();
+		assertFalse(c.player.isPlaying());
+	}
+
+	/**
+	 * Test if CloudAppletController controls pausing a song correctly or not
+	 * 
+	 * @throws InvalidMidiDataException if it fails to run c.player
+	 */
+	@Test
+	public void testPause05() throws InvalidMidiDataException {
+		c.player.setSequence(new Sequence(Sequence.SMPTE_30DROP, 0));
+		c.player.play();
+		c.player.stop();
+		assertFalse(c.player.isPlaying());
+	}
+
 
 }
