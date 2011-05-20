@@ -25,7 +25,7 @@
  * URL of website for displaying to user
  */
 //define("WEBSITE_URL", "http://students.washington.edu/jclement/Cloud-Composer/");
-define("WEBSITE_URL", "http://students.washington.edu/eui/403/");
+define("WEBSITE_URL", "http://publicstaticdroid.com/cloudcomposer/test/");
 /**
  * Directory to save new file (and look up old files)
  */
@@ -95,7 +95,7 @@ function saveSession($data, $filename)
     // write data
     $fileHandler = fopen(SAVE_DIRECTORY . $filename . FILE_EXTENSION, 'w')
         or die("CANNOT OPEN FILE");
-    $dataToWrite = $data;
+    $dataToWrite = stripslashes($data);
     fwrite($fileHandler, $dataToWrite);
     fclose($fileHandler);
 }
