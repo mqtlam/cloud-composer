@@ -2,12 +2,10 @@ package CloudComposerGroup.CloudComposer;
 
 
 import java.applet.Applet;
+import java.io.IOException;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.Sequence;
-
-//import java.awt.event.ActionEvent;
-//import java.awt.event.ActionListener;
 
 //CloudAppletController.java
 //This file is the applet used to interact between the UI,
@@ -33,31 +31,31 @@ public class CloudAppletController extends Applet { //implements ActionListener 
 		}
 	}
 	
-	// TODO: Add note to NoteGrid
+	// Adds the provided data as a note on the NoteGrid.
 	public void addNote(int[] noteData)
 	{
 		addRemoveHelper(noteData, true);
 	}
 	
-	// TODO: Remove note from NoteGrid
+	// Removes the provided data as a note from the NoteGrid.
 	public void removeNote(int[] noteData)
 	{
 		addRemoveHelper(noteData, false);
 	}
 	
 	// noteData format: [instrument, pitch, startPos, stopPos]
+	// Adds or removes a note given the data for the note.
 	private void addRemoveHelper(int[] noteData, boolean add) {
 		changed = true;
 		int length = noteData[3] - noteData[2] + 1;    // for example, starting column is 2 and ending column is 5. 5 - 2 + 1 = 4: 2, 3, 4, 5 
 		
-		
-		//for (int i = 0; i < length; i++)             //  Note: The reason I used a loop is that I wanted to put the same note except length
-		if (add) 								       //  in the columns for the extension of a note. -June
+		if (add)
 			grid.add(new Note(length, noteData[0], noteData[1]), noteData[2]);	
 		else
 			grid.remove(new Note(length, noteData[0], noteData[1]), noteData[2]);
 	}
 	
+	// Returns a list of instruments.
 	public String[] getInstruments() {
 		String[] list = new String[5];
 		for (int i = 0; i < 5; i++) {
@@ -71,15 +69,8 @@ public class CloudAppletController extends Applet { //implements ActionListener 
 	// what it currently has loaded.
 	public void play() throws InvalidMidiDataException
 	{
-		if (changed)
-		{
-			changed = false;
-			Sequence s = sequencer.getSequence();
-			player.playSong(s);
-		} else
-		{
-			player.play();
-		}
+		updateSequence();
+		player.play();
 	}
 	
 	// Plays the note indicated by the instrument and the pitch.
@@ -100,10 +91,11 @@ public class CloudAppletController extends Applet { //implements ActionListener 
 		player.pause();
 	}
 	
-	// TODO: Download MIDI file
-	public void download(String location) 
+	// Updates the sequence and then tells the Midiplayer to write the Midi file.
+	public void download(String location) throws InvalidMidiDataException, IOException 
 	{
-		
+		updateSequence();
+		player.writeToFile(location);
 	}
 	
 	// Sets the current position of the song in the player.
@@ -124,20 +116,24 @@ public class CloudAppletController extends Applet { //implements ActionListener 
 		player.setTempo(bpm);
 	}
 	
+	// Returns the current Midi song data, regardless of if it has been modified.
 	public Sequence getSongSequence() {
 		return player.getSequence();
 	}
 	
+	// Determines if a song is currently being played.
 	public boolean isPlaying() {
 		return player.isPlaying();
 	}
 	
-	
-	
-	/*@Override
-	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
-
-	}*/
+	// Updates the Midiplayer with the actual song data.
+	private void updateSequence() throws InvalidMidiDataException {
+		if (changed)
+		{
+			changed = false;
+			Sequence s = sequencer.getSequence();
+			player.setSequence(s);
+		}
+	}
 
 }
