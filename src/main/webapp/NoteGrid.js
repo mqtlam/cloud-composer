@@ -357,7 +357,7 @@ NoteGrid.prototype.setIntermediateNote = function(evt, instrument) {
 		var column = parseInt(this.getInt(square.parentNode.parentNode.id));
 		// check if it's a valid intermediate note
 		
-		if (pitch == this.dragNote[1] && !this.dragNote[4]) {
+		if (pitch == this.dragNote[1] && this.dragNote[4] == undefined) {
 			var diff = column - this.dragNote[3];
 			if (diff == 1 && this.dragNote[3]-this.dragNote[2] + 1 < this.maxLength && square.className.indexOf(instrument.instrumentName) < 0) {
 				// add
@@ -374,7 +374,7 @@ NoteGrid.prototype.setIntermediateNote = function(evt, instrument) {
 			}
 			
 			
-		} else if (this.dragNote[4]) {
+		} else if (this.dragNote[4] != undefined) {
 			// moving the note!!
 			this.movedOut = true;
 			// needs to test for conflict here
@@ -417,7 +417,7 @@ NoteGrid.prototype.setEndingNote = function(evt, instrument) {
 
 		var note = new Note(this.dragNote[3]-this.dragNote[2] + 1, this.dragNote[0], this.dragNote[1]);	
 		
-		if (this.dragNote[4] && this.movedOut) {
+		if (this.dragNote[4] != undefined && this.movedOut) {
 			
 			// if there is no conflict
 			if (this.noteConflict()) {
@@ -450,7 +450,7 @@ NoteGrid.prototype.setEndingNote = function(evt, instrument) {
 			this.dragNote[5] = undefined;
 			
 			this.movedOut = false;
-		} else if (this.dragNote[4]) {
+		} else if (this.dragNote[4] != undefined) {
 			var endSquare = this.getSquare(this.dragNote[3], this.dragNote[1]);
 			endSquare.className = endSquare.className.replace(" "+this.dragNote[0].instrumentName+"Extendable", "");
 			endSquare = undefined;
@@ -505,7 +505,7 @@ NoteGrid.prototype.setIntermediateNotes = function() {
 
 // show note length adjusting bar
 NoteGrid.prototype.setAdjuster = function(obj, instrumentName) {
-	if (!this.dragNote || !this.dragNote[4]) {
+	if (!this.dragNote || this.dragNote[4] == undefined) {
 		if (obj.className.indexOf(instrumentName+"Extendable") >= 0) {
 			if (obj.getElementsByClassName("adjuster").length <= 0) {
 			
