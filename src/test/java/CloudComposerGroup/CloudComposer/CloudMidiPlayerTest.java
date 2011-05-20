@@ -28,18 +28,6 @@ public class CloudMidiPlayerTest extends TestCase {
 	}
 	
 	/**
-	 * Helper method to place notes needed for successful testing.
-	 * @param column, the starting position of the note
-	 */
-	private void placeNote(int column) {
-		Sequence seq = player.getSequence();
-		CloudMidiPlayer.SequenceInst inst = player.getInstruments()[0];
-		int pitch = 0;
-		int stopPos = column + 4;
-		CloudMidiPlayer.addNote(seq, inst, pitch, column, stopPos);
-	}
-
-	/**
 	 * Test if CloudMidiPlayer returns an array of instruments correctly or not
 	 */
 	@Test
