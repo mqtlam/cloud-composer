@@ -418,8 +418,8 @@ public class CloudMidiPlayerTest extends TestCase {
 	@Test
 	public void testSetPlayTimeAndPlaybackBarColumn01() {
 		int expected = 0;
-		placeNote(expected);
-		player.setPlayTime(expected);
+		placeNote(0);
+		player.setPlayTime(0);
 		int actual = player.playbackBarColumn();
 		assertEquals(expected, actual);
 	}
@@ -430,8 +430,8 @@ public class CloudMidiPlayerTest extends TestCase {
 	@Test
 	public void testSetPlayTimeAndPlaybackBarColumn02() {
 		int expected = 1;
-		placeNote(expected);
-		player.setPlayTime(expected);
+		placeNote(1);
+		player.setPlayTime(1);
 		int actual = player.playbackBarColumn();
 		assertEquals(expected, actual);
 	}
@@ -442,8 +442,8 @@ public class CloudMidiPlayerTest extends TestCase {
 	@Test
 	public void testSetPlayTimeAndPlaybackBarColumn03() {
 		int expected = 2;
-		placeNote(expected);
-		player.setPlayTime(expected);
+		placeNote(2);
+		player.setPlayTime(2);
 		int actual = player.playbackBarColumn();
 		assertEquals(expected, actual);
 	}
@@ -454,8 +454,8 @@ public class CloudMidiPlayerTest extends TestCase {
 	@Test
 	public void testSetPlayTimeAndPlaybackBarColumn04() {
 		int expected = 5;
-		placeNote(expected);
-		player.setPlayTime(expected);
+		placeNote(5);
+		player.setPlayTime(5);
 		int actual = player.playbackBarColumn();
 		assertEquals(expected, actual);
 	}
@@ -466,8 +466,8 @@ public class CloudMidiPlayerTest extends TestCase {
 	@Test
 	public void testSetPlayTimeAndPlaybackBarColumn05() {
 		int expected = 6;
-		placeNote(expected);
-		player.setPlayTime(expected);
+		placeNote(6);
+		player.setPlayTime(6);
 		int actual = player.playbackBarColumn();
 		assertEquals(expected, actual);
 	}
@@ -478,8 +478,8 @@ public class CloudMidiPlayerTest extends TestCase {
 	@Test
 	public void testSetPlayTimeAndPlaybackBarColumn06() {
 		int expected = 100;
-		placeNote(expected);
-		player.setPlayTime(expected);
+		placeNote(100);
+		player.setPlayTime(100);
 		int actual = player.playbackBarColumn();
 		assertEquals(expected, actual);
 	}
@@ -490,8 +490,8 @@ public class CloudMidiPlayerTest extends TestCase {
 	@Test
 	public void testSetPlayTimeAndPlaybackBarColumn07() {
 		int expected = 500;
-		placeNote(expected);
-		player.setPlayTime(expected);
+		placeNote(500);
+		player.setPlayTime(500);
 		int actual = player.playbackBarColumn();
 		assertEquals(expected, actual);
 	}
@@ -502,8 +502,8 @@ public class CloudMidiPlayerTest extends TestCase {
 	@Test
 	public void testSetPlayTimeAndPlaybackBarColumn08() {
 		int expected = 1000;
-		placeNote(expected);
-		player.setPlayTime(expected);
+		placeNote(1000);
+		player.setPlayTime(1000);
 		int actual = player.playbackBarColumn();
 		assertEquals(expected, actual);
 	}
@@ -514,8 +514,8 @@ public class CloudMidiPlayerTest extends TestCase {
 	@Test
 	public void testSetPlayTimeAndPlaybackBarColumn09() {
 		int expected = 10000;
-		placeNote(expected);
-		player.setPlayTime(expected);
+		placeNote(10000);
+		player.setPlayTime(10000);
 		int actual = player.playbackBarColumn();
 		assertEquals(expected, actual);
 	}
