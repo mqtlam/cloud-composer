@@ -31,7 +31,7 @@ function setEvents() {
 	document.body.addEventListener("mouseup", mouseUp, true);
 	document.body.addEventListener("mouseover", mouseOver, false);
 //	document.body.addEventListener("mouseover", d, false);
-//	document.body.addEventListener("mouseout", rollOut, false);
+	document.body.addEventListener("mouseout", mouseOut, false);
 }
 
 function mouseClick(event) {
@@ -77,7 +77,12 @@ function mouseDown(event) {
 		var current = event.target;
 		var chk = grid.isSquare(current);
 		if (chk) {
-			grid.setStartingNote(chk, selector.currentInstrument);
+			if (current.className == "adjuster") {
+				// change the note length
+				grid.changeNoteLength(chk, selector.currentInstrument);
+			} else {
+				grid.setStartingNote(chk, selector.currentInstrument);
+			}
 		}
 	}
 }
@@ -93,11 +98,20 @@ function mouseUp(event) {
 }
 
 function mouseOver(event) {
-	var current = event.target;
-	var chk = grid.isSquare(current);
-	if (chk) {
-		grid.setIntermediateNote(chk, selector.currentInstrument);
+	if (selector.currentInstrument) {
+		var current = event.target;
+		var chk = grid.isSquare(current);
+		if (chk) {
+			grid.setIntermediateNote(chk, selector.currentInstrument);
+		}
+	
+		// let grid take care of the boundaries
+		grid.setAdjuster(current, selector.currentInstrument.instrumentName);
 	}
+}
+
+function mouseOut(event) {
+	var current = event.target;
 }
 
 function rollOver(event) {
