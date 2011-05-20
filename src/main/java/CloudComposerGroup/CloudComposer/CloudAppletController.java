@@ -16,9 +16,9 @@ import javax.sound.midi.Sequence;
 public class CloudAppletController extends Applet { //implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
-	private CloudMidiPlayer player;
+	public CloudMidiPlayer player;
 	private SongSequence sequencer;
-	private NoteGrid grid;
+	public NoteGrid grid;
 	private boolean changed;
 	
 	// Initializes the Applet and its components.
