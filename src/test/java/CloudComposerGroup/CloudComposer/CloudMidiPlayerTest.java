@@ -1,6 +1,7 @@
 import CloudComposerGroup.CloudComposer.*;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.Sequence;
@@ -57,6 +58,21 @@ public class CloudMidiPlayerTest {
 		player.setTempo((float) 5.1521136);
 		assertEquals((float) 5.1521136, player.getTempo(), (float) 1.115);
 	}
+	
+	/**
+	 * Test if CloudMidiPlayer plays a song correctly or not
+	 * 
+	 * @throws InvalidMidiDataException
+	 */
+	@Test
+	public void testPlay() throws InvalidMidiDataException {
+		player.play();
+		assertTrue(player.isPlaying());
+	}
+
+	
+	
+	
 	
 	/**
 	 * Test if CloudMidiPlayer sets and returns a sequence correctly or not 
