@@ -323,6 +323,104 @@ public class CloudMidiPlayerTest {
 		assertFalse(player.isPlaying());
 	}
 
+	/**
+	 * Test if CloudMidiPlayer sets and returns a column correctly
+	 */
+	@Test
+	public void testSetPlayTimeAndPlaybackBarColumn01() {
+		int expected = 0;
+		player.setPlayTime(expected);
+		int actual = player.playbackBarColumn();
+		assertEquals(expected, actual);
+	}
 	
+	/**
+	 * Test if CloudMidiPlayer sets and returns a column correctly
+	 */
+	@Test
+	public void testSetPlayTimeAndPlaybackBarColumn02() {
+		int expected = 1;
+		player.setPlayTime(expected);
+		int actual = player.playbackBarColumn();
+		assertEquals(expected, actual);
+	}
+
+	/**
+	 * Test if CloudMidiPlayer sets and returns a column correctly
+	 */
+	@Test
+	public void testSetPlayTimeAndPlaybackBarColumn03() {
+		int expected = 2;
+		player.setPlayTime(expected);
+		int actual = player.playbackBarColumn();
+		assertEquals(expected, actual);
+	}
+
+	/**
+	 * Test if CloudMidiPlayer sets and returns a column correctly
+	 */
+	@Test
+	public void testSetPlayTimeAndPlaybackBarColumn04() {
+		int expected = 5;
+		player.setPlayTime(expected);
+		int actual = player.playbackBarColumn();
+		assertEquals(expected, actual);
+	}
+
+	/**
+	 * Test if CloudMidiPlayer sets and returns a column correctly
+	 */
+	@Test
+	public void testSetPlayTimeAndPlaybackBarColumn05() {
+		int expected = 6;
+		player.setPlayTime(expected);
+		int actual = player.playbackBarColumn();
+		assertEquals(expected, actual);
+	}
+
+	/**
+	 * Test if CloudMidiPlayer sets and returns a column correctly
+	 */
+	@Test
+	public void testSetPlayTimeAndPlaybackBarColumn06() {
+		int expected = 100;
+		player.setPlayTime(expected);
+		int actual = player.playbackBarColumn();
+		assertEquals(expected, actual);
+	}
+	
+	/**
+	 * Test if CloudMidiPlayer sets and returns a column correctly
+	 */
+	@Test
+	public void testSetPlayTimeAndPlaybackBarColumn07() {
+		int expected = 500;
+		player.setPlayTime(expected);
+		int actual = player.playbackBarColumn();
+		assertEquals(expected, actual);
+	}
+	
+	/**
+	 * Test if CloudMidiPlayer sets and returns a column correctly
+	 */
+	@Test
+	public void testSetPlayTimeAndPlaybackBarColumn08() {
+		int expected = 1000;
+		player.setPlayTime(expected);
+		int actual = player.playbackBarColumn();
+		assertEquals(expected, actual);
+	}
+
+	/**
+	 * Test if CloudMidiPlayer sets and returns a column correctly
+	 */
+	@Test
+	public void testSetPlayTimeAndPlaybackBarColumn09() {
+		int expected = 10000;
+		player.setPlayTime(expected);
+		int actual = player.playbackBarColumn();
+		assertEquals(expected, actual);
+	}
+
 	
 }
