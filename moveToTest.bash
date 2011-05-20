@@ -17,7 +17,8 @@ tempDir="CloudComposerGroup/CloudComposer"
 `mkdir -p $tempDir`
 `mv $workingDir/*.class $tempDir/.`
 `jar -cvf MidiPlayer.jar $tempDir/*.class | echo`
-`jarsigner MidiPlayer.jar mykey`
+password=$2
+`jarsigner -storepass $password -keypass $password MidiPlayer.jar cloudcomposer`
 `rm -r CloudComposerGroup`
 `mv MidiPlayer.jar $toDir`
 
@@ -33,7 +34,6 @@ workingDir="src/main/resources"
 username="cloudcomposer@publicstaticdroid.com"
 server="ftp.publicstaticdroid.com"
 port="21"
-password=$2
 #`scp -p $port "${toDir}/*" "${username}:cloudcomposer/"`
 
 #files=$toDir/*
