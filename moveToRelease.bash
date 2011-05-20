@@ -39,11 +39,13 @@ toDir="${releaseType}/${release}_${versionNum}"
 # Uses the same login info as the FTP server.
 htfile="${toDir}/.htaccess"
 if [[ ($# -eq 2) && (! -e "${htfile}") ]]; then
-	pwfile="${toDir}/.password"
+	pwfile="${toDir}/.htpasswd"
 	`htpasswd -b -c $pwfile $username $password`
 	`echo "AuthType Basic" >> $htfile`
 	`echo "AuthName \"Password Required\"" >> $htfile`
-	`echo "AuthUserFile .password" >> $htfile`
+	`echo "AuthUserFile /usr/local/$username/.htpasswd" >> $htfile`
+	`echo "AuthGroupFile /dev/null" >> $htfile`
+	`echo "require user $username" >> $htfile`
 fi
 
 # Build Java files into a .jar file and place in the release directory.
