@@ -7,8 +7,6 @@ import static org.junit.Assert.assertTrue;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.Sequence;
 
-import org.junit.Before;
-import org.junit.Test;
 import org.junit.*;
 
 
@@ -140,6 +138,49 @@ public class CloudMidiPlayerTest {
 		assertFalse(player.isPlaying());
 	}
 		
+	/**
+	 * Test if CloudMidiPlayer plays a note correctly or not
+	 * 
+	 * @throws InvalidMidiDataException
+	 */
+	@Test
+	public void testPlayNote01() throws InvalidMidiDataException {
+		player.playNote(CloudMidiPlayer.SequenceInst.DRUM, 0);
+		assertTrue(player.isPlaying());
+	}
+	
+	/**
+	 * Test if CloudMidiPlayer plays a note correctly or not
+	 * 
+	 * @throws InvalidMidiDataException
+	 */
+	@Test
+	public void testPlayNote02() throws InvalidMidiDataException {
+		player.playNote(CloudMidiPlayer.SequenceInst.GUITAR, 0);
+		assertTrue(player.isPlaying());
+	}
+
+	/**
+	 * Test if CloudMidiPlayer plays a note correctly or not
+	 * 
+	 * @throws InvalidMidiDataException
+	 */
+	@Test
+	public void testPlayNote03() throws InvalidMidiDataException {
+		player.playNote(CloudMidiPlayer.SequenceInst.PIANO, 0);
+		assertTrue(player.isPlaying());
+	}
+	
+	/**
+	 * Test if CloudMidiPlayer plays a note correctly or not
+	 * 
+	 * @throws InvalidMidiDataException
+	 */
+	@Test
+	public void testPlayNote04() throws InvalidMidiDataException {
+		assertFalse(player.isPlaying());
+	}
+	
 	/**
 	 * Test if CloudMidiPlayer sets and returns a sequence correctly or not 
 	 * 
