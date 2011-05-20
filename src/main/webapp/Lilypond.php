@@ -21,6 +21,7 @@
  *              CANNOT OPEN FILE: file cannot be open to write
  *              XML SAX NOT SUPPORTED: XML SAX extension not enabled on server
  *              PDF GENERATION FAILED: shell execution for lilypond failed
+ *              CANNOT LOAD TEST FILE: unable to open test xml file
  *
  * PHP version 5
  *
@@ -40,7 +41,7 @@ define("WEBSITE_URL", "http://students.washington.edu/eui/403/");
 /**
  * Directory to save new file (and look up old files)
  */
-define("SAVE_DIRECTORY", "");
+define("SAVE_DIRECTORY", "songs/");
 
 /**
  * File extension type
@@ -51,6 +52,12 @@ define("FILE_EXTENSION", ".ly");
  * POST parameter to pass data to this php file.
  */
 define("DATA_PARAM", "data");
+
+/**
+ * GET parameter. Value is the test XML file to load.
+ * It is also the output filename.
+ */
+define("DATA_PARAM", "testfile");
 
 /**
  * All instruments here. TODO: abstract out along with other files?
@@ -517,20 +524,30 @@ function displayLink($filename)
 // }}}
 // {{{ SAVE SESSION AND DISPLAY LINK
 
-// for debug
-$myFile = "lilytest.xml";
-$fh = fopen($myFile, 'r');
-$data = fread($fh, 10000000);
-fclose($fh);
-// end debug
+$data = $_POST[DATA_PARAM];
+if (isset($_GET[TEST_PARAM])) {
+  $myFile = $_GET[TEST_PARAM];
+  $fh = fopen($myFile, 'r')
+    or die("CANNOT LOAD TEST FILE");
+  $data = fread($fh, 10000000);
+  fclose($fh);
+}
 
-//$data = $_POST[DATA_PARAM];
+// Interpret Data
 $lilydata = interpretData($data);
 
+// Generate Filename
 $filename = generateFileName();
+if (isset($_GET[TEST_PARAM]))
+  $filename = $_GET[TEST_PARAM];
+
+// Save .ly file
 saveFile($lilydata, $filename);
 
+// Generate PDF file from .ly file
 //generatePDF($filename);
+
+// Display the link
 displayLink($filename);
 
 // }}}
