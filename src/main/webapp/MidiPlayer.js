@@ -56,13 +56,13 @@ MidiPlayer.prototype.addToPlayer = function (column, note) {
 	var p = note.pitch;
 
 	applet.playNote(i, p);
-	applet.addNote([i, p, column, column + note.length]);
+	applet.addNote([i, p, column, column + note.noteLength - 1]);
 }
 
 MidiPlayer.prototype.removeFromPlayer = function (column, note) {
 	var i = this.instruments.indexOf(note.instrument);
 	var p = note.pitch;
-	applet.removeNote([i, p, column, column + note.length]);
+	applet.removeNote([i, p, column, column + note.length - 1]);
 }
 
 MidiPlayer.prototype.setSongPosition = function(pos) {
@@ -78,8 +78,7 @@ function updateSongPosition() {
 	var g = document.getElementById('grid');
 	var b = document.getElementsByClassName('highlightbar')[0];
 	var p = applet.currentSongPosition();
-	if (!applet.isPlaying) {
-    //if (p == midiplayer.maxValue || p == midiplayer.notePosition) {
+	if (p == midiplayer.maxValue || p == midiplayer.notePosition) {
 		midiplayer.reset(midiplayer.basePosition);
 		g.scrollLeft = midiplayer.baseScroll;
 		
