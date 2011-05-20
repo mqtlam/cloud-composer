@@ -26,7 +26,7 @@ public class CloudMidiPlayer
 	private Sequence[][] noteSequences;
 	private Sequence song;
 	
-	public String earlySetString; // Stores last error for use by front end.
+	public static String earlySetString; // Stores last error for use by front end.
 	
 	// Set of enum values for the list of instruments Cloud Composer supports.
 	public enum SequenceInst 
@@ -41,6 +41,7 @@ public class CloudMidiPlayer
 	}
 	
 	// Constructs a cloudMidiPlayer with the default BPM.
+	// Sets the earlySetString error message if an exception is caught.
 	public CloudMidiPlayer() 
 	{
 		earlySetString = "";
@@ -63,11 +64,7 @@ public class CloudMidiPlayer
 	public void setTempo(float bpm)
 	{
 		seq.setTempoInBPM(bpm);
-		try {
-			generateNotes();
-		} catch (InvalidMidiDataException e) {
-			earlySetString = e.getMessage();
-		}
+		generateNotes();
 	}
 	
 	// Returns the tempo of the song using the provided BPM.
@@ -76,6 +73,7 @@ public class CloudMidiPlayer
 	}
 	
 	// Plays the sequence previously loaded.
+	// Sets the earlySetString error message if an exception is caught.
 	public void play()
 	{
 		pause();
@@ -88,6 +86,8 @@ public class CloudMidiPlayer
 		
 	}
 	
+	// Plays a note using the provided instrument at the given pitch.
+	// Sets the earlySetString error message if an exception is caught.
 	public void playNote(SequenceInst inst, int pitch) 
 	{
 		pause();
@@ -101,12 +101,18 @@ public class CloudMidiPlayer
 	}
 	
 	// Sets the song to the provided sequence.
-	public void setSequence(Sequence s) throws InvalidMidiDataException 
+	// Sets the earlySetString error message if an exception is caught.
+	public void setSequence(Sequence s)
 	{
 		song = s;
-		seq.setSequence(song);
+		try {
+			seq.setSequence(song);
+		} catch (InvalidMidiDataException e) {
+			earlySetString = e.getMessage();
+		}
 	}
 	
+	// Returns the Sequence for the composition.
 	public Sequence getSequence() {
 		return song;
 	}
@@ -124,10 +130,13 @@ public class CloudMidiPlayer
 		seq.setTickPosition(0);
 	}
 	
+	public boolean isPlaying()	{
+		return seq.isRunning();
+	}
+	
 	// Sets the current place in the song based on a percentage of the song length.
 	public void setPlayTime(int column) 
 	{
-		//long songLength = seq.getTickLength();
 		seq.setTickPosition((long) column);
 	}
 	
@@ -135,21 +144,18 @@ public class CloudMidiPlayer
 	public int playbackBarColumn() 
 	{
 		return (int) seq.getTickPosition();
-		//int currentTick = (int) seq.getTickPosition();
-		//return (int) (currentTick / (ticksPerSecond / 16));
 	}
 	
-	public boolean isPlaying()
-	{
-		return seq.isRunning();
-	}
-	
-	// TODO: Write MIDI file
-	public void writeToFile(String location) throws IOException
+	// Writes the currently composed Midi file to the indicated location.
+	// Sets the earlySetString error message if an exception is caught.
+	public void writeToFile(String location) 
 	{
 		File f = new File(location);
-		if (f.canWrite() && song != null) {
-			MidiSystem.write(song, 0, f);
+		try {
+			if (f.canWrite() && song != null) 
+				MidiSystem.write(song, 0, f);
+		} catch (IOException e) {
+			earlySetString = e.getMessage();
 		} 
 	}
 	
@@ -157,86 +163,109 @@ public class CloudMidiPlayer
 	// startPos and stopPos are in terms of the column locations,
 	// and pitch is also in terms of the row location of the note.
 	// This is done here to enforce a specific format related to our Midi Player.
+	// Sets the earlySetString error message if an exception is caught.
 	public static void addNote(Sequence s, SequenceInst inst, 
 						 int pitch, int startPos, int stopPos) 
-						 throws InvalidMidiDataException 
 	{
-		//int startTick = (int) (startPos * ticksPerSecond / 16);
-		//int stopTick = (int) (stopPos * ticksPerSecond / 16);
-		//while (s.getTracks().length < 5) {
-		//	s.createTrack();
-		//}
 		Track t = s.getTracks()[0];
-		ShortMessage m = new ShortMessage();
 		int realPitch = pitch / SCALE.length * 12 + SCALE[pitch % SCALE.length];
-		//System.out.println(pitch + " " + realPitch);
-		m.setMessage(ShortMessage.NOTE_ON, inst.value, realPitch, 100);
-		t.add(new MidiEvent(m, startPos));//startTick));
+
+		try {
+			ShortMessage m = new ShortMessage();
+			m.setMessage(ShortMessage.NOTE_ON, inst.value, realPitch, 100);
+			t.add(new MidiEvent(m, startPos));
+			
+			ShortMessage m2 = new ShortMessage();
+			m2.setMessage(ShortMessage.NOTE_OFF, inst.value, realPitch, 100);
+			t.add(new MidiEvent(m2, stopPos));
+		} catch (InvalidMidiDataException e) {
+			earlySetString = e.getMessage();
+		}
 		
-		ShortMessage m2 = new ShortMessage();
-		m2.setMessage(ShortMessage.NOTE_OFF, inst.value, realPitch, 100);
-		t.add(new MidiEvent(m2, stopPos));//stopTick));
-		
-		//System.out.println(inst.value + " " + pitch + " " + realPitch + " " + startPos + " " + stopPos + " ");
 	}
 	
-	public static Sequence basicSequence() throws InvalidMidiDataException 
+	// Returns a basic Sequence with the instruments defined for use
+	// with converting a NoteGrid into a fully composed song.
+	// Sets the earlySetString error message if an exception is caught.
+	public static Sequence basicSequence() 
 	{
-		Sequence s = new Sequence(Sequence.PPQ, (int) TICKSPERFRAME);
-		s.createTrack();
-		for (SequenceInst inst : SequenceInst.values())
-			setInstrument(s, inst);
+		Sequence s = null;
+		try {
+			s = new Sequence(Sequence.PPQ, (int) TICKSPERFRAME);
+			s.createTrack();
+			for (SequenceInst inst : SequenceInst.values())
+				setInstrument(s, inst);
+		} catch (InvalidMidiDataException e) {
+			earlySetString = e.getMessage();
+		}
+		
 		return s;
 	}
 	
-	public int getLastColumn()
-	{
-		return (int) song.getTracks()[0].ticks();
-	}
+	//public int getLastColumn()
+	//{
+	//	return (int) song.getTracks()[0].ticks();
+	//}  This should not be used.
 	
 	
 // PRIVATE METHODS
 	
-	private static void setInstrument(Sequence s, SequenceInst inst) throws InvalidMidiDataException
+	// Sets an Instrument's channel in a Sequence to use the proper instrument.
+	// Sets the earlySetString error message if an exception is caught.
+	private static void setInstrument(Sequence s, SequenceInst inst)
 	{
-		ShortMessage m = new ShortMessage();
-		m.setMessage(ShortMessage.PROGRAM_CHANGE, inst.value, INSTRUMENTS[inst.value], 0);
-		s.getTracks()[0].add(new MidiEvent(m, 0));//startTick));
-	}
-	
-	// Prepares the Midi System for use.
-	private void loadMidiSystem() throws Exception 
-	{
-		seq = MidiSystem.getSequencer();
-		synth = MidiSystem.getSynthesizer();
-		
-		if (seq == null) {
-		    throw new Exception("Sequencer device not supported.");
-		} else if (synth == null) {
-			throw new Exception("Synthesizer device not supported.");
-		} else {
-		    // Acquire resources and make operational.
-		    seq.open();
-		    synth.open();
+		try {
+			ShortMessage m = new ShortMessage();
+			m.setMessage(ShortMessage.PROGRAM_CHANGE, inst.value, INSTRUMENTS[inst.value], 0);
+			s.getTracks()[0].add(new MidiEvent(m, 0));
+		} catch (InvalidMidiDataException e) {
+			earlySetString = e.getMessage();
 		}
 	}
 	
-	// Generates the Sequences required for single note playback.
-	private void generateNotes() throws InvalidMidiDataException 
+	// Prepares the Midi System for use.
+	// Sets the earlySetString error message if an exception is caught.
+	private void loadMidiSystem()
 	{
-		//int ticksPerFrame = getTicksPerFrame();
+		try {
+			seq = MidiSystem.getSequencer();
+			synth = MidiSystem.getSynthesizer();
+			
+			if (seq == null) {
+				earlySetString = "Sequencer device not supported.";
+				return;
+			} else if (synth == null) {
+				earlySetString = "Synthesizer device not supported.";
+				return;
+			} else {
+			    // Acquire resources and make operational.
+			    seq.open();
+			    synth.open();
+			}
+		} catch (MidiUnavailableException e) {
+			earlySetString = e.getMessage();
+		}
+		
+	}
+	
+	// Generates the Sequences required for single note playback.
+	// Sets the earlySetString error message if an exception is caught and returns.
+	private void generateNotes() 
+	{
 		for (SequenceInst inst : SequenceInst.values()) {
 			for (int pitch = 0; pitch < SCALE.length * OCTAVES; pitch++) {
-				Sequence s = new Sequence(Sequence.PPQ, (int) TICKSPERFRAME);
-				s.createTrack();
-				setInstrument(s, inst);
-//				while (s.getTracks().length < SequenceInst.values().length)
-//					s.createTrack();
-//				Track t = s.getTracks()[inst.value];
+				Sequence s;
+				try {
+					s = new Sequence(Sequence.PPQ, (int) TICKSPERFRAME);
+					s.createTrack();
+					setInstrument(s, inst);
+					addNote(s, inst, pitch, 0, (int) TICKSPERFRAME);
+					noteSequences[inst.value][pitch] = s;
+				} catch (InvalidMidiDataException e) {
+					earlySetString = e.getMessage();
+					return;
+				}
 				
-				//System.out.println(pitch + " " + inst.name());
-				addNote(s, inst, pitch, 0, (int) TICKSPERFRAME);
-				noteSequences[inst.value][pitch] = s;
 			}
 		}
 		
