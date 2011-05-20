@@ -43,7 +43,7 @@ if [[ ($# -eq 2) && (! -e "${htfile}") ]]; then
 	`htpasswd -b -c $pwfile $username $password`
 	`echo "AuthType Basic" >> $htfile`
 	`echo "AuthName \"Password Required\"" >> $htfile`
-	`echo "AuthUserFile /usr/local/$username/.htpasswd" >> $htfile`
+	`echo "AuthUserFile .htpasswd" >> $htfile`
 	`echo "AuthGroupFile /dev/null" >> $htfile`
 	`echo "require user $username" >> $htfile`
 fi
@@ -88,7 +88,7 @@ mkdir songs
 lcd $toDir
 cd $releaseType
 put .htaccess
-put .password
+put .htpasswd
 mput *
 mput images/*
 mput include/*
