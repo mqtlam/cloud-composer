@@ -416,37 +416,36 @@ NoteGrid.prototype.setEndingNote = function(evt, instrument) {
 		var note = new Note(this.dragNote[3]-this.dragNote[2] + 1, this.dragNote[0], this.dragNote[1]);	
 		
 		if (this.dragNote[4]) {
-		
-			// was moving, but came back to original spot, thus remove the note
-			if (this.dragNote[5] == column && this.dragNote[4] == pitch) {	
-				endSquare = this.getSquare(this.dragNote[3], this.dragNote[1]);
+			
+			// if there is no conflict
+			if (this.noteConflict()) {
+				// revert all image, not remove
+				var endSquare = this.getSquare(this.dragNote[3], this.dragNote[1]);
 				endSquare.className = endSquare.className.replace(" "+this.dragNote[0].instrumentName+"Extendable", "");
 				endSquare = undefined;
 				
 				this.clearBackImage();
-				
-			// moved the note to somewhere else, thus add the note there
-			} else {
 			
-				// if there is no conflict
-				if (!this.noteConflict()) {
-					this.notes.addNote(this.dragNote[2], note);
-					this.java.addToPlayer(this.dragNote[2], note);
-					
-					endSquare = this.getSquare(this.dragNote[3], this.dragNote[1]);
-					this.dragNote[4] = undefined;
-					this.dragNote[5] = undefined;
-					
-				// if there's a conflict
-				} else {
-					// revert all image
-					var endSquare = this.getSquare(this.dragNote[3], this.dragNote[1]);
-					endSquare.className = endSquare.className.replace(" "+this.dragNote[0].instrumentName+"Extendable", "");
-					endSquare = undefined;
-					
-					this.clearBackImage();
-				}
+				// move back to original spot
+				this.dragNote[3] = this.dragNote[3] - this.dragNote[2] + this.dragNote[5];
+				this.dragNote[2] = this.dragNote[5];
+				this.dragNote[1] = this.dragNote[4];
+				
+				this.setIntermediateNotes();
+				mainSquare = this.getSquare(this.dragNote[2], this.dragNote[1]);
+				mainSquare.className = mainSquare.className + " " + this.dragNote[0].instrumentName+"Main";
+				
+				endSquare = this.getSquare(this.dragNote[3], this.dragNote[1]);
+				endSquare.className = endSquare.className + " "+this.dragNote[0].instrumentName+"Extendable";
 			}
+			note = new Note(this.dragNote[3]-this.dragNote[2] + 1, this.dragNote[0], this.dragNote[1]);	
+			
+			this.notes.addNote(this.dragNote[2], note);
+			this.java.addToPlayer(this.dragNote[2], note);
+			
+			endSquare = this.getSquare(this.dragNote[3], this.dragNote[1]);
+			this.dragNote[4] = undefined;
+			this.dragNote[5] = undefined;
 			
 		} else {	
 			// has same pitch & has acceptable length
@@ -531,7 +530,7 @@ NoteGrid.prototype.noteConflict = function() {
 			var classNames = this.getSquare(i, this.dragNote[1]).classList;
 			var checker = 0;
 			for (var c=0; c<classNames.length; c++) {
-				if (classNames[c].indexOf("Main") >= 0 || classNames[c].indexOf("Lengthy") >= 0) {
+				if (classNames[c].indexOf(this.dragNote[0].instrumentName+"Main") >= 0 || classNames[c].indexOf(this.dragNote[0].instrumentName+"Lengthy") >= 0) {
 					checker++;
 				}
 			}
