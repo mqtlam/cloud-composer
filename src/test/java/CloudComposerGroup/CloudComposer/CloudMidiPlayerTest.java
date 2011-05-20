@@ -145,8 +145,8 @@ public class CloudMidiPlayerTest {
 	 */
 	@Test
 	public void testPlayNote02() throws InvalidMidiDataException {
-		c.player.playNote(CloudMidiPlayer.SequenceInst.GUITAR, 0);
-		assertTrue(c.player.isPlaying());
+		player.playNote(CloudMidiPlayer.SequenceInst.GUITAR, 0);
+		assertTrue(player.isPlaying());
 	}
 
 	/**
@@ -156,8 +156,8 @@ public class CloudMidiPlayerTest {
 	 */
 	@Test
 	public void testPlayNote03() throws InvalidMidiDataException {
-		c.player.playNote(CloudMidiPlayer.SequenceInst.PIANO, 0);
-		assertTrue(c.player.isPlaying());
+		player.playNote(CloudMidiPlayer.SequenceInst.PIANO, 0);
+		assertTrue(player.isPlaying());
 	}
 	
 	/**
@@ -167,8 +167,8 @@ public class CloudMidiPlayerTest {
 	 */
 	@Test
 	public void testPlayNote04() throws InvalidMidiDataException {
-		c.player.playNote(CloudMidiPlayer.SequenceInst.DRUM, 2);
-		assertTrue(c.player.isPlaying());
+		player.playNote(CloudMidiPlayer.SequenceInst.DRUM, 2);
+		assertTrue(player.isPlaying());
 	}
 	
 	/**
@@ -178,8 +178,8 @@ public class CloudMidiPlayerTest {
 	 */
 	@Test
 	public void testPlayNote05() throws InvalidMidiDataException {
-		c.player.playNote(CloudMidiPlayer.SequenceInst.GUITAR, 5);
-		assertTrue(c.player.isPlaying());
+		player.playNote(CloudMidiPlayer.SequenceInst.GUITAR, 5);
+		assertTrue(player.isPlaying());
 	}
 
 	/**
@@ -189,8 +189,8 @@ public class CloudMidiPlayerTest {
 	 */
 	@Test
 	public void testPlayNote06() throws InvalidMidiDataException {
-		c.player.playNote(CloudMidiPlayer.SequenceInst.PIANO, 9);
-		assertTrue(c.player.isPlaying());
+		player.playNote(CloudMidiPlayer.SequenceInst.PIANO, 9);
+		assertTrue(player.isPlaying());
 	}
 	
 	/**
@@ -200,7 +200,7 @@ public class CloudMidiPlayerTest {
 	 */
 	@Test
 	public void testPlayNote07() throws InvalidMidiDataException {
-		assertFalse(c.player.isPlaying());
+		assertFalse(player.isPlaying());
 	}
 	
 	/**
