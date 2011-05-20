@@ -118,7 +118,7 @@ function startElemHandler($parser, $name, $attribs) {
     global $currentInstrument;
 
     if (strcasecmp($name, COL_NAME) == 0) {
-        // <c id="num"> detected
+        // <column id="num"> detected
         $currentColumn = $attribs["id"];
     }
 
@@ -137,7 +137,7 @@ function startElemHandler($parser, $name, $attribs) {
  */
 function endElemHandler($parser, $name) {
     if (strcasecmp($name, COL_NAME) == 0) {
-        // </c> detected
+        // </column> detected
     }
     foreach ($instruments as $instr => $instrName)
     {
@@ -171,64 +171,25 @@ function characterData($parser, $data) {
       return;
     }
     
+    // This describes a state that we need to fill in rests before proceeding.
     if ($rhythmBuffer < $currentColumn)
     {
-      $restDuration = $currentColumn - $rhythmBuffer;
+      $nextBar = $rhythmBuffer;
       
-      
-      // handles durations longer than whole note
-      $remainingDuration = $restDuration;
-      while ($remainingDuration > 0)
-      {
-
-        // consider the current duration as whole note tops
-        $currentDuration = min(SIXTEENTH_NOTES_PER_MEASURE, $remainingDuration);
-
-        // if any remaining duration left after the (possible) whole note,
-        // use it up in the next iteration of the loop
-        $remainingDuration -= $currentDuration;
-
-        $numQuarterNotes = (int) ($currentDuration / 4);
-        $remainingSixteenthNotes = $currentDuration % 4;
-
-        // {{{ for very specific notation cases
-        if ($numQuarterNotes == 1 && $remainingSixteenthNotes == 2)
-        {
-          // write out the dotted quarter note
-          $newDataPerInstrument[$currentInstrument] .= "r4.";
-        }
-        else
-        {
-          // }}}
-          // {{{ for general notation case
-
-          if ($numQuarterNotes == 1)
-            $newDataPerInstrument[$currentInstrument] .= " r4 ";
-          else if ($numQuarterNotes == 2)
-            $newDataPerInstrument[$currentInstrument] .= " r2 ";
-          else if ($numQuarterNotes == 3)
-            $newDataPerInstrument[$currentInstrument] .= " r2. ";
-          else if ($numQuarterNotes == 4)
-            $newDataPerInstrument[$currentInstrument] .= " r1 ";
-
-          if ($remainingSixteenthNotes > 0 && $numQuarterNotes > 0)
-            $newDataPerInstrument[$currentInstrument] .= " ";
-
-          if ($remainingSixteenthNotes == 1)
-            $newDataPerInstrument[$currentInstrument] .= " r16 ";
-          else if ($remainingSixteenthNotes == 2)
-            $newDataPerInstrument[$currentInstrument] .= " r8 ";
-          else if ($remainingSixteenthNotes == 3)
-            $newDataPerInstrument[$currentInstrument] .= " r8. ";
-
-          // }}}
-        }
+      if ($rhythmBuffer % SIXTEENTH_NOTES_PER_MEASURE != 0)
+        $nextBar = $rhythmBuffer + (SIXTEENTH_NOTES_PER_MEASURE - $rhythmBuffer % SIXTEENTH_NOTES_PER_MEASURE);
+            
+      // fills in rest up to the measure if one exists
+      if ($currentColumn >= $nextBar) {
+        $restDuration = SIXTEENTH_NOTES_PER_MEASURE - $rhythmBuffer % SIXTEENTH_NOTES_PER_MEASURE;
+        restHelper($restDuration);
         
-        //if ($remainingDuration > 0)
-          //$newDataPerInstrument[$currentInstrument] .= " ";
-        
+        $restDuration = $currentColumn - $nextBar;
+        restHelper($restDuration);
+      } else {
+        $restDuration = $currentColumn - $rhythmBuffer;
+        restHelper($restDuration);
       }
-      
       
       $rhythmBuffer = $currentColumn;
     }
@@ -326,6 +287,65 @@ function characterData($parser, $data) {
     // }}}
 }
 
+function restHelper($restDuration)
+{
+    global $newDataPerInstrument;
+    global $currentInstrument;
+
+    // handles durations longer than whole note
+    $remainingDuration = $restDuration;
+    while ($remainingDuration > 0)
+    {
+
+      // consider the current duration as whole note tops
+      $currentDuration = min(SIXTEENTH_NOTES_PER_MEASURE, $remainingDuration);
+
+      // if any remaining duration left after the (possible) whole note,
+      // use it up in the next iteration of the loop
+      $remainingDuration -= $currentDuration;
+
+      $numQuarterNotes = (int) ($currentDuration / 4);
+      $remainingSixteenthNotes = $currentDuration % 4;
+
+      // {{{ for very specific notation cases
+      if ($numQuarterNotes == 1 && $remainingSixteenthNotes == 2)
+      {
+        // write out the dotted quarter note
+        $newDataPerInstrument[$currentInstrument] .= "r4.";
+      }
+      else
+      {
+        // }}}
+        // {{{ for general notation case
+
+        if ($numQuarterNotes == 1)
+          $newDataPerInstrument[$currentInstrument] .= " r4 ";
+        else if ($numQuarterNotes == 2)
+          $newDataPerInstrument[$currentInstrument] .= " r2 ";
+        else if ($numQuarterNotes == 3)
+          $newDataPerInstrument[$currentInstrument] .= " r2. ";
+        else if ($numQuarterNotes == 4)
+          $newDataPerInstrument[$currentInstrument] .= " r1 ";
+
+        if ($remainingSixteenthNotes > 0 && $numQuarterNotes > 0)
+          $newDataPerInstrument[$currentInstrument] .= " ";
+
+        if ($remainingSixteenthNotes == 1)
+          $newDataPerInstrument[$currentInstrument] .= " r16 ";
+        else if ($remainingSixteenthNotes == 2)
+          $newDataPerInstrument[$currentInstrument] .= " r8 ";
+        else if ($remainingSixteenthNotes == 3)
+          $newDataPerInstrument[$currentInstrument] .= " r8. ";
+
+        // }}}
+      }
+      
+      //if ($remainingDuration > 0)
+        //$newDataPerInstrument[$currentInstrument] .= " ";
+      
+    }
+}
+
 // }}}
 // {{{ functions
 
@@ -335,7 +355,8 @@ function characterData($parser, $data) {
  *
  * @return file name
  */
-function generateFileName() {
+function generateFileName()
+{
     // {{{ get existing file names
 
     $existingFileNames = array();
@@ -442,6 +463,9 @@ function generatePDF($filename)
   $output = shell_exec('lilypond ' + $filename)
     or die("PDF GENERATION FAILED");
 
+  // check if generated file exists
+  
+  
   //echo '<pre>'.$output.'</pre>';
 }
 
