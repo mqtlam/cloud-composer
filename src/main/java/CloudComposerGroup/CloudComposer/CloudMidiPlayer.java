@@ -159,6 +159,14 @@ public class CloudMidiPlayer
 	}
 	
 	/**
+	 * @return Whether or not Midi is being played.
+	 */
+	public boolean isPlaying() 
+	{
+		return seq.isRunning();
+	}
+	
+	/**
 	 *  Sets the current place in the song based on a percentage of the song length.
 	 * @param column, the location in the song to start playing from
 	 */
