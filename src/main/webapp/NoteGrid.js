@@ -10,6 +10,7 @@ function NoteGrid(id, cols, instr, midiplayer) {
 	this.dragNote;
 	this.tempNote;
 	this.adjuster;
+	this.movedOut;
 	
 	
 	// constants for the grid	
@@ -374,7 +375,7 @@ NoteGrid.prototype.setIntermediateNote = function(evt, instrument) {
 			
 		} else if (this.dragNote[4]) {
 			// moving the note!!
-
+			this.movedOut = true;
 			// needs to test for conflict here
 			if (true) {
 				// Erase the old square image
@@ -415,7 +416,7 @@ NoteGrid.prototype.setEndingNote = function(evt, instrument) {
 
 		var note = new Note(this.dragNote[3]-this.dragNote[2] + 1, this.dragNote[0], this.dragNote[1]);	
 		
-		if (this.dragNote[4]) {
+		if (this.dragNote[4] && this.movedOut) {
 			
 			// if there is no conflict
 			if (this.noteConflict()) {
@@ -447,6 +448,13 @@ NoteGrid.prototype.setEndingNote = function(evt, instrument) {
 			this.dragNote[4] = undefined;
 			this.dragNote[5] = undefined;
 			
+			this.movedOut = false;
+		} else if (this.dragNote[4]) {
+			var endSquare = this.getSquare(this.dragNote[3], this.dragNote[1]);
+			endSquare.className = endSquare.className.replace(" "+this.dragNote[0].instrumentName+"Extendable", "");
+			endSquare = undefined;
+			
+			this.clearBackImage();
 		} else {	
 			// has same pitch & has acceptable length
 			// move always updates this.dragNote[3] before up event
