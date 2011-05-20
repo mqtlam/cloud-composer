@@ -9,6 +9,7 @@ import javax.sound.midi.Sequence;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.*;
 
 
 public class CloudMidiPlayerTest {
