@@ -71,7 +71,7 @@ function mouseClick(event) {
 		sendNoteGrid(notegrid, "SaveSession.php");
 	} else if (current.id == "getPdfButton") {
 		var notegrid = grid.serialize();
-		sendNoteGrid(notegrid, "LilyPond.php");
+		sendNoteGrid(notegrid, "Lilypond.php");
 	}
 	
 
