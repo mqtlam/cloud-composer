@@ -66,7 +66,7 @@ define("DATA_PARAM", "data");
  * GET parameter. Value is the test XML file to load.
  * It is also the output filename.
  */
-define("DATA_PARAM", "testfile");
+define("TEST_PARAM", "testfile");
 
 /**
  * All instruments here. TODO: abstract out along with other files?
