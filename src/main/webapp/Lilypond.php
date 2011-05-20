@@ -344,7 +344,7 @@ function restHelper($restDuration)
       if ($numQuarterNotes == 1 && $remainingSixteenthNotes == 2)
       {
         // write out the dotted quarter note
-        $newDataPerInstrument[$currentInstrument] .= "r4.";
+        $newDataPerInstrument[$currentInstrument] .= " r4. ";
       }
       else
       {
