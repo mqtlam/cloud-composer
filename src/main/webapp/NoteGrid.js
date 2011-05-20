@@ -305,6 +305,7 @@ NoteGrid.prototype.changeNoteLength = function(square, instrument) {
 		//
 		var note = new Note(column-mainColumn+1, instrument, pitch);
 		var removedNote = this.notes.removeNote(mainColumn, note);
+		this.java.removeFromPlayer(mainColumn, removedNote);
 	}
 }
 
