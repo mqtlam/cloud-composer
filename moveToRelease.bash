@@ -13,6 +13,9 @@ fi
 username="cloudcomposer@publicstaticdroid.com"
 server="ftp.publicstaticdroid.com"
 port="21"
+baseDir="/."
+
+password=$2
 
 # Change release type if --release is provided.
 releaseType="test"
@@ -32,6 +35,17 @@ toDir="${releaseType}/${release}_${versionNum}"
 `mkdir "${toDir}/include"`
 `mkdir "${toDir}/images"`
 
+# Creates the .htaccess file at places it at the base directory.
+# Uses the same login info as the FTP server.
+htfile="${toDir}/.htaccess"
+if [[ ($# -eq 2) && (! -e "${htfile}") ]]; then
+	pwfile="${toDir}/.password"
+	`htpasswd -b -c $pwfile $username $password`
+	`echo "AuthType Basic" >> $htfile`
+	`echo "AuthName \"Password Required\"" >> $htfile`
+	`echo "AuthUserFile .password" >> $htfile`
+fi
+
 # Build Java files into a .jar file and place in the release directory.
 workingDir="src/main/java/CloudComposerGroup/CloudComposer"
 tempDir="CloudComposerGroup/CloudComposer"
@@ -39,7 +53,6 @@ tempDir="CloudComposerGroup/CloudComposer"
 `mkdir -p $tempDir`
 `mv $workingDir/*.class $tempDir/.`
 `jar -cvf MidiPlayer.jar $tempDir/*.class | echo`
-password=$2
 `jarsigner -storepass $password -keypass $password MidiPlayer.jar cloudcomposer | echo`
 `rm -r $tempDir`
 `mv MidiPlayer.jar $toDir`
@@ -63,7 +76,7 @@ quote PASS $password
 binary
 
 mkdir test
-cd $releaseType
+cd $baseDir/$releaseType
 mkdir include
 mkdir images
 mkdir lib
@@ -72,6 +85,8 @@ mkdir songs
 
 lcd $toDir
 cd $releaseType
+put .htaccess
+put .password
 mput *
 mput images/*
 mput include/*
