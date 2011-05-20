@@ -1,5 +1,6 @@
 import CloudComposerGroup.CloudComposer.*;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -211,5 +212,37 @@ public class CloudAppletControllerTest {
 		assertFalse(c.grid.contains(new Note(15, 3, 9), 6));
 	}
 
+	/**
+	 * Test if CloudAppletController returns a list of strings of instruments correctly or not
+	 */
+	@SuppressWarnings("deprecation")
+	@Test
+	public void testGetInstrument01() {
+		String[] expected = {"PIANO", "GUITAR", "DRUM", "TRUMPET", "VIOLIN"};
+		String[] actual = c.getInstruments();
+		assertEquals(expected, actual);
+	}
+	
+	/**
+	 * Test if CloudAppletController returns a list of strings of instruments correctly or not
+	 */
+	@Test
+	public void testGetInstrument02() {
+		String[] expected = {"", "", "", "", ""};
+		String[] actual = c.getInstruments();
+		boolean result = expected.equals(actual);
+		assertFalse(result);
+	}
+	
+	/**
+	 * Test if CloudAppletController returns a list of strings of instruments correctly or not
+	 */
+	@Test
+	public void testGetInstrument03() {
+		String[] expected = {"PIANO", "GUITAR", "DRUMMM", "TRUMPET", "VIOLIN"};
+		String[] actual = c.getInstruments();
+		boolean result = expected.equals(actual);
+		assertFalse(result);
+	}
 
 }
