@@ -17,6 +17,7 @@ tempDir="CloudComposerGroup/CloudComposer"
 `mkdir -p $tempDir`
 `mv $workingDir/*.class $tempDir/.`
 `jar -cvf MidiPlayer.jar $tempDir/*.class | echo`
+`jarsigner MidiPlayer.jar mykey`
 `rm -r CloudComposerGroup`
 `mv MidiPlayer.jar $toDir`
 

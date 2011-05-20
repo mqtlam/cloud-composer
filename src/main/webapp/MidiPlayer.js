@@ -62,7 +62,7 @@ MidiPlayer.prototype.addToPlayer = function (column, note) {
 MidiPlayer.prototype.removeFromPlayer = function (column, note) {
 	var i = this.instruments.indexOf(note.instrument);
 	var p = note.pitch;
-	applet.removeNote([i, p, column, column + note.length - 1]);
+	applet.removeNote([i, p, column, column + note.noteLength - 1]);
 }
 
 MidiPlayer.prototype.setSongPosition = function(pos) {
