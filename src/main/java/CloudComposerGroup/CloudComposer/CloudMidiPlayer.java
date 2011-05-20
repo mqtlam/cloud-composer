@@ -190,6 +190,11 @@ public class CloudMidiPlayer
 		return s;
 	}
 	
+	public int getLastColumn()
+	{
+		return (int) song.getTracks()[0].ticks();
+	}
+	
 	
 // PRIVATE METHODS
 	
