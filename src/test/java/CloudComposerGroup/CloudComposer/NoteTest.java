@@ -1,7 +1,6 @@
 /**
  * Unit test for CloudComposerGroup.Note class!
  */
-import junit.framework.TestCase;
 import org.junit.Test;
 import org.junit.Before;
 
@@ -11,7 +10,7 @@ import static org.junit.matchers.JUnitMatchers.*;
 import CloudComposerGroup.CloudComposer.*;
 
 
-public class NoteTest extends TestCase {
+public class NoteTest {
 
 	/** Note objects **/
 	private Note n1;
