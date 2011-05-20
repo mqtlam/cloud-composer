@@ -2,6 +2,7 @@ package CloudComposerGroup.CloudComposer;
 
 
 import java.io.File;
+import java.io.IOException;
 
 import javax.sound.midi.*;
 
@@ -97,12 +98,12 @@ public class CloudMidiPlayer
 	}
 	
 	// Sets the song to the provided sequence and plays the it.
-	public void playSong(Sequence s) throws InvalidMidiDataException 
-	{
-		pause();
-		setSequence(s);
-		play();
-	}
+	//public void playSong(Sequence s) throws InvalidMidiDataException 
+	//{
+	//	pause();
+	//	setSequence(s);
+	//	play();
+	//}
 	
 	// Sets the song to the provided sequence.
 	public void setSequence(Sequence s) throws InvalidMidiDataException 
@@ -149,9 +150,12 @@ public class CloudMidiPlayer
 	}
 	
 	// TODO: Write MIDI file
-	public void writeToFile(String location)
+	public void writeToFile(String location) throws IOException
 	{
-		
+		File f = new File(location);
+		if (f.canWrite() && song != null) {
+			MidiSystem.write(song, 0, f);
+		} 
 	}
 	
 	// Adds a note to the sequence provided with the provided details.

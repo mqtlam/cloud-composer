@@ -2,6 +2,7 @@ package CloudComposerGroup.CloudComposer;
 
 
 import java.applet.Applet;
+import java.io.IOException;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.Sequence;
@@ -75,11 +76,9 @@ public class CloudAppletController extends Applet { //implements ActionListener 
 		{
 			changed = false;
 			Sequence s = sequencer.getSequence();
-			player.playSong(s);
-		} else
-		{
-			player.play();
+			player.setSequence(s);
 		}
+			player.play();
 	}
 	
 	// Plays the note indicated by the instrument and the pitch.
@@ -101,9 +100,15 @@ public class CloudAppletController extends Applet { //implements ActionListener 
 	}
 	
 	// TODO: Download MIDI file
-	public void download(String location) 
+	public void download(String location) throws InvalidMidiDataException, IOException 
 	{
-		
+		if (changed)
+		{
+			changed = false;
+			Sequence s = sequencer.getSequence();
+			player.setSequence(s);
+		}
+		player.writeToFile(location);
 	}
 	
 	// Sets the current position of the song in the player.
@@ -131,7 +136,6 @@ public class CloudAppletController extends Applet { //implements ActionListener 
 	public boolean isPlaying() {
 		return player.isPlaying();
 	}
-	
 	
 	
 	/*@Override
