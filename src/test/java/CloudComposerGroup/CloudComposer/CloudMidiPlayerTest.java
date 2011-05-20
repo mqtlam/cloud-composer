@@ -9,6 +9,7 @@ import CloudComposerGroup.CloudComposer.*;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.Sequence;
 
+import junit.framework.TestCase;
 
 public class CloudMidiPlayerTest extends TestCase {
 
@@ -23,6 +24,19 @@ public class CloudMidiPlayerTest extends TestCase {
 	@Before
 	public void setUp() throws Exception {
 		player = new CloudMidiPlayer();
+		player.setSequence(CloudMidiPlayer.basicSequence());
+	}
+	
+	/**
+	 * Helper method to place notes needed for successful testing.
+	 * @param column, the starting position of the note
+	 */
+	private void placeNote(int column) {
+		Sequence seq = player.getSequence();
+		CloudMidiPlayer.SequenceInst inst = player.getInstruments()[0];
+		int pitch = 0;
+		int stopPos = column + 4;
+		CloudMidiPlayer.addNote(seq, inst, pitch, column, stopPos);
 	}
 
 	/**
@@ -404,6 +418,7 @@ public class CloudMidiPlayerTest extends TestCase {
 	@Test
 	public void testSetPlayTimeAndPlaybackBarColumn01() {
 		int expected = 0;
+		placeNote(expected);
 		player.setPlayTime(expected);
 		int actual = player.playbackBarColumn();
 		assertEquals(expected, actual);
@@ -415,6 +430,7 @@ public class CloudMidiPlayerTest extends TestCase {
 	@Test
 	public void testSetPlayTimeAndPlaybackBarColumn02() {
 		int expected = 1;
+		placeNote(expected);
 		player.setPlayTime(expected);
 		int actual = player.playbackBarColumn();
 		assertEquals(expected, actual);
@@ -426,6 +442,7 @@ public class CloudMidiPlayerTest extends TestCase {
 	@Test
 	public void testSetPlayTimeAndPlaybackBarColumn03() {
 		int expected = 2;
+		placeNote(expected);
 		player.setPlayTime(expected);
 		int actual = player.playbackBarColumn();
 		assertEquals(expected, actual);
@@ -437,6 +454,7 @@ public class CloudMidiPlayerTest extends TestCase {
 	@Test
 	public void testSetPlayTimeAndPlaybackBarColumn04() {
 		int expected = 5;
+		placeNote(expected);
 		player.setPlayTime(expected);
 		int actual = player.playbackBarColumn();
 		assertEquals(expected, actual);
@@ -448,6 +466,7 @@ public class CloudMidiPlayerTest extends TestCase {
 	@Test
 	public void testSetPlayTimeAndPlaybackBarColumn05() {
 		int expected = 6;
+		placeNote(expected);
 		player.setPlayTime(expected);
 		int actual = player.playbackBarColumn();
 		assertEquals(expected, actual);
@@ -459,6 +478,7 @@ public class CloudMidiPlayerTest extends TestCase {
 	@Test
 	public void testSetPlayTimeAndPlaybackBarColumn06() {
 		int expected = 100;
+		placeNote(expected);
 		player.setPlayTime(expected);
 		int actual = player.playbackBarColumn();
 		assertEquals(expected, actual);
@@ -470,6 +490,7 @@ public class CloudMidiPlayerTest extends TestCase {
 	@Test
 	public void testSetPlayTimeAndPlaybackBarColumn07() {
 		int expected = 500;
+		placeNote(expected);
 		player.setPlayTime(expected);
 		int actual = player.playbackBarColumn();
 		assertEquals(expected, actual);
@@ -481,6 +502,7 @@ public class CloudMidiPlayerTest extends TestCase {
 	@Test
 	public void testSetPlayTimeAndPlaybackBarColumn08() {
 		int expected = 1000;
+		placeNote(expected);
 		player.setPlayTime(expected);
 		int actual = player.playbackBarColumn();
 		assertEquals(expected, actual);
@@ -492,6 +514,7 @@ public class CloudMidiPlayerTest extends TestCase {
 	@Test
 	public void testSetPlayTimeAndPlaybackBarColumn09() {
 		int expected = 10000;
+		placeNote(expected);
 		player.setPlayTime(expected);
 		int actual = player.playbackBarColumn();
 		assertEquals(expected, actual);
