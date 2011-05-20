@@ -8,7 +8,7 @@ function MidiPlayer(inst, num) {
 	this.positionTracker = 1;
 	this.basePosition = 0;
 	
-	createTempoSlider(80);
+	createTempoSlider(120);
 	createPlayerSlider(0);
 }
 
@@ -103,12 +103,11 @@ function createTempoSlider(initialValue) {
 	$("#tempo").slider({
 		// Initializing values
 		animate: false,
-		step: 10,
+		step: 1,
 		min: 50,
 		max: 200,
 		value: initialValue,
 		orientation: 'horizontal',
-		
 		
 		// when value is changed
 		change: function(event, ui){
@@ -139,4 +138,6 @@ function update_bpmValueOnPage(){
 	var value = $('#tempo').slider('option', 'value');
 	// set the value on the page
 	bpm.innerHTML = "BPM = " + value;
+	// update bpm of midiplayer
+	applet.setTempo(value);
 }
