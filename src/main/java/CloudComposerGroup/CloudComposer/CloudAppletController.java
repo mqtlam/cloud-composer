@@ -11,7 +11,7 @@ import javax.sound.midi.Sequence;
 //This file is the applet used to interact between the UI,
 //the Java model of the grid, the NoteGrid to MIDI Sequence converter
 //and the Midi Player itself.
-public class CloudAppletController extends Applet { //implements ActionListener {
+public class CloudAppletController extends Applet { 
 
 	private static final long serialVersionUID = 1L;
 	public CloudMidiPlayer player;
@@ -67,6 +67,7 @@ public class CloudAppletController extends Applet { //implements ActionListener 
 	// Checks if the song has changed since it last played.
 	// If so, it remakes the song and then plays.  Otherwise, it plays
 	// what it currently has loaded.
+	// Throws an error if the new Sequence data is invalid.
 	public void play() throws InvalidMidiDataException
 	{
 		updateSequence();
@@ -74,6 +75,7 @@ public class CloudAppletController extends Applet { //implements ActionListener 
 	}
 	
 	// Plays the note indicated by the instrument and the pitch.
+	// Throws an error if somehow the Midi data is invalid.
 	public void playNote(int instrument, int pitch) throws InvalidMidiDataException 
 	{
 		player.playNote(player.getInstruments()[instrument], pitch);
@@ -92,6 +94,8 @@ public class CloudAppletController extends Applet { //implements ActionListener 
 	}
 	
 	// Updates the sequence and then tells the Midiplayer to write the Midi file.
+	// Throws an exception if our newly composed Sequence is invalid, or
+	// if there is a writing exception.
 	public void download(String location) throws InvalidMidiDataException, IOException 
 	{
 		updateSequence();
@@ -111,6 +115,7 @@ public class CloudAppletController extends Applet { //implements ActionListener 
 	}
 	
 	// Sets the tempo to the provided BPM.
+	// Throws an exception if the BPM is somehow invalid.
 	public void setTempo(float bpm) throws InvalidMidiDataException
 	{
 		player.setTempo(bpm);
@@ -122,11 +127,12 @@ public class CloudAppletController extends Applet { //implements ActionListener 
 	}
 	
 	// Determines if a song is currently being played.
-	public boolean isPlaying() {
-		return player.isPlaying();
-	}
+	//public boolean isPlaying() {
+	//	return player.isPlaying();
+	//} Shouldn't be needed.
 	
 	// Updates the Midiplayer with the actual song data.
+	// Throws an exception if the Midi data is invalid.
 	private void updateSequence() throws InvalidMidiDataException {
 		if (changed)
 		{
