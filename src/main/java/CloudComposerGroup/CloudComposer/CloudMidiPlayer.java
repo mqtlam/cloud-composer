@@ -130,6 +130,10 @@ public class CloudMidiPlayer
 		seq.setTickPosition(0);
 	}
 	
+	public boolean isPlaying()	{
+		return seq.isRunning();
+	}
+	
 	// Sets the current place in the song based on a percentage of the song length.
 	public void setPlayTime(int column) 
 	{
