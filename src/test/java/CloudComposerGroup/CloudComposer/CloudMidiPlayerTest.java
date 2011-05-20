@@ -38,6 +38,17 @@ public class CloudMidiPlayerTest {
 		}
 		assertEquals("PIANO, GUITAR, DRUM, TRUMPET, VIOLIN", actual);
 	}
+
+	/**
+	 * Test if CloudMidiPlayer sets and returns tempo correctly or not
+	 * 
+	 * @throws InvalidMidiDataException 
+	 */
+	@Test
+	public void testSetGetTempo00() throws InvalidMidiDataException {
+		player.setTempo((float) 1);
+		assertEquals((float) 1, player.getTempo(), 0);
+	}
 	
 	/**
 	 * Test if CloudMidiPlayer sets and returns tempo correctly or not
