@@ -5,6 +5,13 @@
  * generates a file containing Lilypond data, and returns
  * the link of the file.
  *
+ * NOTE:    Due to limitations of lilypond, not all composition data
+ *          may be converted correctly. This does not support
+ *          complex polyphony. The $exactTranscription flag will
+ *          become false once this parser encounters data that cannot
+ *          be converted into sheet music. Nonetheless, 
+ *          this parser will try its best to notate what it can.
+ *
  * USAGE:   Pass the composition data to this php file
  *          using the POST variable 'data'.
  *
@@ -158,6 +165,7 @@ function characterData($parser, $data) {
     global $rhythmBuffer;
     global $currentInstrument;
     global $newDataPerInstrument;
+    global $exactTranscription;
 
     if (strpos($data, "{") === false)
       return;
@@ -178,10 +186,10 @@ function characterData($parser, $data) {
       
       if ($rhythmBuffer % SIXTEENTH_NOTES_PER_MEASURE != 0)
         $nextBar = $rhythmBuffer + (SIXTEENTH_NOTES_PER_MEASURE - $rhythmBuffer % SIXTEENTH_NOTES_PER_MEASURE);
-            
+      
       // fills in rest up to the measure if one exists
-      if ($currentColumn >= $nextBar) {
-        $restDuration = SIXTEENTH_NOTES_PER_MEASURE - $rhythmBuffer % SIXTEENTH_NOTES_PER_MEASURE;
+      if ($currentColumn > $nextBar) {
+        $restDuration = $nextBar - $rhythmBuffer;
         restHelper($restDuration);
         
         $restDuration = $currentColumn - $nextBar;
@@ -203,7 +211,7 @@ function characterData($parser, $data) {
     $rows = explode("}{", $processed);
     
     // construct the chord at this column
-    $chord = "< ";
+    $chord = " < ";
     $duration = 0;
 
     // pass 1: find max duration among col
@@ -403,6 +411,7 @@ function interpretData($data)
     global $newDataPerInstrument;
     global $instruments;
     global $pitches;
+    global $exactTranscription;
 
     $timeSignatureNumerator = SIXTEENTH_NOTES_PER_MEASURE / 4;
 
@@ -432,6 +441,9 @@ function interpretData($data)
               . "\n\t\\clef treble\n\t\\time $timeSignatureNumerator/4\n\t";
       $newData .= $instrumentData . " \\bar \"|.\"" . "\n}\n\n";
     }
+    
+    if (!$exactTranscription)
+      $newData .= "\\markup {\n\tNOTE: This is a simplified transcription of the composition.\n}\n";
 
     // }}}
 
