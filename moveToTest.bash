@@ -5,17 +5,19 @@ if [ $# -lt 2 ]; then
 fi
 release="featurecomplete"
 versionNum=$1
-workingDir="src/main/java/CloudComposerGroup/CloudComposer"
 currentDir=$PWD
 toDir="test/${release}_${versionNum}"
 `mkdir -p $toDir`
 `mkdir "${toDir}/include"`
 `mkdir "${toDir}/images"`
 
+workingDir="src/main/java/CloudComposerGroup/CloudComposer"
+tempDir="CloudComposerGroup/CloudComposer"
 `javac "${workingDir}/"*.java`
-`mv $workingDir/*.class .`
-`jar -cvf MidiPlayer.jar *.class | echo`
-`rm *.class`
+`mkdir -p $tempDir`
+`mv $workingDir/*.class $tempDir/.`
+`jar -cvf MidiPlayer.jar $tempDir/*.class | echo`
+`rm -r CloudComposerGroup`
 `mv MidiPlayer.jar $toDir`
 
 workingDir="src/main/webapp"
