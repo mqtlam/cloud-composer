@@ -3,7 +3,7 @@
 // During, Disable Java mode, playback does not work.
 
 // Set Disable Tutorial to true in order to skip tutorials
-var DISABLE_JAVA = false;
+var DISABLE_JAVA = true;
 var DISABLE_TUTORIAL = true;
 
 // reference to the grid object
@@ -63,12 +63,10 @@ function mouseClick(event) {
 		sendNoteGrid(notegrid, "SaveSession.php");
 	} else if (current.className == "column_button") {
 		var c = parseInt(current.id);
-		highlightbar.move(c);
 		midiplayer.setSongPosition(c);
 	}
 
 }
-
 
 // Setting note length
 function mouseDown(event) {
@@ -159,16 +157,15 @@ function loadUI() {
 	
 	var initialNumColumns = 112;
 	
+	applet = DISABLE_JAVA ? new Dummy() : document.getElementById('javaApplet');
+	tutorial = DISABLE_TUTORIAL ? new Dummy() : new Tutorial();
+		
 	selector = new InstrumentSelector(instrumentsList);		
 	midiplayer = new MidiPlayer(instrumentsList, initialNumColumns);
 	// create Grid, multiple of 16
 	grid = new NoteGrid("grid", initialNumColumns, instrumentsList, midiplayer);
 	highlightbar = new HighlightBar(0, "#CC6666");
 	
-	applet = DISABLE_JAVA ? new Dummy() : document.getElementById('javaApplet');
-	tutorial = DISABLE_TUTORIAL ? new Dummy() : new Tutorial();
-    //tempobar = new Slider("tempo", 190, 10, "slider");
-	//playerbar = new Slider("player", 800, 10, "");
 }
 
 ///////// FUNCTION CALLs
