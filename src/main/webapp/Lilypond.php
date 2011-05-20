@@ -551,7 +551,7 @@ if (isset($_GET[TEST_PARAM]))
 saveFile($lilydata, $filename);
 
 // Generate PDF file from .ly file
-//generatePDF($filename);
+generatePDF($filename);
 
 // Display the link
 displayLink($filename);
