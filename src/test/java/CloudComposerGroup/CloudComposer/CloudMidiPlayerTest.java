@@ -1,6 +1,8 @@
 import CloudComposerGroup.CloudComposer.*;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.Sequence;
@@ -59,9 +61,77 @@ public class CloudMidiPlayerTest {
 	}
 	
 	/**
-	 * Test if CloudMidiPlayer sets and returns a sequence correctly or not 
+	 * Test if CloudMidiPlayer plays a song correctly or not
 	 * 
 	 * @throws InvalidMidiDataException
+	 */
+	@Test
+	public void testPlay01() throws InvalidMidiDataException {
+		player.setSequence(new Sequence(0, 0));
+		player.play();
+		assertTrue(player.isPlaying());
+	}
+	
+	/**
+	 * Test if CloudMidiPlayer plays a song correctly or not
+	 * 
+	 * @throws InvalidMidiDataException if it fails to run the player
+	 */
+	@Test
+	public void testPlay02() throws InvalidMidiDataException {
+		player.setSequence(new Sequence(Sequence.PPQ, 0));
+		player.play();
+		assertTrue(player.isPlaying());
+	}
+	
+	/**
+	 * Test if CloudMidiPlayer plays a song correctly or not
+	 * 
+	 * @throws InvalidMidiDataException if it fails to run the player
+	 */
+	@Test
+	public void testPlay03() throws InvalidMidiDataException {
+		player.setSequence(new Sequence(Sequence.SMPTE_24, 0));
+		player.play();
+		assertTrue(player.isPlaying());
+	}
+	
+	/**
+	 * Test if CloudMidiPlayer plays a song correctly or not
+	 * 
+	 * @throws InvalidMidiDataException if it fails to run the player
+	 */
+	@Test
+	public void testPlay04() throws InvalidMidiDataException {
+		player.setSequence(new Sequence(Sequence.SMPTE_30DROP, 0));
+		player.play();
+		assertTrue(player.isPlaying());
+	}
+	
+	/**
+	 * Test if CloudMidiPlayer plays a song correctly or not
+	 * 
+	 * Player is not suppose to play a song until it is requested. 
+	 */
+	@Test
+	public void testPlay05() {
+		assertFalse(player.isPlaying());
+	}
+	
+	/**
+	 * Test if CloudMidiPlayer plays a song correctly or not
+	 * 
+	 * Player is not suppose to play a song until it is requested. 
+	 */
+	@Test
+	public void testPlay06() {
+		assertFalse(player.isPlaying());
+	}
+		
+	/**
+	 * Test if CloudMidiPlayer sets and returns a sequence correctly or not 
+	 * 
+	 * @throws InvalidMidiDataException if it fails to run the player
 	 */
 	@Test
 	public void testSetGetSequence01() throws InvalidMidiDataException {
@@ -74,7 +144,7 @@ public class CloudMidiPlayerTest {
 	/**
 	 * Test if CloudMidiPlayer sets and returns a sequence correctly or not 
 	 * 
-	 * @throws InvalidMidiDataException
+	 * @throws InvalidMidiDataException if it fails to run the player
 	 */
 	@Test
 	public void testSetGetSequence02() throws InvalidMidiDataException {
@@ -87,7 +157,7 @@ public class CloudMidiPlayerTest {
 	/**
 	 * Test if CloudMidiPlayer sets and returns a sequence correctly or not 
 	 * 
-	 * @throws InvalidMidiDataException
+	 * @throws InvalidMidiDataException if it fails to run the player
 	 */
 	@Test
 	public void testSetGetSequence03() throws InvalidMidiDataException {
@@ -100,7 +170,7 @@ public class CloudMidiPlayerTest {
 	/**
 	 * Test if CloudMidiPlayer sets and returns a sequence correctly or not 
 	 * 
-	 * @throws InvalidMidiDataException
+	 * @throws InvalidMidiDataException if it fails to run the player
 	 */
 	@Test
 	public void testSetGetSequence04() throws InvalidMidiDataException {
@@ -113,7 +183,7 @@ public class CloudMidiPlayerTest {
 	/**
 	 * Test if CloudMidiPlayer sets and returns a sequence correctly or not 
 	 * 
-	 * @throws InvalidMidiDataException
+	 * @throws InvalidMidiDataException if it fails to run the player
 	 */
 	@Test
 	public void testSetGetSequence05() throws InvalidMidiDataException {
@@ -123,5 +193,136 @@ public class CloudMidiPlayerTest {
 		assertEquals(expected, actual);
 	}
 
+	/**
+	 * Test if CloudMidiPlayer pauses playing correctly or not
+	 * 
+	 * @throws InvalidMidiDataException if it fails to run the player
+	 */
+	@Test
+	public void testPause01() throws InvalidMidiDataException {
+		player.setSequence(new Sequence(0, 0));
+		player.play();
+		player.stop();
+		assertFalse(player.isPlaying());
+	}
+	
+	/**
+	 * Test if CloudMidiPlayer pauses playing correctly or not
+	 * 
+	 * @throws InvalidMidiDataException if it fails to run the player
+	 */
+	@Test
+	public void testPause02() throws InvalidMidiDataException {
+		player.setSequence(new Sequence(Sequence.PPQ, 0));
+		player.play();
+		player.stop();
+		assertFalse(player.isPlaying());
+	}
 
+	/**
+	 * Test if CloudMidiPlayer pauses playing correctly or not
+	 * 
+	 * @throws InvalidMidiDataException if it fails to run the player
+	 */
+	@Test
+	public void testPause03() throws InvalidMidiDataException {
+		player.setSequence(new Sequence(Sequence.SMPTE_24, 0));
+		player.play();
+		player.stop();
+		assertFalse(player.isPlaying());
+	}
+	
+	/**
+	 * Test if CloudMidiPlayer pauses playing correctly or not
+	 * 
+	 * @throws InvalidMidiDataException if it fails to run the player
+	 */
+	@Test
+	public void testPause04() throws InvalidMidiDataException {
+		player.setSequence(new Sequence(Sequence.SMPTE_30, 0));
+		player.play();
+		player.stop();
+		assertFalse(player.isPlaying());
+	}
+
+	/**
+	 * Test if CloudMidiPlayer pauses playing correctly or not
+	 * 
+	 * @throws InvalidMidiDataException if it fails to run the player
+	 */
+	@Test
+	public void testPause05() throws InvalidMidiDataException {
+		player.setSequence(new Sequence(Sequence.SMPTE_30DROP, 0));
+		player.play();
+		player.stop();
+		assertFalse(player.isPlaying());
+	}
+	
+	/**
+	 * Test if CloudMidiPlayer stops playing correctly or not
+	 * 
+	 * @throws InvalidMidiDataException 
+	 */
+	@Test
+	public void testStop01() throws InvalidMidiDataException {
+		player.setSequence(new Sequence(0, 0));
+		player.play();
+		player.stop();
+		assertFalse(player.isPlaying());
+	}
+	
+	/**
+	 * Test if CloudMidiPlayer stops playing correctly or not
+	 * 
+	 * @throws InvalidMidiDataException if it fails to run the player
+	 */
+	@Test
+	public void testStop02() throws InvalidMidiDataException {
+		player.setSequence(new Sequence(Sequence.PPQ, 0));
+		player.play();
+		player.stop();
+		assertFalse(player.isPlaying());
+	}
+
+	/**
+	 * Test if CloudMidiPlayer stops playing correctly or not
+	 * 
+	 * @throws InvalidMidiDataException if it fails to run the player
+	 */
+	@Test
+	public void testStop03() throws InvalidMidiDataException {
+		player.setSequence(new Sequence(Sequence.SMPTE_24, 0));
+		player.play();
+		player.stop();
+		assertFalse(player.isPlaying());
+	}
+	
+	/**
+	 * Test if CloudMidiPlayer stops playing correctly or not
+	 * 
+	 * @throws InvalidMidiDataException if it fails to run the player
+	 */
+	@Test
+	public void testStop04() throws InvalidMidiDataException {
+		player.setSequence(new Sequence(Sequence.SMPTE_30, 0));
+		player.play();
+		player.stop();
+		assertFalse(player.isPlaying());
+	}
+
+	/**
+	 * Test if CloudMidiPlayer stops playing correctly or not
+	 * 
+	 * @throws InvalidMidiDataException if it fails to run the player
+	 */
+	@Test
+	public void testStop05() throws InvalidMidiDataException {
+		player.setSequence(new Sequence(Sequence.SMPTE_30DROP, 0));
+		player.play();
+		player.stop();
+		assertFalse(player.isPlaying());
+	}
+
+	
+	
 }

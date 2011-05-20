@@ -15,6 +15,16 @@ Grid {
 
  */
 
+.adjuster
+{
+	width: 8px;
+	height: inherit;
+	background-color:white;
+	opacity: 0.5;
+	position:absolute;
+	right:0px;
+}
+ 
 .grid_square
 {
 	background-position = 2px 2px;
