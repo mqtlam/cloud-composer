@@ -20,11 +20,12 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <!--Test Dependencies-->
     <!-- for JUnit -->
     <dependency>
-    	<groupId>com.cedarsoft.commons</groupId>
-    	<artifactId>test-utils</artifactId>
-    	<version>3.0.0</version>
-    	<scope>test</scope>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.8.1</version>
+      <scope>test</scope>
     </dependency>
+    
     
     <!-- for JSUnit -->
     <dependency>
