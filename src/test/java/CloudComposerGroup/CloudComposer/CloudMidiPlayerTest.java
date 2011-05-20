@@ -10,7 +10,7 @@ import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.Sequence;
 
 
-public class CloudMidiPlayerTest {
+public class CloudMidiPlayerTest extends TestCase {
 
 	/**	  CloudMidiPlayer object   **/
 	private CloudMidiPlayer player;
