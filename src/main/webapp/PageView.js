@@ -69,7 +69,7 @@ function mouseClick(event) {
 	} else if (current.id == "getLinkButton") {
 		var notegrid = grid.serialize();
 		sendNoteGrid(notegrid, "SaveSession.php");
-	} else if (current.id == "getLinkButton") {
+	} else if (current.id == "getPdfButton") {
 		var notegrid = grid.serialize();
 		sendNoteGrid(notegrid, "LilyPond.php");
 	}
