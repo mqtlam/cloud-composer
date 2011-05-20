@@ -25,16 +25,7 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
       <version>4.8.1</version>
       <scope>test</scope>
     </dependency>
-    
 
-    <build>
-   	 <plugins>
-   	 	<plugin>
-   	    	 <groupId>org.apache.maven.plugins</groupId>
-   	    	 <artifactId>maven-surefire-plugin</artifactId>
-   	 	</plugin>
-		</plugins>
-	</build>
     <!-- for JSUnit -->
     <dependency>
     <groupId>de.berlios.jsunit</groupId>
@@ -51,5 +42,16 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
       <post>cloudcomposerdev@gmail.com</post>
     </mailingList>
   </mailingLists>
-
+  <profiles>
+    <profile>
+      <build>
+        <plugins>
+        	<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+			</plugin>
+		</plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>
