@@ -40,7 +40,7 @@ define("WEBSITE_URL", "http://students.washington.edu/eui/403/");
 /**
  * Directory to save new file (and look up old files)
  */
-define("SAVE_DIRECTORY", "songs/");
+define("SAVE_DIRECTORY", "");
 
 /**
  * File extension type
@@ -101,15 +101,38 @@ define("SIXTEENTH_NOTES_PER_MEASURE", 16);
  */
 $exactTranscription = true;
 
-$currentColumn = 0;
-$rhythmBuffer = 0;
+/**
+ * Stores the current instrument as a state from the XML parser.
+ */
 $currentInstrument = $instruments['PIANO'];
 
+/**
+ * Stores the entire transcription as a string to be written.
+ */
 $newData = "";
 
+/**
+ * Stores the transcription for each instrument part.
+ */
 $newDataPerInstrument = array();
 foreach ($instruments as $instrument => $name)
   $newDataPerInstrument[$instrument] = "";
+
+/**
+ * Stores the current position state, used to compute rests.
+ */
+$currentCol = FIRST_COL;
+$currentColumn = array();
+foreach ($instruments as $instrument => $name)
+  $currentColumn[$instrument] = FIRST_COL;
+
+/**
+ * Stores the total amount of rhythms processed,
+ * used to compute rests.
+ */
+$rhythmBuffer = array();
+foreach ($instruments as $instrument => $name)
+  $rhythmBuffer[$instrument] = FIRST_COL;
 
 // }}}
 // {{{ xml functions
@@ -121,12 +144,13 @@ foreach ($instruments as $instrument => $name)
  */
 function startElemHandler($parser, $name, $attribs) {
     global $instruments;
+    global $currentCol;
     global $currentColumn;
     global $currentInstrument;
 
     if (strcasecmp($name, COL_NAME) == 0) {
         // <column id="num"> detected
-        $currentColumn = $attribs["id"];
+        $currentCol = $attribs["id"];
     }
 
     foreach ($instruments as $instr => $instrName)
@@ -134,6 +158,7 @@ function startElemHandler($parser, $name, $attribs) {
         if (strcasecmp($name, $instrName) == 0) {
           // <name> detected
           $currentInstrument = $instr;
+          $currentColumn[$currentInstrument] = $currentCol;
         }
     }
 }
@@ -174,32 +199,32 @@ function characterData($parser, $data) {
     
     // This describes a state where there is a start to polyphony.
     // We ignore it for now, i.e. don't trascribe it.
-    if ($rhythmBuffer > $currentColumn) {
+    if ($rhythmBuffer[$currentInstrument] > $currentColumn[$currentInstrument]) {
       $exactTranscription = false;
       return;
     }
     
     // This describes a state that we need to fill in rests before proceeding.
-    if ($rhythmBuffer < $currentColumn)
+    if ($rhythmBuffer[$currentInstrument] < $currentColumn[$currentInstrument])
     {
-      $nextBar = $rhythmBuffer;
+      $nextBar = $rhythmBuffer[$currentInstrument];
       
-      if ($rhythmBuffer % SIXTEENTH_NOTES_PER_MEASURE != 0)
-        $nextBar = $rhythmBuffer + (SIXTEENTH_NOTES_PER_MEASURE - $rhythmBuffer % SIXTEENTH_NOTES_PER_MEASURE);
+      if ($rhythmBuffer[$currentInstrument] % SIXTEENTH_NOTES_PER_MEASURE != 0)
+        $nextBar = $rhythmBuffer[$currentInstrument] + (SIXTEENTH_NOTES_PER_MEASURE - $rhythmBuffer[$currentInstrument] % SIXTEENTH_NOTES_PER_MEASURE);
       
       // fills in rest up to the measure if one exists
-      if ($currentColumn > $nextBar) {
-        $restDuration = $nextBar - $rhythmBuffer;
+      if ($currentColumn[$currentInstrument] > $nextBar) {
+        $restDuration = $nextBar - $rhythmBuffer[$currentInstrument];
         restHelper($restDuration);
         
-        $restDuration = $currentColumn - $nextBar;
+        $restDuration = $currentColumn[$currentInstrument] - $nextBar;
         restHelper($restDuration);
       } else {
-        $restDuration = $currentColumn - $rhythmBuffer;
+        $restDuration = $currentColumn[$currentInstrument] - $rhythmBuffer[$currentInstrument];
         restHelper($restDuration);
       }
       
-      $rhythmBuffer = $currentColumn;
+      $rhythmBuffer[$currentInstrument] = $currentColumn[$currentInstrument];
     }
     
     // }}
@@ -245,7 +270,7 @@ function characterData($parser, $data) {
 
       // consider the current duration as whole note tops
       $currentDuration = min(SIXTEENTH_NOTES_PER_MEASURE, $remainingDuration);
-      $rhythmBuffer += $currentDuration;
+      $rhythmBuffer[$currentInstrument] += $currentDuration;
 
       // if any remaining duration left after the (possible) whole note,
       // use it up in the next iteration of the loop
@@ -493,13 +518,13 @@ function displayLink($filename)
 // {{{ SAVE SESSION AND DISPLAY LINK
 
 // for debug
-/*$myFile = "lilytest.xml";
+$myFile = "lilytest.xml";
 $fh = fopen($myFile, 'r');
 $data = fread($fh, 10000000);
-fclose($fh);*/
+fclose($fh);
 // end debug
 
-$data = $_POST[DATA_PARAM];
+//$data = $_POST[DATA_PARAM];
 $lilydata = interpretData($data);
 
 $filename = generateFileName();
