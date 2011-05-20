@@ -328,6 +328,71 @@ public class CloudAppletControllerTest {
 	}
 	
 	/**
+	 * Test if CloudAppletController controls playing a note correctly or not
+	 * 
+	 * @throws InvalidMidiDataException
+	 */
+	@Test
+	public void testPlayNote02() throws InvalidMidiDataException {
+		c.player.playNote(CloudMidiPlayer.SequenceInst.GUITAR, 0);
+		assertTrue(c.player.isPlaying());
+	}
+
+	/**
+	 * Test if CloudAppletController controls playing a note correctly or not
+	 * 
+	 * @throws InvalidMidiDataException
+	 */
+	@Test
+	public void testPlayNote03() throws InvalidMidiDataException {
+		c.player.playNote(CloudMidiPlayer.SequenceInst.PIANO, 0);
+		assertTrue(c.player.isPlaying());
+	}
+	
+	/**
+	 * Test if CloudAppletController controls playing a note correctly or not
+	 * 
+	 * @throws InvalidMidiDataException
+	 */
+	@Test
+	public void testPlayNote04() throws InvalidMidiDataException {
+		c.player.playNote(CloudMidiPlayer.SequenceInst.DRUM, 2);
+		assertTrue(c.player.isPlaying());
+	}
+	
+	/**
+	 * Test if CloudAppletController controls playing a note correctly or not
+	 * 
+	 * @throws InvalidMidiDataException
+	 */
+	@Test
+	public void testPlayNote05() throws InvalidMidiDataException {
+		c.player.playNote(CloudMidiPlayer.SequenceInst.GUITAR, 5);
+		assertTrue(c.player.isPlaying());
+	}
+
+	/**
+	 * Test if CloudAppletController controls playing a note correctly or not
+	 * 
+	 * @throws InvalidMidiDataException
+	 */
+	@Test
+	public void testPlayNote06() throws InvalidMidiDataException {
+		c.player.playNote(CloudMidiPlayer.SequenceInst.PIANO, 9);
+		assertTrue(c.player.isPlaying());
+	}
+	
+	/**
+	 * Test if CloudAppletController controls playing a note correctly or not
+	 * 
+	 * @throws InvalidMidiDataException
+	 */
+	@Test
+	public void testPlayNote07() throws InvalidMidiDataException {
+		assertFalse(c.player.isPlaying());
+	}
+	
+	/**
 	 * Test if CloudAppletController controls stopping a song correctly or not
 	 * 
 	 * @throws InvalidMidiDataException if it fails to run c.player
