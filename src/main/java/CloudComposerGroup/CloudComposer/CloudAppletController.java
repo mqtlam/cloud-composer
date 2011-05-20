@@ -164,6 +164,14 @@ public class CloudAppletController extends Applet {
 		player.setTempo(bpm);
 	}
 	
+	/**
+	 * Returns the tempo to the provided BPM.
+	 */
+	public float getTempo() 
+	{
+		return player.getTempo();
+	}
+	
 	 /**
 	  * Gets the currently loaded song.
 	  * @return The Sequence loaded in the player.

@@ -281,6 +281,7 @@ NoteGrid.prototype.gridClick = function (evt, instrument) {
 */
 }
 
+
 /////////////////////// Note Length
 NoteGrid.prototype.changeNoteLength = function(square, instrument) {
 	//find the main note
@@ -300,7 +301,7 @@ NoteGrid.prototype.changeNoteLength = function(square, instrument) {
 		mainSquare.className = mainSquare.className.replace(" "+instrument.instrumentName+"Main", "");
 		
 		this.dragNote = [instrument, pitch, mainColumn, column];
-		this.tempNote = this.dragNote;
+		this.tempNote = [instrument, pitch, mainColumn, column];
 		
 		//
 		var note = new Note(column-mainColumn+1, instrument, pitch);
@@ -326,9 +327,12 @@ NoteGrid.prototype.setStartingNote = function(evt, instrument) {
 		// can't place a note if it's a part of the note is there.
 		if (square.className.indexOf(instrument.instrumentName+"LengthyNote") < 0) {
 		
+			// if the note doesn't exist, start adding
 			if (index == -1) {
 				this.dragNote = [instrument, pitch, column, column];
 				square.style.backgroundImage = "url('images/thumbnail_gray_"+instrument.instrumentName+".png')";
+				
+			// if the note exist on the place, remove the note.
 			} else {
 				this.dragNote = [instrument, pitch, column, -1, pitch, column];
 				/////
@@ -338,7 +342,6 @@ NoteGrid.prototype.setStartingNote = function(evt, instrument) {
 				
 				this.dragNote[3] = column + removedNote.noteLength - 1;
 				
-
 			}
 		}
 		
@@ -357,6 +360,7 @@ NoteGrid.prototype.setIntermediateNote = function(evt, instrument) {
 		var column = parseInt(this.getInt(square.parentNode.parentNode.id));
 		// check if it's a valid intermediate note
 		
+		// not moving; extending note while adding
 		if (pitch == this.dragNote[1] && this.dragNote[4] == undefined) {
 			var diff = column - this.dragNote[3];
 			if (diff == 1 && this.dragNote[3]-this.dragNote[2] + 1 < this.maxLength && square.className.indexOf(instrument.instrumentName) < 0) {
@@ -374,33 +378,42 @@ NoteGrid.prototype.setIntermediateNote = function(evt, instrument) {
 			}
 			
 			
+		// moving the note.
 		} else if (this.dragNote[4] != undefined) {
-			// moving the note!!
 			this.movedOut = true;
-			// needs to test for conflict here
-			if (true) {
-				// Erase the old square image
-				var endSquare = this.getSquare(this.dragNote[3], this.dragNote[1]);
-				endSquare.className = endSquare.className.replace(" "+this.dragNote[0].instrumentName+"Extendable", "");
-				
-				this.clearBackImage();
-						
-				this.updateDisplay(this.dragNote[2], this.dragNote[1]);
-				
-				
-				// update dragNote
-				this.dragNote[1] = pitch;
-				this.dragNote[3] = this.dragNote[3]-this.dragNote[2]+column;
-				this.dragNote[2] = column;
-				
-				// create new Image
-				this.setIntermediateNotes();
-				mainSquare = this.getSquare(this.dragNote[2], this.dragNote[1]);
-				mainSquare.className = mainSquare.className + " " + this.dragNote[0].instrumentName+"Main";
-				
-				endSquare = this.getSquare(this.dragNote[3], this.dragNote[1]);
-				endSquare.className = endSquare.className + " "+this.dragNote[0].instrumentName+"Extendable";
-			}
+
+			// Erase the old square image
+			var endSquare = this.getSquare(this.dragNote[3], this.dragNote[1]);
+			endSquare.className = endSquare.className.replace(" "+this.dragNote[0].instrumentName+"Extendable", "");
+			
+			// erase images from the old squares
+			this.clearBackImage();
+			
+			// need to remove Adjuster image if exist.
+			// temporary undefine this.dragNote[4]
+			var temp_drag_note_4 = this.dragNote[4];
+			this.dragNote[4] = undefined;
+			this.setAdjuster(endSquare, this.dragNote[0].instrumentName);
+			this.dragNote[4] = temp_drag_note_4;
+			
+			// update indicator, (gets removed here while maintaining other instruments' indicators)
+			this.updateDisplay(this.dragNote[2], this.dragNote[1]);
+			
+			
+			// update dragNote
+			this.dragNote[1] = pitch;
+			this.dragNote[3] = this.dragNote[3]-this.dragNote[2]+column;
+			this.dragNote[2] = column;
+			
+			// create new backImage
+			this.setIntermediateNotes();
+			
+			// set appropriate classNames
+			mainSquare = this.getSquare(this.dragNote[2], this.dragNote[1]);
+			mainSquare.className = mainSquare.className + " " + this.dragNote[0].instrumentName+"Main";
+			
+			endSquare = this.getSquare(this.dragNote[3], this.dragNote[1]);
+			endSquare.className = endSquare.className + " "+this.dragNote[0].instrumentName+"Extendable";
 		}
 	}
 }
@@ -417,29 +430,16 @@ NoteGrid.prototype.setEndingNote = function(evt, instrument) {
 
 		var note = new Note(this.dragNote[3]-this.dragNote[2] + 1, this.dragNote[0], this.dragNote[1]);	
 		
+		// moving and moved out
 		if (this.dragNote[4] != undefined && this.movedOut) {
 			
-			// if there is no conflict
+			// if there is a conflict
 			if (this.noteConflict()) {
 				// revert all image, not remove
-				var endSquare = this.getSquare(this.dragNote[3], this.dragNote[1]);
-				endSquare.className = endSquare.className.replace(" "+this.dragNote[0].instrumentName+"Extendable", "");
-				endSquare = undefined;
-				
-				this.clearBackImage();
-			
-				// move back to original spot
-				this.dragNote[3] = this.dragNote[3] - this.dragNote[2] + this.dragNote[5];
-				this.dragNote[2] = this.dragNote[5];
-				this.dragNote[1] = this.dragNote[4];
-				
-				this.setIntermediateNotes();
-				mainSquare = this.getSquare(this.dragNote[2], this.dragNote[1]);
-				mainSquare.className = mainSquare.className + " " + this.dragNote[0].instrumentName+"Main";
-				
-				endSquare = this.getSquare(this.dragNote[3], this.dragNote[1]);
-				endSquare.className = endSquare.className + " "+this.dragNote[0].instrumentName+"Extendable";
+				this.revertNote();
 			}
+			
+			// if moved, create new note at the beginning column
 			note = new Note(this.dragNote[3]-this.dragNote[2] + 1, this.dragNote[0], this.dragNote[1]);	
 			
 			this.notes.addNote(this.dragNote[2], note);
@@ -450,27 +450,30 @@ NoteGrid.prototype.setEndingNote = function(evt, instrument) {
 			this.dragNote[5] = undefined;
 			
 			this.movedOut = false;
+			
+		// if moved back to the same place
 		} else if (this.dragNote[4] != undefined) {
 			var endSquare = this.getSquare(this.dragNote[3], this.dragNote[1]);
 			endSquare.className = endSquare.className.replace(" "+this.dragNote[0].instrumentName+"Extendable", "");
 			endSquare = undefined;
 			
 			this.clearBackImage();
-		} else {	
+			
+		// ADDING A NOTE including initial Drag.
+		} else {
 			// has same pitch & has acceptable length
 			// move always updates this.dragNote[3] before up event
 			// So just checking if the column is the same as this.dragNote[3] is sufficient for checking the length
 			if (this.dragNote[1] == pitch && this.dragNote[3] == column) {
-				//this.notes.changeNoteLength(column, new Note(1, instrument, pitch), len);
-				// must visually update as well
-
 				this.notes.addNote(this.dragNote[2], note);
 				this.java.addToPlayer(this.dragNote[2], note);
 				
+				// set the main square
 				var mainSquare = this.getSquare(this.dragNote[2], this.dragNote[1]);
 				mainSquare.className = mainSquare.className + " " + this.dragNote[0].instrumentName+"Main";
 				mainSquare.style.backgroundImage = "url('images/thumbnail_"+this.dragNote[0].instrumentName+".png')";
 				
+				// set the ending square
 				endSquare = this.getSquare(this.dragNote[3], this.dragNote[1]);
 				endSquare.className = endSquare.className + " "+this.dragNote[0].instrumentName+"Extendable";
 			} else {
@@ -529,11 +532,44 @@ NoteGrid.prototype.setAdjuster = function(obj, instrumentName) {
 
 NoteGrid.prototype.resetNote = function() {
 	if (this.dragNote) {
-		// reset background Image and then remove dragNote
-		this.clearBackImage();
-		this.dragNote = undefined;
+	
+		// released in an invalid area while moving
+		if (this.movedOut) {
+			this.revertNote();
+			this.setEndingNote(this.getSquare(this.dragNote[3], this.dragNote[1]), this.dragNote[0]);
+			
+		// released in an invalid area while changing the length
+		} else {
+			// reset background Image and then remove dragNote
+			this.clearBackImage();
+			this.dragNote = undefined;
+		}
 	}
 }
+
+NoteGrid.prototype.revertNote = function() {
+	if (this.dragNote) {
+		var endSquare = this.getSquare(this.dragNote[3], this.dragNote[1]);
+		endSquare.className = endSquare.className.replace(" "+this.dragNote[0].instrumentName+"Extendable", "");
+		endSquare = undefined;
+		
+		this.clearBackImage();
+	
+		// move back to original spot
+		this.dragNote[3] = this.dragNote[3] - this.dragNote[2] + this.dragNote[5];
+		this.dragNote[2] = this.dragNote[5];
+		this.dragNote[1] = this.dragNote[4];
+		
+		this.setIntermediateNotes();
+		mainSquare = this.getSquare(this.dragNote[2], this.dragNote[1]);
+		mainSquare.className = mainSquare.className + " " + this.dragNote[0].instrumentName+"Main";
+		
+		endSquare = this.getSquare(this.dragNote[3], this.dragNote[1]);
+		endSquare.className = endSquare.className + " "+this.dragNote[0].instrumentName+"Extendable";
+	}
+}
+
+
 
 NoteGrid.prototype.noteConflict = function() {
 	if (this.dragNote) {
@@ -584,10 +620,12 @@ NoteGrid.prototype.clearBackImage = function() {
 			}
 		}
 	}
+	
 	if (this.tempNote) {
 		this.dragNote = this.tempNote;
 		this.setIntermediateNotes();
 		this.setEndingNote(this.getSquare(this.dragNote[3], this.dragNote[1]), this.dragNote[0]); //fake register
+		this.tempNote = undefined;
 	}
 }
 
