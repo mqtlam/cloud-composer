@@ -51,10 +51,8 @@ mkdir songs
 lcd $toDir
 cd test
 mput *
-lcd images
-mput *
-lcd ../include
-mput *
+mput images/*
+mput include/*
 bye
 
 END_SCRIPT
