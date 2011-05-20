@@ -108,16 +108,20 @@ NoteData.prototype.print = function () {
 	for (var i=0; i<this.data.length; i++) {
 		var column = this.data[i];
 		
-		str += "column " + i + "\n";
+		var temp = "";
 		for (var instr in column) {
-			str += "\t" + instr + ":\n";
+			temp += "\t" + instr + ":\n";
 			var notes = column[instr];			
 			for (var n = 0; n<notes.length; n++) {
-				str += "\t\t" + notes[n].pitch + "\n";
+				temp += "\t\t pitch:" + notes[n].pitch + " length:" + notes[n].noteLength + "\n";
 			}
+			temp += "\n";
+		}
+		if (temp != "") {
+			str += "column " + i + "\n";
+			str += temp;
 			str += "\n";
 		}
-		str += "\n";
 	}
 	
 	return str;
