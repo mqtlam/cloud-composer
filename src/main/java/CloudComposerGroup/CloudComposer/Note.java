@@ -28,6 +28,19 @@ public class Note implements Comparable<Note> {
 	}
 
 	/**
+	 * Returns true if this and another note object is the same or equal.
+	 * Otherwise, returns false.
+	 * 
+	 * @param other, note object for equality
+	 * @return true if this.length == other.length && this.instrument == other.instrument && this.pitch == other.pitch
+	 *         false, otherwise.
+	 */
+	public boolean equals(Note other) {
+		return (this.length == other.length && this.instrument == other.instrument && this.pitch == other.pitch);
+	}
+	
+	
+	/**
 	 * Returns an integer by comparing with another Note object.
 	 * Notes are in increasing order
 	 * 
