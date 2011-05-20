@@ -1,0 +1,80 @@
+<?xml version="1.0" ?>
+<notedata>
+  <column id="0">
+    <piano>
+      {16,2}{16,0}
+    </piano>
+    <guitar>
+      {16,4}{16,0}
+    </guitar>
+    <trumpet>
+      {16,3}{16,1}
+    </trumpet>
+  </column>
+  <column id="16">
+    <piano>
+      {8,2}{8,3}{8,6}
+    </piano>
+    <guitar>
+      {8,2}{8,3}{8,6}
+    </guitar>
+    <trumpet>
+      {8,2}{8,3}{8,6}
+    </trumpet>
+  </column>
+  <column id="24">
+    <piano>
+      {8,2}{8,3}
+    </piano>
+    <guitar>
+      {8,2}{8,3}
+    </guitar>
+    <trumpet>
+      {8,2}{8,3}
+    </trumpet>
+  </column>
+  <column id="32">
+    <piano>
+      {4,0}
+    </piano>
+    <guitar>
+      {4,0}
+    </guitar>
+    <trumpet>
+      {4,9}
+    </trumpet>
+  </column>
+  <column id="36">
+    <piano>
+      {4,0}
+    </piano>
+    <guitar>
+      {4,1}
+    </guitar>
+    <trumpet>
+      {4,8}
+    </trumpet>
+  </column>
+  <column id="40">
+    <piano>
+      {4,0}
+    </piano>
+    <guitar>
+      {4,2}
+    </guitar>
+    <trumpet>
+      {4,7}
+    </trumpet>
+  </column>
+  <column id="44">
+    <piano>
+      {4,0}
+    </piano>
+    <guitar>
+      {4,3}
+    </guitar>
+    <trumpet>
+      {4,6}
+    </trumpet>
+  </column>
+</notedata>
