@@ -14,7 +14,7 @@
 
 //package CloudComposerGroup;
 
-/*
+
 import java.io.File;
 import java.io.IOException;
 
@@ -68,7 +68,7 @@ public class TestWrite {
 		/*File f = new File("/Users/crombrodin/fib.midi");
 		MidiSystem.write(seq.getSequence(), 1, f);
 		System.out.println("Done");*/
-//	}
+	}
 	
-//}
-//*/
+}
+//
