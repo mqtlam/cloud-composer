@@ -1,7 +1,7 @@
 /**
  * Unit test for CloudComposerGroup.Note class!
  */
-
+import junit.framework.TestCase;
 import org.junit.Test;
 import org.junit.Before;
 

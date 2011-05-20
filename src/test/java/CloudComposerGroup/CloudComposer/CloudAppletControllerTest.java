@@ -1,6 +1,7 @@
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.Sequence;
 
+import junit.framework.TestCase;
 import org.junit.Test;
 import org.junit.Before;
 
