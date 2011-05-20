@@ -537,5 +537,103 @@ public class CloudAppletControllerTest extends TestCase {
 		assertFalse(c.player.isPlaying());
 	}
 
+	/**
+	 * Test if CloudMidiPlayer sets and returns a column correctly
+	 */
+	@Test
+	public void testSetSongPositionAndCurrentSongPosition01() {
+		int expected = 0;
+		c.setSongPosition(0);
+		int actual = c.currentSongPosition();
+		assertEquals(expected, actual);
+	}
+	
+	/**
+	 * Test if CloudMidiPlayer sets and returns a column correctly
+	 */
+	@Test
+	public void testSetSongPositionAndCurrentSongPosition02() {
+		int expected = 1;
+		c.setSongPosition(1);
+		int actual = c.currentSongPosition();
+		assertEquals(expected, actual);
+	}
+
+	/**
+	 * Test if CloudMidiPlayer sets and returns a column correctly
+	 */
+	@Test
+	public void testSetSongPositionAndCurrentSongPosition03() {
+		int expected = 2;
+		c.setSongPosition(2);
+		int actual = c.currentSongPosition();
+		assertEquals(expected, actual);
+	}
+
+	/**
+	 * Test if CloudMidiPlayer sets and returns a column correctly
+	 */
+	@Test
+	public void testSetSongPositionAndCurrentSongPosition04() {
+		int expected = 5;
+		c.setSongPosition(5);
+		int actual = c.currentSongPosition();
+		assertEquals(expected, actual);
+	}
+
+	/**
+	 * Test if CloudMidiPlayer sets and returns a column correctly
+	 */
+	@Test
+	public void testSetSongPositionAndCurrentSongPosition05() {
+		int expected = 6;
+		c.setSongPosition(6);
+		int actual = c.currentSongPosition();
+		assertEquals(expected, actual);
+	}
+
+	/**
+	 * Test if CloudMidiPlayer sets and returns a column correctly
+	 */
+	@Test
+	public void testSetSongPositionAndCurrentSongPosition06() {
+		int expected = 100;
+		c.setSongPosition(100);
+		int actual = c.currentSongPosition();
+		assertEquals(expected, actual);
+	}
+	
+	/**
+	 * Test if CloudMidiPlayer sets and returns a column correctly
+	 */
+	@Test
+	public void testSetSongPositionAndCurrentSongPosition07() {
+		int expected = 500;
+		c.setSongPosition(500);
+		int actual = c.currentSongPosition();
+		assertEquals(expected, actual);
+	}
+	
+	/**
+	 * Test if CloudMidiPlayer sets and returns a column correctly
+	 */
+	@Test
+	public void testSetSongPositionAndCurrentSongPosition08() {
+		int expected = 1000;
+		c.setSongPosition(1000);
+		int actual = c.currentSongPosition();
+		assertEquals(expected, actual);
+	}
+
+	/**
+	 * Test if CloudMidiPlayer sets and returns a column correctly
+	 */
+	@Test
+	public void testSetSongPositionAndCurrentSongPosition09() {
+		int expected = 10000;
+		c.setSongPosition(10000);
+		int actual = c.currentSongPosition();
+		assertEquals(expected, actual);
+	}
 
 }
