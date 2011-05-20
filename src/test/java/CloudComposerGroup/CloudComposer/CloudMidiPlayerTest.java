@@ -144,20 +144,9 @@ public class CloudMidiPlayerTest {
 	 * @throws InvalidMidiDataException
 	 */
 	@Test
-	public void testPlayNote01() throws InvalidMidiDataException {
-		player.playNote(CloudMidiPlayer.SequenceInst.DRUM, 0);
-		assertTrue(player.isPlaying());
-	}
-	
-	/**
-	 * Test if CloudMidiPlayer plays a note correctly or not
-	 * 
-	 * @throws InvalidMidiDataException
-	 */
-	@Test
 	public void testPlayNote02() throws InvalidMidiDataException {
-		player.playNote(CloudMidiPlayer.SequenceInst.GUITAR, 0);
-		assertTrue(player.isPlaying());
+		c.player.playNote(CloudMidiPlayer.SequenceInst.GUITAR, 0);
+		assertTrue(c.player.isPlaying());
 	}
 
 	/**
@@ -167,8 +156,8 @@ public class CloudMidiPlayerTest {
 	 */
 	@Test
 	public void testPlayNote03() throws InvalidMidiDataException {
-		player.playNote(CloudMidiPlayer.SequenceInst.PIANO, 0);
-		assertTrue(player.isPlaying());
+		c.player.playNote(CloudMidiPlayer.SequenceInst.PIANO, 0);
+		assertTrue(c.player.isPlaying());
 	}
 	
 	/**
@@ -178,7 +167,40 @@ public class CloudMidiPlayerTest {
 	 */
 	@Test
 	public void testPlayNote04() throws InvalidMidiDataException {
-		assertFalse(player.isPlaying());
+		c.player.playNote(CloudMidiPlayer.SequenceInst.DRUM, 2);
+		assertTrue(c.player.isPlaying());
+	}
+	
+	/**
+	 * Test if CloudMidiPlayer plays a note correctly or not
+	 * 
+	 * @throws InvalidMidiDataException
+	 */
+	@Test
+	public void testPlayNote05() throws InvalidMidiDataException {
+		c.player.playNote(CloudMidiPlayer.SequenceInst.GUITAR, 5);
+		assertTrue(c.player.isPlaying());
+	}
+
+	/**
+	 * Test if CloudMidiPlayer plays a note correctly or not
+	 * 
+	 * @throws InvalidMidiDataException
+	 */
+	@Test
+	public void testPlayNote06() throws InvalidMidiDataException {
+		c.player.playNote(CloudMidiPlayer.SequenceInst.PIANO, 9);
+		assertTrue(c.player.isPlaying());
+	}
+	
+	/**
+	 * Test if CloudMidiPlayer plays a note correctly or not
+	 * 
+	 * @throws InvalidMidiDataException
+	 */
+	@Test
+	public void testPlayNote07() throws InvalidMidiDataException {
+		assertFalse(c.player.isPlaying());
 	}
 	
 	/**
