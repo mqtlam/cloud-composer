@@ -15,7 +15,7 @@ import java.util.*;
  * This is for testing whether NoteGrid object works correct as it 
  * is supposed to without any bugs.
  */
-public class NoteGridTest  {
+public class NoteGridTest extends TestCase  {
 	
 	/** NoteGrid object   **/
 	private NoteGrid grid;

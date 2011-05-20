@@ -11,7 +11,7 @@ import static org.junit.matchers.JUnitMatchers.*;
 import CloudComposerGroup.CloudComposer.*;
 
 
-public class NoteTest {
+public class NoteTest extends TestCase {
 
 	/** Note objects **/
 	private Note n1;

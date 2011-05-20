@@ -9,7 +9,7 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.junit.matchers.JUnitMatchers.*;
 import CloudComposerGroup.CloudComposer.*;
 
-public class CloudAppletControllerTest {
+public class CloudAppletControllerTest extends TestCase {
 	
 	/**   CloudAppletController   **/
 	private CloudAppletController c;
