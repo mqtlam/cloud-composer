@@ -15,7 +15,11 @@
  * USAGE:   Pass the composition data to this php file
  *          using the POST variable 'data'.
  *
+ *          Alternatively, for testing, pass the location of the 
+ *          XML test file using the GET variable 'testfile'.
+ *
  *          Saves to songs/filename.ly
+ *          Publishes the PDF to songs/filename.pdf
  *
  *          Returns the link on success or displays an error message:
  *              CANNOT OPEN FILE: file cannot be open to write
@@ -44,9 +48,14 @@ define("WEBSITE_URL", "http://students.washington.edu/eui/403/");
 define("SAVE_DIRECTORY", "songs/");
 
 /**
- * File extension type
+ * Lilypond file extension type
  */
-define("FILE_EXTENSION", ".ly");
+define("LILY_FILE_EXTENSION", ".ly");
+
+/**
+ * PDF file extension type
+ */
+define("PDF_FILE_EXTENSION", ".pdf");
 
 /**
  * POST parameter to pass data to this php file.
@@ -327,6 +336,9 @@ function characterData($parser, $data) {
     // }}}
 }
 
+/**
+ * Appends rests to the composition for the given duration.
+ */
 function restHelper($restDuration)
 {
     global $newDataPerInstrument;
@@ -379,10 +391,6 @@ function restHelper($restDuration)
 
         // }}}
       }
-      
-      //if ($remainingDuration > 0)
-        //$newDataPerInstrument[$currentInstrument] .= " ";
-      
     }
 }
 
@@ -419,7 +427,7 @@ function generateFileName()
     {
         $filename = rand(1000000000, 9999999999);
 
-        if (array_search($filename . FILE_EXTENSION,
+        if (array_search($filename . LILY_FILE_EXTENSION,
             $existingFileNames)) {
             $filename = "";
         }
@@ -491,7 +499,7 @@ function interpretData($data)
 function saveFile($data, $filename)
 {
     // write data
-    $fileHandler = fopen(SAVE_DIRECTORY . $filename . FILE_EXTENSION, 'w')
+    $fileHandler = fopen(SAVE_DIRECTORY . $filename . LILY_FILE_EXTENSION, 'w')
         or die("CANNOT OPEN FILE");
     $dataToWrite = $data;
     fwrite($fileHandler, $dataToWrite);
@@ -508,9 +516,7 @@ function generatePDF($filename)
     or die("PDF GENERATION FAILED");
 
   // check if generated file exists
-  
-  
-  //echo '<pre>'.$output.'</pre>';
+  return file_exists(SAVE_DIRECTORY . $filename . PDF_FILE_EXTENSION);
 }
 
 /**
