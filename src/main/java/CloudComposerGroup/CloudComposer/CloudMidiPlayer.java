@@ -6,7 +6,7 @@ import java.io.IOException;
 
 import javax.sound.midi.*;
 
-//cloudMidiPlayer.jav
+//cloudMidiPlayer.java
 
 //This file provides a class for storing and playing a song.
 //It also generates and holds individual note pitch data for playing
@@ -15,8 +15,6 @@ public class CloudMidiPlayer
 {
 	public static final int[] SCALE = {60, 62, 64, 67, 69};
 	public static final int[] INSTRUMENTS = {0, 30, 114, 56, 40};
-	//private static final int INSTRUMENTS = 5;
-	//public static final int SCALENOTES = 5;
 	public static final int OCTAVES = 2;
 	public static final int DEFAULTBPM = 120;
 	
@@ -28,9 +26,7 @@ public class CloudMidiPlayer
 	private Sequence[][] noteSequences;
 	private Sequence song;
 	
-	public String earlySetString;
-	
-	//private SequenceInst[] instruments;
+	public String earlySetString; // Stores last error for use by front end.
 	
 	// Set of enum values for the list of instruments Cloud Composer supports.
 	public enum SequenceInst 
@@ -45,30 +41,33 @@ public class CloudMidiPlayer
 	}
 	
 	// Constructs a cloudMidiPlayer with the default BPM.
-	public CloudMidiPlayer() throws Exception 
+	public CloudMidiPlayer() 
 	{
 		earlySetString = "";
 		try {
-//		instruments = SequenceInst.values();
-		loadMidiSystem();
-		noteSequences = new Sequence[getInstruments().length][SCALE.length * OCTAVES];
-		setTempo(DEFAULTBPM);
+			loadMidiSystem();
+			noteSequences = new Sequence[getInstruments().length][SCALE.length * OCTAVES];
+			setTempo(DEFAULTBPM);
 		} catch (Exception e) {
 			earlySetString = e.getMessage();
 		}
 	}
 	
+	// Returns the list of SequenceInst instruments.
 	public SequenceInst[] getInstruments() 
 	{
 		return SequenceInst.values();
 	}
 	
 	// Sets the tempo of the song using the provided BPM. 
-	public void setTempo(float bpm) throws InvalidMidiDataException 
+	public void setTempo(float bpm)
 	{
 		seq.setTempoInBPM(bpm);
-		//ticksPerSecond = bpm / 1800;
-		generateNotes();
+		try {
+			generateNotes();
+		} catch (InvalidMidiDataException e) {
+			earlySetString = e.getMessage();
+		}
 	}
 	
 	// Returns the tempo of the song using the provided BPM.
@@ -76,34 +75,30 @@ public class CloudMidiPlayer
 		return seq.getTempoInBPM();
 	}
 	
-	//public int getTicksPerFrame() 
-	//{
-//		return (int) ticksPerSecond;
-//	}
-
 	// Plays the sequence previously loaded.
-	public void play() throws InvalidMidiDataException 
+	public void play()
 	{
 		pause();
-		seq.setSequence(song);
-		seq.start();
+		try {
+			seq.setSequence(song);
+			seq.start();
+		} catch (InvalidMidiDataException e) {
+			earlySetString = e.getMessage();
+		}
+		
 	}
 	
-	public void playNote(SequenceInst inst, int pitch) throws InvalidMidiDataException 
+	public void playNote(SequenceInst inst, int pitch) 
 	{
 		pause();
-		seq.setSequence(noteSequences[inst.value][pitch]);
-		seq.setTickPosition(0);
-		seq.start();
+		try {
+			seq.setSequence(noteSequences[inst.value][pitch]);
+			seq.setTickPosition(0);
+			seq.start();
+		} catch (InvalidMidiDataException e) {
+			earlySetString = e.getMessage();
+		}
 	}
-	
-	// Sets the song to the provided sequence and plays the it.
-	//public void playSong(Sequence s) throws InvalidMidiDataException 
-	//{
-	//	pause();
-	//	setSequence(s);
-	//	play();
-	//}
 	
 	// Sets the song to the provided sequence.
 	public void setSequence(Sequence s) throws InvalidMidiDataException 
