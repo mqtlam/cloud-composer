@@ -44,8 +44,8 @@ public class CloudMidiPlayerTest {
 	 */
 	@Test
 	public void testSetGetTempo00() throws InvalidMidiDataException {
-		player.setTempo((float) 1);
-		assertEquals((float) 1, player.getTempo(), 0);
+		player.setTempo((float) 120);
+		assertEquals((float) 120, player.getTempo(), 0.1);
 	}
 	
 	/**
