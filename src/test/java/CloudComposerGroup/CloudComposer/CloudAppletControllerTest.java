@@ -539,7 +539,7 @@ public class CloudAppletControllerTest extends TestCase {
 	}
 
 	/**
-	 * Test if CloudMidiPlayer sets and returns a column correctly
+	 * Test if CloudAppletController controls setting and returning a column correctly
 	 */
 	@Test
 	public void testSetSongPositionAndCurrentSongPosition01() {
@@ -550,7 +550,7 @@ public class CloudAppletControllerTest extends TestCase {
 	}
 	
 	/**
-	 * Test if CloudMidiPlayer sets and returns a column correctly
+	 * Test if CloudAppletController controls setting and returning a column correctly
 	 */
 	@Test
 	public void testSetSongPositionAndCurrentSongPosition02() {
@@ -561,7 +561,7 @@ public class CloudAppletControllerTest extends TestCase {
 	}
 
 	/**
-	 * Test if CloudMidiPlayer sets and returns a column correctly
+	 * Test if CloudAppletController controls setting and returning a column correctly
 	 */
 	@Test
 	public void testSetSongPositionAndCurrentSongPosition03() {
@@ -572,7 +572,7 @@ public class CloudAppletControllerTest extends TestCase {
 	}
 
 	/**
-	 * Test if CloudMidiPlayer sets and returns a column correctly
+	 * Test if CloudAppletController controls setting and returning a column correctly
 	 */
 	@Test
 	public void testSetSongPositionAndCurrentSongPosition04() {
@@ -583,7 +583,7 @@ public class CloudAppletControllerTest extends TestCase {
 	}
 
 	/**
-	 * Test if CloudMidiPlayer sets and returns a column correctly
+	 * Test if CloudAppletController controls setting and returning a column correctly
 	 */
 	@Test
 	public void testSetSongPositionAndCurrentSongPosition05() {
@@ -594,7 +594,7 @@ public class CloudAppletControllerTest extends TestCase {
 	}
 
 	/**
-	 * Test if CloudMidiPlayer sets and returns a column correctly
+	 * Test if CloudAppletController controls setting and returning a column correctly
 	 */
 	@Test
 	public void testSetSongPositionAndCurrentSongPosition06() {
@@ -605,7 +605,7 @@ public class CloudAppletControllerTest extends TestCase {
 	}
 	
 	/**
-	 * Test if CloudMidiPlayer sets and returns a column correctly
+	 * Test if CloudAppletController controls setting and returning a column correctly
 	 */
 	@Test
 	public void testSetSongPositionAndCurrentSongPosition07() {
@@ -616,7 +616,7 @@ public class CloudAppletControllerTest extends TestCase {
 	}
 	
 	/**
-	 * Test if CloudMidiPlayer sets and returns a column correctly
+	 * Test if CloudAppletController controls setting and returning a column correctly
 	 */
 	@Test
 	public void testSetSongPositionAndCurrentSongPosition08() {
@@ -627,7 +627,7 @@ public class CloudAppletControllerTest extends TestCase {
 	}
 
 	/**
-	 * Test if CloudMidiPlayer sets and returns a column correctly
+	 * Test if CloudAppletController controls setting and returning a column correctly
 	 */
 	@Test
 	public void testSetSongPositionAndCurrentSongPosition09() {
@@ -635,6 +635,39 @@ public class CloudAppletControllerTest extends TestCase {
 		c.setSongPosition(10000);
 		int actual = c.currentSongPosition();
 		assertEquals(expected, actual);
+	}
+
+	/**
+	 * Test if CloudAppletController controls setting and returning tempo correctly or not
+	 * 
+	 * @throws InvalidMidiDataException 
+	 */
+	@Test
+	public void testSetGetTempo00() throws InvalidMidiDataException {
+		c.setTempo((float) 120);
+		assertEquals((float) 120, c.getTempo(), 0.1);
+	}
+	
+	/**
+	 * Test if CloudAppletController controls setting and returning tempo correctly or not
+	 * 
+	 * @throws InvalidMidiDataException 
+	 */
+	@Test
+	public void testSetGetTempo01() throws InvalidMidiDataException {
+		c.setTempo((float) 1.215136);
+		assertEquals((float) 1.215136, c.getTempo(), (float) 1.115);
+	}
+	
+	/**
+	 * Test if CloudAppletController controls setting and returning tempo correctly or not
+	 * 
+	 * @throws InvalidMidiDataException 
+	 */
+	@Test
+	public void testSetGetTempo02() throws InvalidMidiDataException {
+		c.setTempo((float) 5.1521136);
+		assertEquals((float) 5.1521136, c.getTempo(), (float) 1.115);
 	}
 
 }
