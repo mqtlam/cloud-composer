@@ -1,0 +1,12 @@
+#getLinkText
+{
+	color:black;
+	font-size: 20pt;
+	font-weight: bold;
+}
+
+#getLinkButton, #getPdfButton
+{
+	margin: 20px;
+	width: 200px;
+}

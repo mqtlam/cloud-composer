@@ -15,6 +15,7 @@ var playerbar;
 var highlightbar;
 var tutorial;
 var applet;
+var getlink;
 
 // computed values
 
@@ -58,13 +59,20 @@ function mouseClick(event) {
 	} else if (current.id == "playpausebutton") {
 		midiplayer.onPlayPauseClick(grid.numColumns);
 	} else if (current.id == "getlinkbutton") {
-		// TODO put this code somewhere else...
-		var notegrid = grid.serialize();
-		sendNoteGrid(notegrid, "SaveSession.php");
+		getlink = new GetLink(600, 280, "#CCCCCC");		
 	} else if (current.className == "column_button") {
 		var c = parseInt(current.id);
 		midiplayer.setSongPosition(c);
+	} else if (current.id == "getLinkCloseButton") {
+		// remove the GetLink Box
+		document.body.removeChild(getlink.back);
+	} else if (current.id == "getLinkButton") {
+		var notegrid = grid.serialize();
+		sendNoteGrid(notegrid, "SaveSession.php");
+	} else if (current.id == "getLinkButton") {
+		// trigger lilypond!
 	}
+	
 
 }
 
