@@ -87,6 +87,13 @@ define("SIXTEENTH_NOTES_PER_MEASURE", 16);
 // }}}
 // {{{ global variables (for maintaining state with sax parser)
 
+/**
+ * If false, then the song sheet generated is not an exact transcription
+ * of the data due to Lilypond limitations. If true, then 
+ * the sheet generated is an exact transcription.
+ */
+$exactTranscription = true;
+
 $currentColumn = 0;
 $rhythmBuffer = 0;
 $currentInstrument = $instruments['PIANO'];
@@ -159,8 +166,10 @@ function characterData($parser, $data) {
     
     // This describes a state where there is a start to polyphony.
     // We ignore it for now, i.e. don't trascribe it.
-    if ($rhythmBuffer > $currentColumn)
+    if ($rhythmBuffer > $currentColumn) {
+      $exactTranscription = false;
       return;
+    }
     
     if ($rhythmBuffer < $currentColumn)
     {
@@ -194,28 +203,30 @@ function characterData($parser, $data) {
           // {{{ for general notation case
 
           if ($numQuarterNotes == 1)
-            $newDataPerInstrument[$currentInstrument] .= "r4";
+            $newDataPerInstrument[$currentInstrument] .= " r4 ";
           else if ($numQuarterNotes == 2)
-            $newDataPerInstrument[$currentInstrument] .= "r2";
+            $newDataPerInstrument[$currentInstrument] .= " r2 ";
           else if ($numQuarterNotes == 3)
-            $newDataPerInstrument[$currentInstrument] .= "r2.";
+            $newDataPerInstrument[$currentInstrument] .= " r2. ";
           else if ($numQuarterNotes == 4)
-            $newDataPerInstrument[$currentInstrument] .= "r1";
-          //else if ($numQuarterNotes > 4)
-          //  $newData .= "{$chord}1 ~";
+            $newDataPerInstrument[$currentInstrument] .= " r1 ";
 
           if ($remainingSixteenthNotes > 0 && $numQuarterNotes > 0)
             $newDataPerInstrument[$currentInstrument] .= " ";
 
           if ($remainingSixteenthNotes == 1)
-            $newDataPerInstrument[$currentInstrument] .= "r16";
+            $newDataPerInstrument[$currentInstrument] .= " r16 ";
           else if ($remainingSixteenthNotes == 2)
-            $newDataPerInstrument[$currentInstrument] .= "r8";
+            $newDataPerInstrument[$currentInstrument] .= " r8 ";
           else if ($remainingSixteenthNotes == 3)
-            $newDataPerInstrument[$currentInstrument] .= "r8.";
+            $newDataPerInstrument[$currentInstrument] .= " r8. ";
 
           // }}}
         }
+        
+        //if ($remainingDuration > 0)
+          //$newDataPerInstrument[$currentInstrument] .= " ";
+        
       }
       
       
@@ -228,17 +239,29 @@ function characterData($parser, $data) {
     // put all {} pairs into an array
     $processed = $data;
     $processed = preg_replace(array("/^\s*{/", "/}\s*$/", "/\s+/"), array("","",""), $processed);
-    $columns = explode("}{", $processed);
+    $rows = explode("}{", $processed);
     
     // construct the chord at this column
     $chord = "< ";
     $duration = 0;
 
-    foreach ($columns as $col) {
-      list($length, $pitch) = explode(",", $col);
-      $duration = intval($length);
-
-      $chord .= "{$pitches[$pitch]} ";
+    // pass 1: find max duration among col
+    foreach ($rows as $row) {
+      list($length, $pitch) = explode(",", $row);
+      
+      // if two different durations detected in one column
+      if ($duration > 0 && $duration != $length)
+        $exactTranscription = false;
+      
+      $duration = max($duration, $length);
+    }
+    
+    // pass 2: only record notes with the max duration among col
+    foreach ($rows as $row) {
+      list($length, $pitch) = explode(",", $row);
+      
+      if ($length == $duration)
+        $chord .= "{$pitches[$pitch]} ";
     }
 
     $chord .= ">";
@@ -259,7 +282,7 @@ function characterData($parser, $data) {
       // use it up in the next iteration of the loop
       $remainingDuration -= $currentDuration;
 
-      $numQuarterNotes = (int) ($currentDuration / 4);
+      $numQuarterNotes = (int) ($currentDuration / 4); // cast necessary in PHP!
       $remainingSixteenthNotes = $currentDuration % 4;
 
       // {{{ for very specific notation cases
@@ -281,8 +304,6 @@ function characterData($parser, $data) {
           $newDataPerInstrument[$currentInstrument] .= "{$chord}2.";
         else if ($numQuarterNotes == 4)
           $newDataPerInstrument[$currentInstrument] .= "{$chord}1";
-        //else if ($numQuarterNotes > 4)
-        //  $newData .= "{$chord}1 ~";
 
         if ($remainingSixteenthNotes > 0 && $numQuarterNotes > 0)
           $newDataPerInstrument[$currentInstrument] .= " ~ ";
@@ -388,7 +409,7 @@ function interpretData($data)
     {
       $newData .= "\\new Staff\n{\n\t\\set Staff.instrumentName = #\"{$instruments[$instr]}\""
               . "\n\t\\clef treble\n\t\\time $timeSignatureNumerator/4\n\t";
-      $newData .= $instrumentData . "\n}\n\n";
+      $newData .= $instrumentData . " \\bar \"|.\"" . "\n}\n\n";
     }
 
     // }}}
@@ -438,12 +459,12 @@ function displayLink($filename)
 // for debug
 /*$myFile = "lilytest.xml";
 $fh = fopen($myFile, 'r');
-$data = fread($fh, 10000000);*/
-fclose($fh);
+$data = fread($fh, 10000000);
+fclose($fh);*/
 // end debug
 
-//$data = $_POST[DATA_PARAM];
-//$lilydata = interpretData($data);
+$data = $_POST[DATA_PARAM];
+$lilydata = interpretData($data);
 
 $filename = generateFileName();
 saveFile($lilydata, $filename);
