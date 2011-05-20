@@ -1,14 +1,13 @@
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.Sequence;
 
-import CloudComposerGroup.CloudComposer.*;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.Before;
+
+import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.matchers.JUnitMatchers.*;
+import CloudComposerGroup.CloudComposer.*;
 
 public class CloudAppletControllerTest {
 	
