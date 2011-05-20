@@ -8,6 +8,9 @@ function NoteGrid(id, cols, instr, midiplayer) {
 	this.java = midiplayer;
 	
 	this.dragNote;
+	this.tempNote;
+	this.adjuster;
+	
 	
 	// constants for the grid	
 	// must change is css
@@ -17,11 +20,11 @@ function NoteGrid(id, cols, instr, midiplayer) {
 	this.measureSeparation = 4;			// gap between measures in pixels	
 
 	// just constants
-	this.maxLength = 4;
+	this.maxLength = 100000;
 	this.pitches = 5;					// number of pitches (squares) in a column
 	this.octaves = 2;					// number of octaves
 	this.octaveMargin = 4;
-	this.measureWidth = 16;				// number of squares in a measure
+	this.measureWidth = 4;				// number of squares in a measure
 	this.extenderWidth = 24;			// width of the extender bar
 	this.appendBy = 2;					// number of measures to append at a time
 	this.instrumentOffset = 2;			// stack distancei
@@ -170,31 +173,37 @@ NoteGrid.prototype.updateColumnNumber = function (addition) {
 	// update the Notedata
 }
 
-NoteGrid.prototype.updateDisplay = function() {	// column, pitch
-	var column = this.dragNote[2];
-	var pitch = this.dragNote[1];
-	
+NoteGrid.prototype.updateDisplay = function(column, pitch) {	// column, pitch
 	var instrumentsToDisplay = this.getInstruments(this.notes.getInstruments(column, pitch));
 	var square = this.getSquare(column, pitch);
-	
-	this.updateIndicator(square, instrumentsToDisplay);
+
+	square.innerHTML = "";	// removes all children	
+	square.appendChild(this.createInstrumentIndicator(instrumentsToDisplay));
 }
 
 NoteGrid.prototype.updateIndicator = function(square, instrumentsList) {
-	square.innerHTML = "";	// removes all children
 	square.appendChild(this.createInstrumentIndicator(instrumentsList));
 }
 
 NoteGrid.prototype.updateMainImage = function(instrumentName) {
 	for (var j=0; j<this.instruments.length; j++) {
-		var notes = document.getElementsByClassName(this.instruments[j].instrumentName);
+		var notes = document.getElementsByClassName(this.instruments[j].instrumentName+"Main");
+		for (var i=0; i<notes.length; i++) {
+			notes[i].style.backgroundImage = "none";
+		}
+		notes = document.getElementsByClassName(this.instruments[j].instrumentName+"LengthyNote");
 		for (var i=0; i<notes.length; i++) {
 			notes[i].style.backgroundImage = "none";
 		}
 	}
-	var notes = document.getElementsByClassName(instrumentName);
+	var notes = document.getElementsByClassName(instrumentName+"Main");
 	for (var i=0; i<notes.length; i++) {
-		notes[i].style.backgroundImage = "url('images/thumbnail_"+instrumentName+".png')";
+			notes[i].style.backgroundImage = "url('images/thumbnail_"+instrumentName+".png')";
+	}
+	
+	notes = document.getElementsByClassName(instrumentName+"LengthyNote");
+	for (var i=0; i<notes.length; i++) {
+			notes[i].style.backgroundImage = "url('images/thumbnail_gray_"+instrumentName+".png')";
 	}
 }
 
@@ -217,6 +226,13 @@ NoteGrid.prototype.createInstrumentIndicator = function (instrs) {
 		holder.appendChild(span);
 	}
 	return holder;
+}
+
+
+NoteGrid.prototype.createAdjuster = function() {
+	var btn = document.createElement("div");
+	btn.className = "adjuster";
+	return btn;
 }
 
 NoteGrid.prototype.createInstrumentImg = function (instrumnet) {
@@ -246,13 +262,13 @@ NoteGrid.prototype.gridClick = function (evt, instrument) {
 		if (index == -1) {
 			this.notes.addNote(column, note);
 			this.java.addToPlayer(column, note);
-			square.className = square.className + " " + instrument.instrumentName;
+			square.className = square.className + " " + instrument.instrumentName+"Main";
 			square.style.backgroundImage = "url('images/thumbnail_"+instrument.instrumentName+".png')";
 		} else {
 			this.notes.removeNote(column, note);
 			this.java.removeFromPlayer(column, note);
 			square.style.backgroundImage = "none";
-			square.className = square.className.replace(" " + instrument.instrumentName, "");
+			square.className = square.className.replace(" " + instrument.instrumentName+"Main", "");
 		}
 		
 		this.updateDisplay(column, pitch);
@@ -265,6 +281,35 @@ NoteGrid.prototype.gridClick = function (evt, instrument) {
 }
 
 /////////////////////// Note Length
+NoteGrid.prototype.changeNoteLength = function(square, instrument) {
+	//find the main note
+	// fake create dragNote and also store it in tempNote
+	// remove the existing note
+	// pretend as if you just put down a note
+	// if need to revert, do so if tempNote exist in reset
+	
+	if (!this.dragNote) {
+		square.className = square.className.replace(" "+instrument.instrumentName+"Extendable", "");
+
+		var pitch = parseInt(this.getInt(square.id));
+		var column = parseInt(this.getInt(square.parentNode.parentNode.id));
+
+		var mainSquare = this.findMainSquare(column, pitch, instrument.instrumentName);
+		var mainColumn = parseInt(this.getInt(mainSquare.parentNode.parentNode.id));
+		mainSquare.className = mainSquare.className.replace(" "+instrument.instrumentName+"Main", "");
+		
+		this.dragNote = [instrument, pitch, mainColumn, column];
+		this.tempNote = this.dragNote;
+		
+		//
+		var note = new Note(column-mainColumn+1, instrument, pitch);
+		var removedNote = this.notes.removeNote(mainColumn, note);
+	}
+}
+
+
+
+
 NoteGrid.prototype.setStartingNote = function(evt, instrument) {
 	var square = evt;
 	
@@ -275,12 +320,24 @@ NoteGrid.prototype.setStartingNote = function(evt, instrument) {
 	var index = this.notes.getIndex(column, note);
 
 	if (applet.player.earlySetString == "") {
-		// should add the note if not already there, otherwise remove
-		if (index == -1) {
-			this.dragNote = [instrument, pitch, column, column];
-			square.style.backgroundImage = "url('images/thumbnail_gray_"+instrument.instrumentName+".png')";
-		} else {
-			this.dragNote = [instrument, pitch, column, -1];
+
+		// can't place a note if it's a part of the note is there.
+		if (square.className.indexOf(instrument.instrumentName+"LengthyNote") < 0) {
+		
+			if (index == -1) {
+				this.dragNote = [instrument, pitch, column, column];
+				square.style.backgroundImage = "url('images/thumbnail_gray_"+instrument.instrumentName+".png')";
+			} else {
+				this.dragNote = [instrument, pitch, column, -1, pitch, column];
+				/////
+				
+				var removedNote = this.notes.removeNote(column, note);		// <- noteLength maybe wrong, but doesn't matter
+				this.java.removeFromPlayer(column, removedNote);
+				
+				this.dragNote[3] = column + removedNote.noteLength - 1;
+				
+
+			}
 		}
 		
 	} else {
@@ -298,18 +355,49 @@ NoteGrid.prototype.setIntermediateNote = function(evt, instrument) {
 		var column = parseInt(this.getInt(square.parentNode.parentNode.id));
 		// check if it's a valid intermediate note
 		
-		if (pitch == this.dragNote[1]) {
+		if (pitch == this.dragNote[1] && !this.dragNote[4]) {
 			var diff = column - this.dragNote[3];
-			if (diff == 1 && this.dragNote[3]-this.dragNote[2] + 1 < this.maxLength) {
+			if (diff == 1 && this.dragNote[3]-this.dragNote[2] + 1 < this.maxLength && square.className.indexOf(instrument.instrumentName) < 0) {
 				// add
 				this.dragNote[3] += 1;
 				square.style.backgroundImage = "url('images/thumbnail_gray_"+instrument.instrumentName+".png')";
+				square.className = square.className + " " + instrument.instrumentName + "LengthyNote";
 			} else if (diff == -1 && column >= this.dragNote[2]) {
 				// remove
 				this.dragNote[3] -= 1;
 				var oldSquare = this.getSquare(column+1, pitch);
 				
 				oldSquare.style.backgroundImage = "none";
+				oldSquare.className = oldSquare.className.replace(" "+instrument.instrumentName + "LengthyNote", "");
+			}
+			
+			
+		} else if (this.dragNote[4]) {
+			// moving the note!!
+
+			// needs to test for conflict here
+			if (true) {
+				// Erase the old square image
+				var endSquare = this.getSquare(this.dragNote[3], this.dragNote[1]);
+				endSquare.className = endSquare.className.replace(" "+this.dragNote[0].instrumentName+"Extendable", "");
+				
+				this.clearBackImage();
+						
+				this.updateDisplay(this.dragNote[2], this.dragNote[1]);
+				
+				
+				// update dragNote
+				this.dragNote[1] = pitch;
+				this.dragNote[3] = this.dragNote[3]-this.dragNote[2]+column;
+				this.dragNote[2] = column;
+				
+				// create new Image
+				this.setIntermediateNotes();
+				mainSquare = this.getSquare(this.dragNote[2], this.dragNote[1]);
+				mainSquare.className = mainSquare.className + " " + this.dragNote[0].instrumentName+"Main";
+				
+				endSquare = this.getSquare(this.dragNote[3], this.dragNote[1]);
+				endSquare.className = endSquare.className + " "+this.dragNote[0].instrumentName+"Extendable";
 			}
 		}
 	}
@@ -319,20 +407,45 @@ NoteGrid.prototype.setIntermediateNote = function(evt, instrument) {
 
 NoteGrid.prototype.setEndingNote = function(evt, instrument) {
 	if (this.dragNote) {
+		var endSquare;
+	
 		var square = evt;
 		var pitch = parseInt(this.getInt(square.id));
 		var column = parseInt(this.getInt(square.parentNode.parentNode.id));
 
 		var note = new Note(this.dragNote[3]-this.dragNote[2] + 1, this.dragNote[0], this.dragNote[1]);	
 		
-		if (this.dragNote[3] == -1) {
-			if (this.dragNote[2] == column) {	
-				var removedNote = this.notes.removeNote(column, note);
-				this.java.removeFromPlayer(column, removedNote);
+		if (this.dragNote[4]) {
+		
+			// was moving, but came back to original spot, thus remove the note
+			if (this.dragNote[5] == column && this.dragNote[4] == pitch) {	
+				endSquare = this.getSquare(this.dragNote[3], this.dragNote[1]);
+				endSquare.className = endSquare.className.replace(" "+this.dragNote[0].instrumentName+"Extendable", "");
+				endSquare = undefined;
 				
-				this.dragNote[3] = column + removedNote.noteLength;
 				this.clearBackImage();
-				square.className = square.className.replace(" " + instrument.instrumentName, "");
+				
+			// moved the note to somewhere else, thus add the note there
+			} else {
+			
+				// if there is no conflict
+				if (!this.noteConflict()) {
+					this.notes.addNote(this.dragNote[2], note);
+					this.java.addToPlayer(this.dragNote[2], note);
+					
+					endSquare = this.getSquare(this.dragNote[3], this.dragNote[1]);
+					this.dragNote[4] = undefined;
+					this.dragNote[5] = undefined;
+					
+				// if there's a conflict
+				} else {
+					// revert all image
+					var endSquare = this.getSquare(this.dragNote[3], this.dragNote[1]);
+					endSquare.className = endSquare.className.replace(" "+this.dragNote[0].instrumentName+"Extendable", "");
+					endSquare = undefined;
+					
+					this.clearBackImage();
+				}
 			}
 			
 		} else {	
@@ -347,12 +460,11 @@ NoteGrid.prototype.setEndingNote = function(evt, instrument) {
 				this.java.addToPlayer(this.dragNote[2], note);
 				
 				var mainSquare = this.getSquare(this.dragNote[2], this.dragNote[1]);
-				mainSquare.className = mainSquare.className + " " + this.dragNote[0].instrumentName;
+				mainSquare.className = mainSquare.className + " " + this.dragNote[0].instrumentName+"Main";
 				mainSquare.style.backgroundImage = "url('images/thumbnail_"+this.dragNote[0].instrumentName+".png')";
 				
-				var endSquare = this.getSquare(this.dragNote[3], this.dragNote[1]);
-//				endSquare.className = 
-				
+				endSquare = this.getSquare(this.dragNote[3], this.dragNote[1]);
+				endSquare.className = endSquare.className + " "+this.dragNote[0].instrumentName+"Extendable";
 			} else {
 				// removes all the background
 				this.clearBackImage();	
@@ -361,13 +473,48 @@ NoteGrid.prototype.setEndingNote = function(evt, instrument) {
 			// consume the event
 		}
 		
-		this.updateDisplay();
+		this.updateDisplay(this.dragNote[2], this.dragNote[1]);
+		if (endSquare) {
+			this.setAdjuster(endSquare, this.dragNote[0].instrumentName);
+		}
 		this.dragNote = undefined;
+		this.tempNote = undefined;
 	}
 }
 
+NoteGrid.prototype.setIntermediateNotes = function() {
+	if (this.dragNote) {
+		var square = this.getSquare(this.dragNote[2], this.dragNote[1]);
+		square.style.backgroundImage = "url('images/thumbnail_"+this.dragNote[0].instrumentName+".png')";
+		
+		for (var i=this.dragNote[2]+1; i<= this.dragNote[3]; i++) {
+			square = this.getSquare(i, this.dragNote[1]);
+			square.style.backgroundImage = "url('images/thumbnail_gray_"+this.dragNote[0].instrumentName+".png')";
+			square.className = square.className + " " + this.dragNote[0].instrumentName + "LengthyNote";
+		}
+	}
+}
 
-
+// show note length adjusting bar
+NoteGrid.prototype.setAdjuster = function(obj, instrumentName) {
+	if (!this.dragNote || !this.dragNote[4]) {
+		if (obj.className.indexOf(instrumentName+"Extendable") >= 0) {
+			if (obj.getElementsByClassName("adjuster").length <= 0) {
+			
+				// make sure to remove the previous one before making new one
+				if (this.adjuster && this.adjuster.parentNote) {
+					this.adjuster.parentNode.removeChild(this.adjuster);
+				}
+				
+				this.adjuster = this.createAdjuster();
+				obj.appendChild(this.adjuster);
+			}
+		} else if (obj.className != "adjuster" && this.adjuster) {
+			this.adjuster.parentNode.removeChild(this.adjuster);
+			this.adjuster = undefined;
+		}
+	}
+}
 
 
 NoteGrid.prototype.resetNote = function() {
@@ -378,13 +525,59 @@ NoteGrid.prototype.resetNote = function() {
 	}
 }
 
+NoteGrid.prototype.noteConflict = function() {
+	if (this.dragNote) {
+		for (var i=this.dragNote[2]; i<=this.dragNote[3]; i++) {
+			var classNames = this.getSquare(i, this.dragNote[1]).classList;
+			var checker = 0;
+			for (var c=0; c<classNames.length; c++) {
+				if (classNames[c].indexOf("Main") >= 0 || classNames[c].indexOf("Lengthy") >= 0) {
+					checker++;
+				}
+			}
+			
+			if (checker >= 2) {
+				return true;
+			}
+		}
+		
+		return false;
+	} else {
+		//IllegalStateException
+	}
+}
+
 NoteGrid.prototype.clearBackImage = function() {
 	if (this.dragNote) {
 		// reset background Image and then remove dragNote
-		for (var i=this.dragNote[2]; i<=this.dragNote[3]; i++) {
-			var square = this.getSquare(i, this.dragNote[1]);
+		var square = this.getSquare(this.dragNote[2], this.dragNote[1]);
+		square.className = square.className.replace(" "+this.dragNote[0].instrumentName+"Main", "");
+		if (square.className.indexOf(this.dragNote[0].instrumentName+"LengthyNote") != -1) {
+			square.style.backgroundImage = "url('images/thumbnail_gray_"+this.dragNote[0].instrumentName+".png')";
+		} else if (square.className.indexOf(this.dragNote[0].instrumentName) != -1) {
+			square.style.backgroundImage = "url('images/thumbnail_"+this.dragNote[0].instrumentName+".png')";
+		} else {
 			square.style.backgroundImage = "none";
 		}
+			
+			
+		for (var i=this.dragNote[2]+1; i<=this.dragNote[3]; i++) {
+			square = this.getSquare(i, this.dragNote[1]);
+			square.className = square.className.replace(" "+this.dragNote[0].instrumentName+"LengthyNote", "");
+			
+			if (square.className.indexOf(this.dragNote[0].instrumentName+"LengthyNote") != -1) {
+				square.style.backgroundImage = "url('images/thumbnail_gray_"+this.dragNote[0].instrumentName+".png')";
+			} else if (square.className.indexOf(this.dragNote[0].instrumentName) != -1) {
+				square.style.backgroundImage = "url('images/thumbnail_"+this.dragNote[0].instrumentName+".png')";
+			} else {
+				square.style.backgroundImage = "none";
+			}
+		}
+	}
+	if (this.tempNote) {
+		this.dragNote = this.tempNote;
+		this.setIntermediateNotes();
+		this.setEndingNote(this.getSquare(this.dragNote[3], this.dragNote[1]), this.dragNote[0]); //fake register
 	}
 }
 
@@ -442,6 +635,15 @@ NoteGrid.prototype.checkNote = function (a, b) {
 NoteGrid.prototype.getSquare = function(column, pitch) {
 	var col = document.getElementById("column"+column);
 	var square = col.getElementsByClassName("grid_square")[this.reversePitch(pitch)];
+	
+	return square;
+}
+
+NoteGrid.prototype.findMainSquare = function(column, pitch, instrumentName) {
+	var square = this.getSquare(column, pitch);
+	while (square.className.indexOf(instrumentName+"LengthyNote") >= 0) {
+		square = this.getSquare(--column, pitch);
+	}
 	
 	return square;
 }
