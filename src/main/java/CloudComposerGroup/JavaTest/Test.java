@@ -20,6 +20,9 @@ public class Test {
 				//Thread.sleep(1000);
 		c.addNote(j);
 		c.play();
+		c.stop();
+		int thing = c.player.getLastColumn();
+		c.play();
 		/*while (c.player.seq.isRunning()) {
 			Thread.sleep(250);
 		}

@@ -6,15 +6,17 @@ fi
 release="featurecomplete"
 versionNum=$1
 workingDir="src/main/java/CloudComposerGroup/CloudComposer"
+currentDir=$PWD
 toDir="test/${release}_${versionNum}"
 `mkdir -p $toDir`
 `mkdir "${toDir}/include"`
 `mkdir "${toDir}/images"`
 
 `javac "${workingDir}/"*.java`
-`jar -cvf $workingDir/MidiPlayer.jar $workingDir/*.class | echo`
-`rm "${workingDir}/"*.class`
-`mv "${workingDir}/MidiPlayer.jar" $toDir`
+`mv $workingDir/*.class .`
+`jar -cvf MidiPlayer.jar *.class | echo`
+`rm *.class`
+`mv MidiPlayer.jar $toDir`
 
 workingDir="src/main/webapp"
 `cp "${workingDir}/"*.html "${toDir}/"`
@@ -33,9 +35,11 @@ password=$2
 
 #files=$toDir/*
 
-ftp -n $server <<END_SCRIPT
+ftp -ni $server <<END_SCRIPT
 quote USER $username
 quote PASS $password
+binary
+
 mkdir test
 cd test
 mkdir include
@@ -43,37 +47,14 @@ mkdir images
 mkdir lib
 mkdir resources
 mkdir songs
-END_SCRIPT
 
-for ff in $toDir/*; do
-file="test/${ff#*/*/}"
-ftp -n $server <<END_SCRIPT
-quote USER $username
-quote PASS $password
-binary
-put $ff $file
-quit
-END_SCRIPT
-done
+lcd $toDir
+cd test
+mput *
+lcd images
+mput *
+lcd ../include
+mput *
+bye
 
-for ff in $toDir/include/*; do
-file="test/${ff#*/*/}"
-ftp -n $server <<END_SCRIPT
-quote USER $username
-quote PASS $password
-binary
-put $ff $file
-quit
 END_SCRIPT
-done
-
-for ff in $toDir/images/*; do
-file="test/${ff#*/*/}"
-ftp -n $server <<END_SCRIPT
-quote USER $username
-quote PASS $password
-binary
-put $ff $file
-quit
-END_SCRIPT
-done
