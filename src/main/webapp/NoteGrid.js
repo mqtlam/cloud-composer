@@ -714,9 +714,12 @@ NoteGrid.prototype.findMainSquare = function(column, pitch, instrumentName) {
 }
 
 NoteGrid.prototype.isSquare = function(current) {
-	if (current.className.indexOf("grid_square") == 0) {
+	// if move out of browser, className is undefined
+	if (current && current.className && current.className.indexOf("grid_square") == 0) {
 		return current;
-	} else if (current.parentNode.className.indexOf("grid_square") == 0) {
+		
+	// if move out of <html> tag, there's no parentNode's className
+	} else if (current.parentNode && current.parentNode.className && current.parentNode.className.indexOf("grid_square") == 0) {
 		return current.parentNode;
 	} else {
 		return false;
