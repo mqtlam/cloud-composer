@@ -524,7 +524,8 @@ function generatePDF($filename)
  */
 function displayLink($filename)
 {
-    echo WEBSITE_URL . $filename;
+    //echo WEBSITE_URL . SAVE_DIRECTORY . $filename . PDF_FILE_EXTENSION;
+    echo WEBSITE_URL . SAVE_DIRECTORY . $filename . LILY_FILE_EXTENSION;
 }
 
 // }}}
@@ -551,7 +552,7 @@ if (isset($_GET[TEST_PARAM]))
 saveFile($lilydata, $filename);
 
 // Generate PDF file from .ly file
-generatePDF($filename);
+//generatePDF($filename);
 
 // Display the link
 displayLink($filename);
