@@ -169,7 +169,6 @@ NoteData.prototype.serializeInstrument = function (column, instr) {
 	return instrumentstring;
 }
 
-
 NoteData.prototype.hasAnyInstruments = function(column) {
 	if (this.data[column]["piano"] && this.data[column]["piano"].length > 0) {
 		return true;
