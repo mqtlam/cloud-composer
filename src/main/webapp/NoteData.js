@@ -154,15 +154,16 @@ NoteData.prototype.serializeInstrument = function (column, instr) {
 	var instrumentstring = "";
 	
 	if (this.data[column][instr].length > 0) {
-		instrumentstring += "<" + instr + ">";
+		instrumentstring += "<instrument name=\"" + instr + "\">";
 		for (var i = 0; i < this.data[column][instr].length; i++) {
 			var noteLength = this.data[column][instr][i].noteLength;
 			var pitch = this.data[column][instr][i].pitch;
-
+			
 			var notestring = "{" + noteLength + "," + pitch + "}";
-			instrumentstring += notestring;
+			instrumentstring += "<length>" + noteLength + "</length>";
+			instrumentstring += "<pitch>" + pitch + "</pitch>";
 		}
-		instrumentstring += "</" + instr + ">";
+		instrumentstring += "</instrument>";
 	}
 	
 	return instrumentstring;

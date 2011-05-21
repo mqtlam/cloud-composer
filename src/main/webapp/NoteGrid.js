@@ -281,6 +281,22 @@ NoteGrid.prototype.gridClick = function (evt, instrument) {
 */
 }
 
+NoteGrid.prototype.manuallyAddNote = function(instrument, pitch, column, noteLength) {
+	this.setStartingNote(this.getSquare(column, pitch), instrument);
+	
+	for (var i=column+1; i<column+noteLength; i++) {
+		this.setIntermediateNote(this.getSquare(i, pitch), instrument);
+	}
+	
+	this.setEndingNote(this.getSquare(column+noteLength-1, pitch), instrument);
+	
+	// remove all the adjuster
+	var adj = document.getElementsByClassName("adjuster");
+	for (var j=0; j<adj.length; j++) {
+		adj[0].parentNode.removeChild(adj[0]);
+	}
+}
+
 
 /////////////////////// Note Length
 NoteGrid.prototype.changeNoteLength = function(square, instrument) {
@@ -346,6 +362,7 @@ NoteGrid.prototype.setStartingNote = function(evt, instrument) {
 		}
 		
 	} else {
+		// switch to the popupbox
 		alert("I am sorry, but your platform does not support Midi Playback.\n"
 			+ "For Possible Resolution visit the following link:\n"
 			+"http://publicstaticdroid.com/cloudcomposer/Issues.html");
