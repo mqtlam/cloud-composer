@@ -23,6 +23,7 @@ public abstract class JSUnitBase extends StandaloneTest {
 		System.setProperty("url", url);
 	}
 
+	// this method is not be used.
 	public abstract String getTestPageRelative(); // this should, when defined in encompassing classes, return actual test file
 }
 
