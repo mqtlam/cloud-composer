@@ -184,6 +184,8 @@ function startElemHandler($parser, $name, $attribs) {
  * e.g. </start>. $name stores the tag name.
  */
 function endElemHandler($parser, $name) {
+/*    global $instruments;
+    
     if (strcasecmp($name, COL_NAME) == 0) {
         // </column> detected
     }
@@ -192,7 +194,7 @@ function endElemHandler($parser, $name) {
         if (strcasecmp($name, $instrName) == 0) {
           // <name> detected
         }
-    }
+    }*/
 }
 
 /**
