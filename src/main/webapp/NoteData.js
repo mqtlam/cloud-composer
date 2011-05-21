@@ -169,6 +169,42 @@ NoteData.prototype.serializeInstrument = function (column, instr) {
 	return instrumentstring;
 }
 
+
+/* For Lilypond, temporary function               --------------------------------------------*/
+NoteData.prototype.serializeColumnForLilypond = function (column) {		
+	var columnstring = "";
+	
+	if (this.hasAnyInstruments(column)) {
+		columnstring += "<column" + " id=\"" + column + "\">";	
+		for (var instr in this.data[column]) {
+			columnstring += this.serializeInstrumentForLilypond(column, instr);
+		}
+		columnstring += "</column>";
+	}
+	
+	return columnstring;
+}
+
+/* For Lilypond, temporary function                --------------------------------------------*/
+NoteData.prototype.serializeInstrumentForLilypond = function (column, instr) {
+        var instrumentstring = "";
+        
+        if (this.data[column][instr].length > 0) {
+                instrumentstring += "<" + instr + ">";
+                for (var i = 0; i < this.data[column][instr].length; i++) {
+                        var noteLength = this.data[column][instr][i].noteLength;
+                        var pitch = this.data[column][instr][i].pitch;
+
+                        var notestring = "{" + noteLength + "," + pitch + "}";
+                        instrumentstring += notestring;
+                }
+                instrumentstring += "</" + instr + ">";
+        }
+        
+        return instrumentstring;
+}
+
+
 NoteData.prototype.hasAnyInstruments = function(column) {
 	if (this.data[column]["piano"] && this.data[column]["piano"].length > 0) {
 		return true;
