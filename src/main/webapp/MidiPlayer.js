@@ -4,7 +4,7 @@ function MidiPlayer(inst, num) {
 	this.instruments = inst;
 	this.maxValue = num-1;
 	this.intervalID = 0;
-	this.intervalSpeend = 150;
+	this.intervalSpeend = 200;
 	this.positionTracker = 1;
 	this.basePosition = 0;
 	
@@ -66,19 +66,25 @@ MidiPlayer.prototype.removeFromPlayer = function (column, note) {
 }
 
 MidiPlayer.prototype.setSongPosition = function(pos) {
-	this.notePosition = pos-1;
+	this.notePosition = pos;
+	this.basePosition = pos;
+	applet.setSongPosition(pos);
+	
+	$('#playbackSlider').slider('option', 'value', pos);	
+	highlightbar.move(pos);
+	
 	var column = document.getElementById('column'+pos);
 	var g = document.getElementById('grid');
 	this.positionTracker = Math.floor(column.offsetLeft/g.offsetWidth)+1;
-	applet.setSongPosition(pos);
-	this.basePosition = pos;
 }
+
 
 function updateSongPosition() {
 	var g = document.getElementById('grid');
 	var b = document.getElementsByClassName('highlightbar')[0];
 	var p = applet.currentSongPosition();
-	if (p == midiplayer.maxValue || p == midiplayer.notePosition) {
+	
+	if (midiplayer.notePosition != midiplayer.basePosition && (p == midiplayer.maxValue || p == grid.lastColumn)) {
 		midiplayer.reset(midiplayer.basePosition);
 		g.scrollLeft = midiplayer.baseScroll;
 		
