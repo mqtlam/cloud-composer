@@ -1,5 +1,5 @@
 var SESSION = "session";
-var SERVER = "http://publicstaticdroid.com/cloudcomposer/test/songs/";
+var SERVER = "http://publicstaticdroid.com/cloudcomposer/songs/";
 
 function checkSession() {
 	var url = window.location.search;
