@@ -7,6 +7,9 @@ function NoteGrid(id, cols, instr, midiplayer) {
 	this.instruments = instr;
 	this.java = midiplayer;
 	
+	// beyond this column, note is not present
+	this.lastColumn = 0;
+	
 	this.dragNote;
 	this.tempNote;
 	this.adjuster;
@@ -461,6 +464,7 @@ NoteGrid.prototype.setEndingNote = function(evt, instrument) {
 			
 			this.notes.addNote(this.dragNote[2], note);
 			this.java.addToPlayer(this.dragNote[2], note);
+			this.lastColumn = Math.max(this.lastColumn, this.dragNote[3]+1);
 			
 			endSquare = this.getSquare(this.dragNote[3], this.dragNote[1]);
 			this.dragNote[4] = undefined;
@@ -484,6 +488,7 @@ NoteGrid.prototype.setEndingNote = function(evt, instrument) {
 			if (this.dragNote[1] == pitch && this.dragNote[3] == column) {
 				this.notes.addNote(this.dragNote[2], note);
 				this.java.addToPlayer(this.dragNote[2], note);
+				this.lastColumn = Math.max(this.lastColumn, this.dragNote[3]+1);
 				
 				// set the main square
 				var mainSquare = this.getSquare(this.dragNote[2], this.dragNote[1]);
