@@ -501,8 +501,8 @@ function interpretData($data)
 function saveFile($data, $filename)
 {
     // write data
-    $fileHandler = fopen(SAVE_DIRECTORY . $filename . LILY_FILE_EXTENSION, 'w')
-        or die("CANNOT OPEN FILE");
+    $fileHandler = fopen(SAVE_DIRECTORY . $filename . LILY_FILE_EXTENSION, 'w');
+//        or die("CANNOT OPEN FILE");
     $dataToWrite = $data;
     fwrite($fileHandler, $dataToWrite);
     fclose($fileHandler);
@@ -514,9 +514,10 @@ function saveFile($data, $filename)
  */
 function generatePDF($filename)
 {
-  $output = shell_exec('lilypond ' + SAVE_DIRECTORY . $filename . LILY_FILE_EXTENSION)
-    or die("PDF GENERATION FAILED");
-
+  $output = shell_exec('~/lilypond/usr/bin/lilypond ' . SAVE_DIRECTORY . $filename . LILY_FILE_EXTENSION);
+//    or die("PDF GENERATION FAILED");
+	shell_exec('mv *.pdf songs/');
+	shell_exec('mv *.ps songs/');
   // check if generated file exists
   return file_exists(SAVE_DIRECTORY . $filename . PDF_FILE_EXTENSION);
 }
@@ -556,7 +557,7 @@ saveFile($lilydata, $filename);
 generatePDF($filename);
 
 // Display the link
-//displayLink($filename);
+displayLink($filename);
 
 // }}}
 

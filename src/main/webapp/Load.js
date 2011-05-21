@@ -46,10 +46,16 @@ function addSessionData(xml) {
 		for (var j=0; j<instruments.length; j++) {
 			selectedInstrument = instruments[j].getAttribute("name");
 			var instr = selector.getInstrument(selectedInstrument);
-			var len = parseInt(instruments[j].getElementsByTagName("length")[0].firstChild.nodeValue);
-			var pitch = parseInt(instruments[j].getElementsByTagName("pitch")[0].firstChild.nodeValue);
 			
-			grid.manuallyAddNote(instr, pitch, col, len);
+			var lengths = instruments[j].getElementsByTagName("length");
+			var pitches = instruments[j].getElementsByTagName("pitch");
+			
+			for (var k=0; k<pitches.length; k++) {
+				var len = parseInt(lengths[k].firstChild.nodeValue);
+				var pitch = parseInt(pitches[k].firstChild.nodeValue);
+			
+				grid.manuallyAddNote(instr, pitch, col, len);
+			}
 		}
 	
 	}
