@@ -105,7 +105,8 @@ function saveSession($data, $filename)
  */
 function displayLink($filename)
 {
-    echo WEBSITE_URL . SAVE_DIRECTORY . $filename .FILE_EXTENSION;
+//   echo WEBSITE_URL . SAVE_DIRECTORY . $filename .FILE_EXTENSION;
+	echo WEBSITE_URL . "Main.html?session=" . $filename;
 }
 
 // }}}

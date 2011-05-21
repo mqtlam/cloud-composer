@@ -175,6 +175,9 @@ function loadUI() {
 	grid = new NoteGrid("grid", initialNumColumns, instrumentsList, midiplayer);
 	highlightbar = new HighlightBar(0, "#CC6666");
 	
+	
+	loadSession();
+	
 }
 
 ///////// FUNCTION CALLs

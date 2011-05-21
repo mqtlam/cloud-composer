@@ -113,6 +113,8 @@ function createTempoSlider(initialValue) {
 			update_bpmValueOnPage();
 		}
 	});
+	
+	update_bpmValueOnPage();
 }
 
 function createPlayerSlider(initialValue) {	
