@@ -531,7 +531,7 @@ function displayLink($filename)
 // }}}
 // {{{ SAVE SESSION AND DISPLAY LINK
 
-$data = $_POST[DATA_PARAM];
+$data = stripslashes($_POST[DATA_PARAM]);
 if (isset($_GET[TEST_PARAM])) {
   $myFile = $_GET[TEST_PARAM];
   $fh = fopen($myFile, 'r')
