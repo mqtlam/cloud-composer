@@ -81,11 +81,16 @@ GetLink.prototype.makeGetLinkContents = function () {
 	var buttons = document.createElement("div");
 	buttons.style.textAlign = "center";
 	
+	var text = document.createElement("div");
+	text.style.textAlign = "center";
+	text.id = "getLinkText"
+	text.innerHTML = "<p>Use following buttons to save your work!<p>";
+	text.style.height = (this.windowHeight - 200) + "px";
+	
 	var texts = document.createElement("div");
 	texts.style.textAlign = "center";
-	texts.id = "getLinkText"
-	texts.innerHTML = "<p>Use following buttons to save your work!<p>";
-	texts.style.height = (this.windowHeight - 120) + "px";
+	texts.id = "getLinkLink"
+	texts.style.height = (this.windowHeight - 200) + "px";
 	
 	var pdfBtn = document.createElement("button");
 	pdfBtn.innerHTML = "Get Sheet Music PDF";
@@ -98,6 +103,7 @@ GetLink.prototype.makeGetLinkContents = function () {
 	buttons.appendChild(pdfBtn);
 	buttons.appendChild(linkBtn);
 	
+	mainBox.appendChild(text);
 	mainBox.appendChild(texts);
 	mainBox.appendChild(buttons);
 	

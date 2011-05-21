@@ -19,7 +19,7 @@ function sendNoteGrid(notegrid, dest) {
 function displayLinkURL(linkURL) {
 	// TODO change me... just checking if it works.
 //	copyToClipboard(linkURL);
-	alert("PermaLink:\n" + linkURL);// + "\n" + "PermaLink has been copied to your clipboard!!");
+	$("#getLinkLink")[0].innerHTML = linkURL;// + "\n" + "PermaLink has been copied to your clipboard!!");
 }
 
 

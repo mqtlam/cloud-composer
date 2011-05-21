@@ -27,12 +27,12 @@ $(document).bind("dragstart", function() {
 
 // call this onload
 function setEvents() {
-	document.body.addEventListener("click", mouseClick, false);
-	document.body.addEventListener("mousedown", mouseDown, false);
-	document.body.addEventListener("mouseup", mouseUp, true);
-	document.body.addEventListener("mouseover", mouseOver, false);
-//	document.body.addEventListener("mouseover", d, false);
-	document.body.addEventListener("mouseout", mouseOut, false);
+	document.addEventListener("click", mouseClick, false);
+	document.addEventListener("mousedown", mouseDown, false);
+	document.addEventListener("mouseup", mouseUp, true);
+	document.addEventListener("mouseover", mouseOver, false);
+//	document.addEventListener("mouseover", mousemove, false);
+//	document.addEventListener("mouseout", mouseOut, false);
 }
 
 function mouseClick(event) {
@@ -79,11 +79,11 @@ function mouseClick(event) {
 
 // Setting note length
 function mouseDown(event) {
-	event.preventDefault();
 	if (selector.currentInstrument) {		
 		var current = event.target;
 		var chk = grid.isSquare(current);
 		if (chk) {
+			event.preventDefault();
 			if (current.className == "adjuster") {
 				// change the note length
 				grid.changeNoteLength(chk, selector.currentInstrument);
@@ -117,8 +117,10 @@ function mouseOver(event) {
 	}
 }
 
-function mouseOut(event) {
-	var current = event.target;
+var a;
+function mousemove(event) {
+	a = event;
+	$("#header_left")[0].innerHTML = event;
 }
 
 function rollOver(event) {
