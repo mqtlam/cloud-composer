@@ -18,6 +18,7 @@ public class CloudMidiPlayer
 	public static final int[] INSTRUMENTS = {0, 30, 114, 56, 40};
 	public static final int OCTAVES = 2;
 	public static final int DEFAULTBPM = 120;
+	private float bpm;
 	
 	public static final float TICKSPERFRAME = 4;
 	
@@ -75,8 +76,14 @@ public class CloudMidiPlayer
 	 */
 	public void setTempo(float bpm)
 	{
-		seq.setTempoInBPM(bpm);
+		guaranteeTempo(bpm);
 		generateNotes();
+	}
+	
+	private void guaranteeTempo(float bpm)
+	{
+		this.bpm = bpm;
+		seq.setTempoInBPM(bpm);
 	}
 	
 	/**
@@ -84,7 +91,7 @@ public class CloudMidiPlayer
 	 * @return A float that represents the current BPM.
 	 */
 	public float getTempo() {
-		return seq.getTempoInBPM();
+		return bpm;
 	}
 	
 	/** 
@@ -96,6 +103,7 @@ public class CloudMidiPlayer
 		pause();
 		try {
 			seq.setSequence(song);
+			guaranteeTempo(bpm);
 			seq.start();
 		} catch (InvalidMidiDataException e) {
 			earlySetString = e.getMessage();
@@ -156,6 +164,7 @@ public class CloudMidiPlayer
 	{
 		seq.stop();
 		seq.setTickPosition(0);
+		
 	}
 	
 	/**
@@ -313,8 +322,10 @@ public class CloudMidiPlayer
 	{
 		for (SequenceInst inst : SequenceInst.values()) {
 			for (int pitch = 0; pitch < SCALE.length * OCTAVES; pitch++) {
-				Sequence s;
-				try {
+				Sequence s = basicSequence();
+				addNote(s, inst, pitch, 0, (int) TICKSPERFRAME);
+				noteSequences[inst.value][pitch] = s;
+				/*try {
 					s = new Sequence(Sequence.PPQ, (int) TICKSPERFRAME);
 					s.createTrack();
 					setInstrument(s, inst);
@@ -323,7 +334,7 @@ public class CloudMidiPlayer
 				} catch (InvalidMidiDataException e) {
 					earlySetString = e.getMessage();
 					return;
-				}
+				}*/
 				
 			}
 		}

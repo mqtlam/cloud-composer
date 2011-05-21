@@ -189,7 +189,7 @@ public class CloudAppletController extends Applet {
 	  * Updates the Midiplayer with the actual song data.
 	  * @throws InvalidMidiDataException if the Midi data is invalid.
 	  */
-	private void updateSequence() throws InvalidMidiDataException {
+	public void updateSequence() throws InvalidMidiDataException {
 		if (changed)
 		{
 			changed = false;

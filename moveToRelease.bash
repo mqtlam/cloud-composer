@@ -31,9 +31,11 @@ versionNum=$1
 toDir="${releaseType}/${release}_${versionNum}"
 
 # Makes the directories we need to place the files.
-`mkdir -p $toDir`
-`mkdir "${toDir}/include"`
-`mkdir "${toDir}/images"`
+if [[ ! -e "${toDir}" ]]; then
+	`mkdir -p $toDir` 
+	`mkdir "${toDir}/include"`
+	`mkdir "${toDir}/images"`
+fi
 
 # This is no longer being automated.
 if [ 1 -lt 0 ]; then

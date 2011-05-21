@@ -23,10 +23,15 @@ public class Test {
 		int[] j = {2, 6, 0, 4};
 				//Thread.sleep(1000);
 		c.addNote(j);
+		c.setTempo(200);
+		System.out.println(c.getTempo());
 		c.play();
+		Thread.sleep(1000);
 		c.stop();
+		System.out.println(c.getTempo());
 		//int thing = c.player.getLastColumn();
 		c.play();
+		System.out.println(c.getTempo());
 		/*while (c.player.seq.isRunning()) {
 			Thread.sleep(250);
 		}
