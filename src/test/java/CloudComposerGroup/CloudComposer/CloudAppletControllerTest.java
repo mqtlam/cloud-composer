@@ -1,5 +1,8 @@
 import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.MidiEvent;
+import javax.sound.midi.MidiMessage;
 import javax.sound.midi.Sequence;
+import javax.sound.midi.Track;
 
 import junit.framework.TestCase;
 import org.junit.Test;
@@ -668,6 +671,41 @@ public class CloudAppletControllerTest extends TestCase {
 	public void testSetGetTempo02() throws InvalidMidiDataException {
 		c.setTempo((float) 5.1521136);
 		assertEquals((float) 5.1521136, c.getTempo(), (float) 1.115);
+	}
+	
+	@Test
+	public void testGetSequence() throws InvalidMidiDataException {
+		assertTrue(c.getSongSequence() == null);
+		
+		int[] note = {0,0,0,4};
+		Sequence s = CloudMidiPlayer.basicSequence();
+		CloudMidiPlayer.SequenceInst instrument = c.player.getInstruments()[note[0]];
+		CloudMidiPlayer.addNote(s, instrument, note[1], note[2], note[3]);
+		c.addNote(note);
+		c.updateSequence();
+		
+		Sequence s2 = c.getSongSequence();
+		assertFalse(s2 == null);
+		
+		Track[] t1 = s.getTracks();
+		Track[] t2 = s2.getTracks();
+		assertTrue(t1.length == t2.length);
+		for (int i = 0; i < t1.length; i++) {
+			Track track1 = t1[i];
+			Track track2 = t2[i];
+			assertTrue(track1.size() == track2.size());
+			for (int j = 0; j < track1.size(); j++) {
+				MidiEvent m1 = track1.get(j);
+				MidiEvent m2 = track2.get(j);
+				assertTrue(m1.getTick() == m2.getTick());
+				byte[] b1 = m1.getMessage().getMessage();
+				byte[] b2 = m2.getMessage().getMessage();
+				assertTrue(b1.length == b2.length);
+				for (int k = 0; k < b1.length; k++) {
+					assertTrue(b1[k] == b2[k]);
+				}
+			}
+		}
 	}
 
 }
