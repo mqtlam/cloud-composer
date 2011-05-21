@@ -742,3 +742,14 @@ NoteGrid.prototype.serialize = function () {
 	return notegridstring;
 }
 
+/* Temporary method */
+NoteGrid.prototype.serializeForLilypond = function () {
+	var notegridstring = "<?xml version=\"1.0\"?>";
+	notegridstring += "<noteData>";
+	for (var i = 0; i < this.numColumns; i++) {
+		notegridstring += this.notes.serializeColumnForLilypond(i); // returns "<col><><>...</col>"
+	}
+	notegridstring += "</noteData>";
+	return notegridstring;
+}
+
