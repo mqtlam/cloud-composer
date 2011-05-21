@@ -514,7 +514,7 @@ function saveFile($data, $filename)
  */
 function generatePDF($filename)
 {
-  $output = ('lilypond ' + SAVE_DIRECTORY . $filename . LILY_FILE_EXTENSION)
+  $output = shell_exec('lilypond ' + SAVE_DIRECTORY . $filename . LILY_FILE_EXTENSION)
     or die("PDF GENERATION FAILED");
 
   // check if generated file exists
@@ -556,7 +556,7 @@ saveFile($lilydata, $filename);
 generatePDF($filename);
 
 // Display the link
-displayLink($filename);
+//displayLink($filename);
 
 // }}}
 
