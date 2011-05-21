@@ -35,17 +35,24 @@ toDir="${releaseType}/${release}_${versionNum}"
 `mkdir "${toDir}/include"`
 `mkdir "${toDir}/images"`
 
+# This is no longer being automated.
+if [ 1 -lt 0 ]; then
 # Creates the .htaccess file at places it at the base directory.
 # Uses the same login info as the FTP server.
 htfile="${toDir}/.htaccess"
 if [[ ($# -eq 2) && (! -e "${htfile}") ]]; then
-	pwfile="${toDir}/.htpasswd"
-	`htpasswd -b -c $pwfile $username $password`
-	`echo "AuthType Basic" >> $htfile`
+	htuser=`echo $username | sed -e 's/@/ /g' | { read FIRST REST ; echo "$FIRST"; }`
+	echo ".htaccess user name is $htuser"
+	htpass=`echo $password | sed -e 's/[^0-9a-zA-Z]//g' | { read FIRST REST ; echo "$FIRST"; }`
+	echo ".htaccess password is now $htpass"
+	pwfile="${toDir}/.testpasswd"
+	`htpasswd -m -b -c $pwfile $htuser $htpass`
 	`echo "AuthName \"Password Required\"" >> $htfile`
-	`echo "AuthUserFile .htpasswd" >> $htfile`
+	`echo "AuthType Basic" >> $htfile`
+	`echo "AuthUserFile /test/.testpasswd" >> $htfile`
 	`echo "AuthGroupFile /dev/null" >> $htfile`
-	`echo "require user $username" >> $htfile`
+	`echo "require valid-user" >> $htfile`
+fi
 fi
 
 # Build Java files into a .jar file and place in the release directory.
@@ -72,7 +79,7 @@ workingDir="src/main/resources"
 
 # Begin an FTP session and proceed to copy all the files over.
 # Will make directories if they do not yet exist.
-ftp -ni $server <<END_SCRIPT
+ftp -ni $server > /dev/null<<END_SCRIPT
 quote USER $username
 quote PASS $password
 binary
@@ -87,11 +94,11 @@ mkdir songs
 
 lcd $toDir
 cd $releaseType
-put .htaccess
-put .htpasswd
 mput *
 mput images/*
 mput include/*
 bye
 
 END_SCRIPT
+
+echo "Transfer complete!"
