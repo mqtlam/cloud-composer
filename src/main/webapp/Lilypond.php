@@ -184,8 +184,8 @@ function startElemHandler($parser, $name, $attribs) {
  * e.g. </start>. $name stores the tag name.
  */
 function endElemHandler($parser, $name) {
-/*    global $instruments;
-    
+/*	global $instruments;
+
     if (strcasecmp($name, COL_NAME) == 0) {
         // </column> detected
     }
@@ -514,7 +514,7 @@ function saveFile($data, $filename)
  */
 function generatePDF($filename)
 {
-  $output = shell_exec('lilypond ' + $filename)
+  $output = ('lilypond ' + SAVE_DIRECTORY . $filename . LILY_FILE_EXTENSION)
     or die("PDF GENERATION FAILED");
 
   // check if generated file exists
@@ -527,13 +527,12 @@ function generatePDF($filename)
 function displayLink($filename)
 {
     echo WEBSITE_URL . SAVE_DIRECTORY . $filename . PDF_FILE_EXTENSION;
-    //echo WEBSITE_URL . SAVE_DIRECTORY . $filename . LILY_FILE_EXTENSION;
 }
 
 // }}}
 // {{{ SAVE SESSION AND DISPLAY LINK
 
-$data = stripslashes($_POST[DATA_PARAM]);
+$data = $_POST[DATA_PARAM];
 if (isset($_GET[TEST_PARAM])) {
   $myFile = $_GET[TEST_PARAM];
   $fh = fopen($myFile, 'r')
@@ -543,7 +542,7 @@ if (isset($_GET[TEST_PARAM])) {
 }
 
 // Interpret Data
-$lilydata = interpretData($data);
+$lilydata = interpretData(stripslashes($data));
 
 // Generate Filename
 $filename = generateFileName();
