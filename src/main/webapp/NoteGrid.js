@@ -295,10 +295,11 @@ NoteGrid.prototype.manuallyAddNote = function(instrument, pitch, column, noteLen
 	this.setEndingNote(this.getSquare(column+noteLength-1, pitch), instrument);
 	
 	// remove all the adjuster
-	var adj = document.getElementsByClassName("adjuster");
-	for (var j=0; j<adj.length; j++) {
-		adj[0].parentNode.removeChild(adj[0]);
-	}
+	this.adjuster.parentNode.removeChild(this.adjuster);
+//	var adj = document.getElementsByClassName("adjuster");
+//	for (var j=0; j<adj.length; j++) {
+//		adj[0].parentNode.removeChild(adj[0]);
+//	}
 }
 
 
