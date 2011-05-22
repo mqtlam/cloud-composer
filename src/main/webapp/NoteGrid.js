@@ -368,7 +368,7 @@ NoteGrid.prototype.setStartingNote = function(evt, instrument) {
 		// switch to the popupbox
 		alert("I am sorry, but your platform does not support Midi Playback.\n"
 			+ "For Possible Resolution visit the following link:\n"
-			+"http://publicstaticdroid.com/cloudcomposer/Issues.html");
+			+"http://cloud-composer.com/Issues.html");
 	}
 }
 
