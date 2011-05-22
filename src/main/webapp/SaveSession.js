@@ -1,25 +1,21 @@
 // called when user clicks save session button
 function sendNoteGrid(notegrid, dest) {
+	$("#getLinkLink")[0].innerHTML = "";
+	$("#getLinkLink")[0].style.backgroundImage = "url('images/loading.gif')";
 	var xmlhttp;
-	var linkURL;
 	if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
 		xmlhttp=new XMLHttpRequest();
 	}
 	xmlhttp.open("POST", dest, true);
 	xmlhttp.onreadystatechange = function() {		
 		if (xmlhttp.readyState==4 && xmlhttp.status==200) {
-			displayLinkURL(xmlhttp.responseText);
+			var link = xmlhttp.responseText;
+			$("#getLinkLink")[0].innerHTML = "<a href=\"" + link + "\" target=\"_blank\">" + link + "</a>";
+			$("#getLinkLink")[0].style.backgroundImage = "none";
 		}
 	}
 	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	xmlhttp.send("data="+notegrid);
-	//displayLinkURL("TEST SERVER RESPOND");	// TEST
-}
-
-function displayLinkURL(linkURL) {
-	// TODO change me... just checking if it works.
-//	copyToClipboard(linkURL);
-	$("#getLinkLink")[0].innerHTML = linkURL;// + "\n" + "PermaLink has been copied to your clipboard!!");
 }
 
 
