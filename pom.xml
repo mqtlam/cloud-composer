@@ -1,0 +1,57 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>CloudComposerGroup</groupId>
+  <artifactId>CloudComposerArtifact</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>Cloud-Composer</name>
+  <url>http://maven.apache.org</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <dependencies>
+    <!--Test Dependencies-->
+    <!-- for JUnit -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.8.1</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- for JSUnit -->
+    <dependency>
+    <groupId>de.berlios.jsunit</groupId>
+    <artifactId>jsunit-maven2-plugin</artifactId>
+    <version>1.3</version>
+	</dependency>
+    
+    
+  </dependencies>
+
+  <mailingLists>
+    <mailingList>
+      <name>Mail Support</name>
+      <post>cloudcomposerdev@gmail.com</post>
+    </mailingList>
+  </mailingLists>
+  <profiles>
+    <profile>
+      <build>
+        <plugins>
+        	<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+			</plugin>
+		</plugins>
+      </build>
+    </profile>
+  </profiles>
+</project>
