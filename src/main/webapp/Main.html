@@ -1,13 +1,6 @@
-<?php 
-
-$save = $_REQUEST["save"];
-# echo "save is $save";
-
-?>
-
 <html>
 	<head>
-		<title>403 UI</title>
+		<title>Cloud Composer, CSE 403</title>
 		
 		
 		<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
@@ -18,7 +11,7 @@ $save = $_REQUEST["save"];
 		<link rel="stylesheet" type="text/css" href="include/Grid.css" />
 		<link rel="stylesheet" type="text/css" href="include/Instrument.css"/>
 		<link rel="stylesheet" type="text/css" href="include/MidiPlayer.css" />
-		<link rel="stylesheet" type="text/css" href="include/GetLink.css" />
+		<link rel="stylesheet" type="text/css" href="include/DisplayBox.css" />
 		
 		<script src="include/Load.js" type="text/javascript"></script>
 		
@@ -34,7 +27,7 @@ $save = $_REQUEST["save"];
         <script src="include/MidiPlayer.js" type="text/javascript"></script>
         <script src="include/SaveSession.js" type="text/javascript"></script>
         <script src="include/HighlightBar.js" type="text/javascript"></script>
-        <script src="include/GetLink.js" type="text/javascript"></script>
+        <script src="include/DisplayBox.js" type="text/javascript"></script>
         <script src="include/Tutorial.js" type="text/javascript"></script>
         <script src="include/Dummy.js" type="text/javascript"></script>
 	</head>
@@ -48,6 +41,7 @@ $save = $_REQUEST["save"];
 			<div id="header_right">
 				<button id="getlinkbutton">Get Link</button>
 				<button id="downloadbutton">Download</button>
+				
 				<div id="tempobar">
 					<div id="sliderValue">
 						BPM = 80
@@ -55,6 +49,11 @@ $save = $_REQUEST["save"];
 					<div id="tempo">
 						<!-- Slider goes here-->
 					</div>
+				</div>
+				
+				<div>
+					Tutorial
+					<!-- Tutorial display Button -->
 				</div>
 			</div>
 		</div>

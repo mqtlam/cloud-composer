@@ -26,7 +26,9 @@
  */
 //define("WEBSITE_URL", "http://students.washington.edu/jclement/Cloud-Composer/");
 //define("WEBSITE_URL", "http://publicstaticdroid.com/cloudcomposer/test/");
-define("WEBSITE_URL", "http://cloud-composer.com/");
+define("WEBSITE_URL", "http://publicstaticdroid.com/cloudcomposer/");
+//define("WEBSITE_URL", "http://cloud-composer.com/");
+
 /**
  * Directory to save new file (and look up old files)
  */
@@ -107,7 +109,7 @@ function saveSession($data, $filename)
 function displayLink($filename)
 {
 //   echo WEBSITE_URL . SAVE_DIRECTORY . $filename .FILE_EXTENSION;
-	echo WEBSITE_URL . "?save=" . $filename;
+	echo WEBSITE_URL . "?session=" . $filename;
 }
 
 // }}}

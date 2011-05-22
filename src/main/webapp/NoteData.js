@@ -88,6 +88,7 @@ NoteData.prototype.getIndex = function (column, note) {
 	return -1;
 }
 
+// get all the instruments that exist in the specified column and pitch.
 NoteData.prototype.getInstruments = function (column, pitch) {
 	var list = [];
 	for (var instr in this.data[column]) {
@@ -206,16 +207,11 @@ NoteData.prototype.serializeInstrumentForLilypond = function (column, instr) {
 
 
 NoteData.prototype.hasAnyInstruments = function(column) {
-	if (this.data[column]["piano"] && this.data[column]["piano"].length > 0) {
-		return true;
-	} else if (this.data[column]["trumpet"] && this.data[column]["trumpet"].length > 0) {
-		return true;
-	} else if (this.data[column]["violin"] && this.data[column]["violin"].length > 0) {
-		return true;
-	} else if (this.data[column]["drum"] && this.data[column]["drum"].length > 0) {
-		return true;
-	} else if (this.data[column]["guitar"] && this.data[column]["guitar"].length > 0) {
-		return true;
+	for (var instr in this.data[column]) {
+		if (this.data[column][instr] && this.data[column][instr].length > 0) {
+			return true;
+		}
 	}
+
 	return false;
 }

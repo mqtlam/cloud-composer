@@ -1,5 +1,5 @@
 var SESSION = "session";
-var SERVER = "http://publicstaticdroid.com/cloudcomposer/songs/";
+var SERVER = "http://"+window.location.hostname+window.location.pathname.substr(0, window.location.pathname.lastIndexOf("/"))+"/songs/";
 
 function checkSession() {
 	var url = window.location.search;
@@ -59,6 +59,9 @@ function addSessionData(xml) {
 		}
 	
 	}
+	
+	// sets the tempo
+	grid.setTempo(parseInt(head.getAttribute("tempo")));
 	
 	// force selects an instrument.
 	selector.setActiveInstrument(selectedInstrument);
