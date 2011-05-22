@@ -12,6 +12,8 @@
 	font-weight: bold;
 	border: 1px dashed black;
 	background-color: #DDDDDD;
+	background-repeat: no-repeat;
+	background-position:center;
 }
 
 #getLinkButton, #getPdfButton
