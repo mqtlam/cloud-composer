@@ -20,18 +20,26 @@ public class Test {
 		c.addNote(i);
 		int[] k = {0, 4, 3, 20};
 		c.addNote(k);*/
-		int[] j = {2, 6, 0, 4};
+		int[] j = {2, 6, 7, 10};
 				//Thread.sleep(1000);
+		//System.out.println(c.currentSongPosition());
 		c.addNote(j);
-		c.setTempo(200);
-		System.out.println(c.getTempo());
+		c.playNote(0, 1);
+		Thread.sleep(500);
+		c.setSongPosition(5);
 		c.play();
-		Thread.sleep(1000);
-		c.stop();
-		System.out.println(c.getTempo());
+		//c.pause();
+		//System.out.println(c.currentSongPosition());
+		
+		//c.setTempo(200);
+		//System.out.println(c.getTempo());
+		//c.play();
+		//Thread.sleep(1000);
+		//c.stop();
+		//System.out.println(c.getTempo());
 		//int thing = c.player.getLastColumn();
-		c.play();
-		System.out.println(c.getTempo());
+		//c.play();
+		//System.out.println(c.getTempo());
 		/*while (c.player.seq.isRunning()) {
 			Thread.sleep(250);
 		}
