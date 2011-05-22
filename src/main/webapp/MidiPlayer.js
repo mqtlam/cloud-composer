@@ -136,8 +136,6 @@ function createPlayerSlider(initialValue) {
 	$("#playbackSlider").slider("disable");
 }
 
-
-
 function update_bpmValueOnPage(){
 	// get the location to update
 	var bpm = document.getElementById("sliderValue");
@@ -147,4 +145,5 @@ function update_bpmValueOnPage(){
 	bpm.innerHTML = "BPM = " + value;
 	// update bpm of midiplayer
 	applet.setTempo(value);
+	grid.notes.tempo = value;
 }

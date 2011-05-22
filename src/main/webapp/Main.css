@@ -16,7 +16,7 @@ body > div
 	margin-left:auto;
 	margin-right:auto;
 	width:95%;
-	min-width:860px;
+	min-width:900px;
 }
 
 #header
@@ -33,7 +33,7 @@ body > div
 #header_right
 {
 	float:right;
-	width:540px;
+	width:600px;
 
 }
 #header_right > button

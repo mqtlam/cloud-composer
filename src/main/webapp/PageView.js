@@ -3,8 +3,8 @@
 // During, Disable Java mode, playback does not work.
 
 // Set Disable Tutorial to true in order to skip tutorials
-var DISABLE_JAVA = false;
-var DISABLE_TUTORIAL = true;
+var DISABLE_JAVA = true;
+var DISABLE_TUTORIAL = false;
 
 // reference to the grid object
 var grid;
@@ -35,6 +35,8 @@ function setEvents() {
 //	document.addEventListener("mouseout", mouseOut, false);
 }
 
+
+// Listens for a normal mouse click events
 function mouseClick(event) {
 	var current = event.target;
 	var tutorialChecker = current.className == "" ? current.id : current.className;
@@ -59,13 +61,13 @@ function mouseClick(event) {
 	} else if (current.id == "playpausebutton") {
 		midiplayer.onPlayPauseClick(grid.numColumns);
 	} else if (current.id == "getlinkbutton") {
-		getlink = new GetLink(600, 280, "#CCCCCC");		
+		getlink = new DisplayBox(600, 280, "#CCCCCC", "GetLink");		
 	} else if (current.className == "column_button") {
 		var c = parseInt(current.id);
 		midiplayer.setSongPosition(c);
-	} else if (current.id == "getLinkCloseButton") {
+	} else if (current.id == "displayCloseButton") {
 		// remove the GetLink Box
-		document.body.removeChild(getlink.back);
+		document.body.removeChild(current.parentNode.parentNode);
 	} else if (current.id == "getLinkButton") {
 		var notegrid = grid.serialize();
 		sendNoteGrid(notegrid, "SaveSession.php");
@@ -171,15 +173,21 @@ function loadUI() {
 	applet = DISABLE_JAVA ? new Dummy() : document.getElementById('javaApplet');
 	tutorial = DISABLE_TUTORIAL ? new Dummy() : new Tutorial();
 		
-	selector = new InstrumentSelector(instrumentsList);		
-	midiplayer = new MidiPlayer(instrumentsList, initialNumColumns);
+	selector = new InstrumentSelector(instrumentsList);
+			
 	// create Grid, multiple of 16
-	grid = new NoteGrid("grid", initialNumColumns, instrumentsList, midiplayer);
+	grid = new NoteGrid("grid", initialNumColumns, instrumentsList);
+	midiplayer = new MidiPlayer(instrumentsList, initialNumColumns);
 	highlightbar = new HighlightBar(0, "#CC6666");
 	
+	shareReferences()
 	
 	loadSession();
 	
+}
+
+function shareReferences() {
+	grid.java = midiplayer;
 }
 
 ///////// FUNCTION CALLs

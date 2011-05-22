@@ -8,6 +8,7 @@ Dummy.prototype.stop = function () {}
 Dummy.prototype.playNote = function (a,b) {}
 Dummy.prototype.addNote = function (a) {}
 Dummy.prototype.removeNote = function (a) {}
+Dummy.prototype.setTempo = function (a) {}
 Dummy.prototype.setSongPosition = function (a) {}
 Dummy.prototype.currentSongPosition = function () {}
 Dummy.prototype.updateTutorialView = function (a) {}

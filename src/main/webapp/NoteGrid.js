@@ -1,11 +1,11 @@
 // Contains functions related to the grid
 
-function NoteGrid(id, cols, instr, midiplayer) {
+function NoteGrid(id, cols, instr) {
 	// initiated values
 	this.numColumns = 0;								// current number of columns
 	this.notes = new NoteData(this.numColumns);			// array that contains all the notes
 	this.instruments = instr;
-	this.java = midiplayer;
+	this.java;
 	
 	// beyond this column, note is not present
 	this.lastColumn = 0;
@@ -515,6 +515,12 @@ NoteGrid.prototype.setEndingNote = function(evt, instrument) {
 	}
 }
 
+NoteGrid.prototype.setTempo = function (t) {
+	this.notes.tempo = t;
+	$('#tempo').slider('option', 'value', t);
+}
+
+
 NoteGrid.prototype.setIntermediateNotes = function() {
 	if (this.dragNote) {
 		var square = this.getSquare(this.dragNote[2], this.dragNote[1]);
@@ -734,7 +740,7 @@ NoteGrid.prototype.isSquare = function(current) {
 /* returns a string version of the current grid (used for submitting form to PHP) */
 NoteGrid.prototype.serialize = function () {
 	var notegridstring = "<?xml version=\"1.0\"?>";
-	notegridstring += "<noteData>";
+	notegridstring += "<noteData tempo=\"" + this.notes.tempo + "\">";
 	for (var i = 0; i < this.numColumns; i++) {
 		notegridstring += this.notes.serializeColumn(i); // returns "<col><><>...</col>"
 	}
