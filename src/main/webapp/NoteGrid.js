@@ -83,6 +83,7 @@ NoteGrid.prototype.createColumn = function (loc_x) {
 	// create selector bar
 	var columnbutton = document.createElement("button");
 	columnbutton.className = "column_button";
+	columnbutton.innerHTML = "<span class=\"columnNumber\">" + (loc_x+1) + "</span>";
 	columnbutton.id = loc_x;
 	column.appendChild(columnbutton);
 

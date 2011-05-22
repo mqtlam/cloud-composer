@@ -3,8 +3,8 @@
 // During, Disable Java mode, playback does not work.
 
 // Set Disable Tutorial to true in order to skip tutorials
-var DISABLE_JAVA = true;
-var DISABLE_TUTORIAL = false;
+var DISABLE_JAVA = false;
+var DISABLE_TUTORIAL = true;
 
 // reference to the grid object
 var grid;
