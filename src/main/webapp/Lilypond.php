@@ -108,7 +108,7 @@ define("COL_NAME", "column");
 /**
  * Column id attribute.
  */
-define("COL_ID", "column");
+define("COL_ID", "id");
 
 /**
  * Index of first column in note grid.
