@@ -518,7 +518,7 @@ function generatePDF($filename)
 	shell_exec('mv *.pdf songs/');
 	shell_exec('mv *.ps songs/');
   // check if generated file exists
-  return file_exists(SAVE_DIRECTORY . $filename . PDF_FILE_EXTENSION);
+  //return file_exists(SAVE_DIRECTORY . $filename . LILY_FILE_EXTENSION);
 }
 
 /**
