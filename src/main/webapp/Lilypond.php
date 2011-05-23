@@ -479,6 +479,7 @@ function interpretData($data)
     global $instruments;
     global $pitches;
     global $exactTranscription;
+    global $tempo;
 
     $timeSignatureNumerator = SIXTEENTH_NOTES_PER_MEASURE / 4;
 
