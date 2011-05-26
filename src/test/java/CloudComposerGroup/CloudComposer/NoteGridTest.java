@@ -2,21 +2,25 @@
  * Unit test for CloudComposerGroup.Note class!
  */
 
-import org.junit.Test;
-import org.junit.Before;
-
-import junit.framework.TestCase;
-import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.matchers.JUnitMatchers.*;
 import CloudComposerGroup.CloudComposer.*;
-import java.util.*;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * This is for testing whether NoteGrid object works correct as it 
  * is supposed to without any bugs.
  */
-public class NoteGridTest extends TestCase  {
+public class NoteGridTest  {
 	
 	/** NoteGrid object   **/
 	private NoteGrid grid;
@@ -60,7 +64,7 @@ public class NoteGridTest extends TestCase  {
 	public void testNoteGridAddContains00() {
 		grid.add(n0, 0);
 
-		assertTrue(grid.contains(n0, 0));
+		assertTrue(grid.contains(new Note(1, 0, 0), 0));
 	}
 	
 	/**
@@ -72,8 +76,8 @@ public class NoteGridTest extends TestCase  {
 		grid.add(n0, 0);
 		grid.add(n1, 1);
 
-		assertTrue(grid.contains(n0, 0));
-		assertTrue(grid.contains(n1, 1));
+		assertTrue(grid.contains(new Note(1, 0, 0), 0));
+		assertTrue(grid.contains(new Note(1, 1, 1), 1));
 	}
 	
 	/**
@@ -84,7 +88,7 @@ public class NoteGridTest extends TestCase  {
 	public void testNoteGridAddContains02() {
 		grid.add(n0, 9);
 
-		assertTrue(grid.contains(n0, 9));
+		assertTrue(grid.contains(new Note(1, 0, 0), 9));
 	}
 	
 	/**
@@ -95,7 +99,7 @@ public class NoteGridTest extends TestCase  {
 	public void testNoteGridAddContains03() {
 		grid.add(n0, 9);
 
-		assertTrue(grid.contains(n0, 9));
+		assertTrue(grid.contains(new Note(1, 0, 0), 9));
 	}
 	
 	/**
@@ -107,8 +111,8 @@ public class NoteGridTest extends TestCase  {
 		grid.add(n5, 8);
 		grid.add(n6, 9);
 
-		assertTrue(grid.contains(n5, 8));
-		assertTrue(grid.contains(n6, 9));
+		assertTrue(grid.contains(new Note(1, 2, 5), 8));
+		assertTrue(grid.contains(new Note(1, 4, 6), 9));
 	}
 
 
@@ -123,12 +127,12 @@ public class NoteGridTest extends TestCase  {
 		grid.add(n2, 2);
 		grid.add(n3, 3);
 		grid.add(n4, 4);
-
-		assertTrue(grid.contains(n0, 0));
-		assertTrue(grid.contains(n1, 1));
-		assertTrue(grid.contains(n2, 2));
-		assertTrue(grid.contains(n3, 3));
-		assertTrue(grid.contains(n4, 4));
+		
+		assertTrue(grid.contains(new Note(1, 0, 0), 0));
+		assertTrue(grid.contains(new Note(1, 1, 1), 1));
+		assertTrue(grid.contains(new Note(1, 2, 2), 2));
+		assertTrue(grid.contains(new Note(1, 3, 3), 3));
+		assertTrue(grid.contains(new Note(1, 1, 4), 4));
 	}
 
 	/**
@@ -143,11 +147,11 @@ public class NoteGridTest extends TestCase  {
 		grid.add(n3, 8);
 		grid.add(n4, 9);
 
-		assertTrue(grid.contains(n0, 5));
-		assertTrue(grid.contains(n1, 6));
-		assertTrue(grid.contains(n2, 7));
-		assertTrue(grid.contains(n3, 8));
-		assertTrue(grid.contains(n4, 9));
+		assertTrue(grid.contains(new Note(1, 0, 0), 5));
+		assertTrue(grid.contains(new Note(1, 1, 1), 6));
+		assertTrue(grid.contains(new Note(1, 2, 2), 7));
+		assertTrue(grid.contains(new Note(1, 3, 3), 8));
+		assertTrue(grid.contains(new Note(1, 1, 4), 9));
 	}
 	
 	/**
@@ -167,16 +171,16 @@ public class NoteGridTest extends TestCase  {
 		grid.add(n8, 8);
 		grid.add(n9, 9);
 
-		assertTrue(grid.contains(n0, 0));
-		assertTrue(grid.contains(n1, 1));
-		assertTrue(grid.contains(n2, 2));
-		assertTrue(grid.contains(n3, 3));
-		assertTrue(grid.contains(n4, 4));
-		assertTrue(grid.contains(n5, 5));
-		assertTrue(grid.contains(n6, 6));
-		assertTrue(grid.contains(n7, 7));
-		assertTrue(grid.contains(n8, 8));
-		assertTrue(grid.contains(n9, 9));
+		assertTrue(grid.contains(new Note(1, 0, 0), 0));
+		assertTrue(grid.contains(new Note(1, 1, 1), 1));
+		assertTrue(grid.contains(new Note(1, 2, 2), 2));
+		assertTrue(grid.contains(new Note(1, 3, 3), 3));
+		assertTrue(grid.contains(new Note(1, 1, 4), 4));
+		assertTrue(grid.contains(new Note(1, 2, 5), 5));
+		assertTrue(grid.contains(new Note(1, 4, 6), 6));
+		assertTrue(grid.contains(new Note(1, 3, 7), 7));
+		assertTrue(grid.contains(new Note(1, 0, 8), 8));
+		assertTrue(grid.contains(new Note(1, 2, 9), 9));
 	}
 		
 	/**
@@ -275,10 +279,10 @@ public class NoteGridTest extends TestCase  {
 		grid.add(n0, 0);
 		List<Note> actual = grid.getNotes(0);
 		List<Note> expected = new ArrayList<Note>();
-		expected.add(n0);
+		expected.add(new Note(1, 0, 0));
 		
-		assertEquals(expected, actual);
-	}
+		assertTrue(testNoteGridGetNotesHelper(expected, actual));
+	}	
 	
 	/**
 	 * Test if note grid returns a list of the notes of a column correctly or not
@@ -289,10 +293,10 @@ public class NoteGridTest extends TestCase  {
 		grid.add(n1, 0);
 		List<Note> actual = grid.getNotes(0);
 		List<Note> expected = new ArrayList<Note>();
-		expected.add(n0);
-		expected.add(n1);
+		expected.add(new Note(1, 0, 0));
+		expected.add(new Note(1, 1, 1));
 		
-		assertEquals(expected, actual);
+		assertTrue(testNoteGridGetNotesHelper(expected, actual));
 	}
 
 	/**
@@ -304,10 +308,10 @@ public class NoteGridTest extends TestCase  {
 		grid.add(n1, 1);
 		List<Note> actual = grid.getNotes(1);
 		List<Note> expected = new ArrayList<Note>();
-		expected.add(n0);
-		expected.add(n1);
+		expected.add(new Note(1, 0, 0));
+		expected.add(new Note(1, 1, 1));
 		
-		assertEquals(expected, actual);
+		assertTrue(testNoteGridGetNotesHelper(expected, actual));
 	}
 
 	/**
@@ -319,10 +323,10 @@ public class NoteGridTest extends TestCase  {
 		grid.add(n1, 2);
 		List<Note> actual = grid.getNotes(2);
 		List<Note> expected = new ArrayList<Note>();
-		expected.add(n0);
-		expected.add(n1);
+		expected.add(new Note(1, 0, 0));
+		expected.add(new Note(1, 1, 1));
 		
-		assertEquals(expected, actual);
+		assertTrue(testNoteGridGetNotesHelper(expected, actual));
 	}
 
 	/**
@@ -334,10 +338,10 @@ public class NoteGridTest extends TestCase  {
 		grid.add(n1, 8);
 		List<Note> actual = grid.getNotes(8);
 		List<Note> expected = new ArrayList<Note>();
-		expected.add(n0);
-		expected.add(n1);
+		expected.add(new Note(1, 0, 0));
+		expected.add(new Note(1, 1, 1));
 		
-		assertEquals(expected, actual);
+		assertTrue(testNoteGridGetNotesHelper(expected, actual));
 	}
 
 	/**
@@ -349,10 +353,10 @@ public class NoteGridTest extends TestCase  {
 		grid.add(n1, 9);
 		List<Note> actual = grid.getNotes(9);
 		List<Note> expected = new ArrayList<Note>();
-		expected.add(n0);
-		expected.add(n1);
+		expected.add(new Note(1, 0, 0));
+		expected.add(new Note(1, 1, 1));
 		
-		assertEquals(expected, actual);
+		assertTrue(testNoteGridGetNotesHelper(expected, actual));
 	}
 
 	/**
@@ -368,13 +372,13 @@ public class NoteGridTest extends TestCase  {
 		List<Note> actual = grid.getNotes(0);
 		
 		List<Note> expected = new ArrayList<Note>();
-		expected.add(n0);
-		expected.add(n1);
-		expected.add(n2);
-		expected.add(n3);
-		expected.add(n4);
+		expected.add(new Note(1, 0, 0));
+		expected.add(new Note(1, 1, 1));
+		expected.add(new Note(1, 2, 2));
+		expected.add(new Note(1, 3, 3));
+		expected.add(new Note(1, 1, 4));
 		
-		assertEquals(expected, actual);
+		assertTrue(testNoteGridGetNotesHelper(expected, actual));
 	}
 
 	/**
@@ -390,13 +394,29 @@ public class NoteGridTest extends TestCase  {
 		List<Note> actual = grid.getNotes(0);
 		
 		List<Note> expected = new ArrayList<Note>();
-		expected.add(n5);
-		expected.add(n6);
-		expected.add(n7);
-		expected.add(n8);
-		expected.add(n9);
+		expected.add(new Note(1, 2, 5));
+		expected.add(new Note(1, 4, 6));
+		expected.add(new Note(1, 3, 7));
+		expected.add(new Note(1, 0, 8));
+		expected.add(new Note(1, 2, 9));
 		
-		assertEquals(expected, actual);
+		assertTrue(testNoteGridGetNotesHelper(expected, actual));
+	}
+	
+	/**
+	 * Helper method for testNoteGridGetNotes
+	 * 
+	 * @param expected, expected result
+	 * @param actual, actual result
+	 * @return true if expected = actual. false, otherwise.
+	 */
+	private boolean testNoteGridGetNotesHelper(List<Note> expected, List<Note> actual) {
+		if (expected.size() != actual.size())
+			return false;
+		for (int i = 0; i < expected.size(); i++)
+			if (!expected.get(i).equals(actual.get(i)))
+				return false;
+		return true;
 	}
 	
 	/**
