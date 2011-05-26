@@ -682,6 +682,19 @@ public class CloudAppletControllerTest extends TestCase {
 		assertEquals((float) 5.1521136, c.getTempo(), (float) 1.115);
 	}
 	
+//	@Test
+//	public void testDownload01() throws InvalidMidiDataException, IOException {
+//		c.player.setSequence(new Sequence(Sequence.SMPTE_25, 0));
+//		c.download("./download/");
+//		
+//	}
+//	
+//	@Test
+//	public void testDownload02() throws InvalidMidiDataException, IOException {
+//		c.player.setSequence(new Sequence(Sequence.PPQ, 0));
+//		c.download("./download/");
+//	}
+	
 	@Test
 	public void testGetSequence() throws InvalidMidiDataException {
 		assertTrue(c.getSongSequence() == null);
