@@ -103,7 +103,6 @@ public class CloudMidiPlayer
 		pause();
 		guaranteeTempo(bpm);
 		seq.start();
-		
 	}
 	
 	/** Plays a note using the provided instrument at the given pitch. 
@@ -320,17 +319,6 @@ public class CloudMidiPlayer
 				Sequence s = basicSequence();
 				addNote(s, inst, pitch, 0, (int) TICKSPERFRAME);
 				noteSequences[inst.value][pitch] = s;
-				/*try {
-					s = new Sequence(Sequence.PPQ, (int) TICKSPERFRAME);
-					s.createTrack();
-					setInstrument(s, inst);
-					addNote(s, inst, pitch, 0, (int) TICKSPERFRAME);
-					noteSequences[inst.value][pitch] = s;
-				} catch (InvalidMidiDataException e) {
-					earlySetString = e.getMessage();
-					return;
-				}*/
-				
 			}
 		}
 		
