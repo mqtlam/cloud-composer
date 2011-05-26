@@ -39,9 +39,7 @@
 /**
  * URL of website for displaying to user
  */
-//define("WEBSITE_URL", "http://students.washington.edu/jclement/Cloud-Composer/");
-//define("WEBSITE_URL", "http://publicstaticdroid.com/cloudcomposer/test/");
-define("WEBSITE_URL", "http://publicstaticdroid.com/cloudcomposer/");
+define("WEBSITE_URL", "http://" . $_SERVER['SERVER_NAME'] . substr($_SERVER['PHP_SELF'], 0, strrpos($_SERVER['PHP_SELF'], "/")) . "/");
 
 /**
  * Directory to save new file (and look up old files)
@@ -93,9 +91,24 @@ $pitches = array(   0   => "c'",  // c4 = 60
                     9   => "a''"   );
 
 /**
+ * Note data tag name.
+ */
+define("NOTE_DATA_NAME", "noteData");
+
+/**
+ * Note data tempo attribute.
+ */
+define("NOTE_DATA_TEMPO", "tempo");
+
+/**
  * Column tag name.
  */
 define("COL_NAME", "column");
+
+/**
+ * Column id attribute.
+ */
+define("COL_ID", "id");
 
 /**
  * Index of first column in note grid.
@@ -117,6 +130,11 @@ define("SIXTEENTH_NOTES_PER_MEASURE", 16);
  * the sheet generated is an exact transcription.
  */
 $exactTranscription = true;
+
+/**
+ * Stores the tempo of the song. If 0, then no tempo marking will be recorded.
+ */
+$tempo = 0;
 
 /**
  * Stores the current instrument as a state from the XML parser.
@@ -164,10 +182,16 @@ function startElemHandler($parser, $name, $attribs) {
     global $currentCol;
     global $currentColumn;
     global $currentInstrument;
+    global $tempo;
+
+    if (strcasecmp($name, NOTE_DATA_NAME) == 0) {
+        // <noteData tempo="num"> detected
+        $tempo = $attribs[NOTE_DATA_TEMPO];
+    }
 
     if (strcasecmp($name, COL_NAME) == 0) {
         // <column id="num"> detected
-        $currentCol = $attribs["id"];
+        $currentCol = $attribs[COL_ID];
     }
 
     foreach ($instruments as $instr => $instrName)
@@ -455,6 +479,7 @@ function interpretData($data)
     global $instruments;
     global $pitches;
     global $exactTranscription;
+    global $tempo;
 
     $timeSignatureNumerator = SIXTEENTH_NOTES_PER_MEASURE / 4;
 
@@ -482,6 +507,8 @@ function interpretData($data)
     {
       $newData .= "\\new Staff\n{\n\t\\set Staff.instrumentName = #\"{$instruments[$instr]}\""
               . "\n\t\\clef treble\n\t\\time $timeSignatureNumerator/4\n\t";
+      if ($tempo > 0)
+        $newData .= "\\tempo 4 = $tempo\n\t";
       $newData .= $instrumentData . " \\bar \"|.\"" . "\n}\n\n";
     }
     
@@ -520,7 +547,7 @@ function generatePDF($filename)
 	shell_exec('mv *.pdf songs/');
 	shell_exec('mv *.ps songs/');
   // check if generated file exists
-  return file_exists(SAVE_DIRECTORY . $filename . PDF_FILE_EXTENSION);
+  //return file_exists(SAVE_DIRECTORY . $filename . LILY_FILE_EXTENSION);
 }
 
 /**

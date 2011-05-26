@@ -1,11 +1,11 @@
 // Contains functions related to the grid
 
-function NoteGrid(id, cols, instr, midiplayer) {
+function NoteGrid(id, cols, instr) {
 	// initiated values
 	this.numColumns = 0;								// current number of columns
 	this.notes = new NoteData(this.numColumns);			// array that contains all the notes
 	this.instruments = instr;
-	this.java = midiplayer;
+	this.java;
 	
 	// beyond this column, note is not present
 	this.lastColumn = 0;
@@ -83,6 +83,7 @@ NoteGrid.prototype.createColumn = function (loc_x) {
 	// create selector bar
 	var columnbutton = document.createElement("button");
 	columnbutton.className = "column_button";
+	columnbutton.innerHTML = "<span class=\"columnNumber\">" + (loc_x+1) + "</span>";
 	columnbutton.id = loc_x;
 	column.appendChild(columnbutton);
 
@@ -294,10 +295,11 @@ NoteGrid.prototype.manuallyAddNote = function(instrument, pitch, column, noteLen
 	this.setEndingNote(this.getSquare(column+noteLength-1, pitch), instrument);
 	
 	// remove all the adjuster
-	var adj = document.getElementsByClassName("adjuster");
-	for (var j=0; j<adj.length; j++) {
-		adj[0].parentNode.removeChild(adj[0]);
-	}
+	this.adjuster.parentNode.removeChild(this.adjuster);
+//	var adj = document.getElementsByClassName("adjuster");
+//	for (var j=0; j<adj.length; j++) {
+//		adj[0].parentNode.removeChild(adj[0]);
+//	}
 }
 
 
@@ -368,7 +370,7 @@ NoteGrid.prototype.setStartingNote = function(evt, instrument) {
 		// switch to the popupbox
 		alert("I am sorry, but your platform does not support Midi Playback.\n"
 			+ "For Possible Resolution visit the following link:\n"
-			+"http://publicstaticdroid.com/cloudcomposer/Issues.html");
+			+"http://cloud-composer.com/Issues.html");
 	}
 }
 
@@ -514,6 +516,12 @@ NoteGrid.prototype.setEndingNote = function(evt, instrument) {
 		this.tempNote = undefined;
 	}
 }
+
+NoteGrid.prototype.setTempo = function (t) {
+	this.notes.tempo = t;
+	$('#tempo').slider('option', 'value', t);
+}
+
 
 NoteGrid.prototype.setIntermediateNotes = function() {
 	if (this.dragNote) {
@@ -734,7 +742,7 @@ NoteGrid.prototype.isSquare = function(current) {
 /* returns a string version of the current grid (used for submitting form to PHP) */
 NoteGrid.prototype.serialize = function () {
 	var notegridstring = "<?xml version=\"1.0\"?>";
-	notegridstring += "<noteData>";
+	notegridstring += "<noteData tempo=\"" + this.notes.tempo + "\">";
 	for (var i = 0; i < this.numColumns; i++) {
 		notegridstring += this.notes.serializeColumn(i); // returns "<col><><>...</col>"
 	}

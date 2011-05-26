@@ -21,6 +21,7 @@ public class CloudAppletController extends Applet {
 	private SongSequence sequencer;
 	public NoteGrid grid;
 	private boolean changed;
+	public int songPosition;
 	
 	 /** 
 	  * Initializes the Applet and its components.
@@ -31,6 +32,7 @@ public class CloudAppletController extends Applet {
 			player = new CloudMidiPlayer();
 			sequencer = new SongSequence(grid);
 			changed = false;
+			songPosition = 0;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -140,10 +142,19 @@ public class CloudAppletController extends Applet {
 	 /** 
 	  * Sets the current position of the song in the player.
 	  * @param column, the column to move the Midi player to
+	 * @throws InvalidMidiDataException 
 	  */
-	public void setSongPosition(int column) 
+	public void setSongPosition(int column) throws InvalidMidiDataException 
 	{
-		player.setPlayTime(column);
+		//updateSequence();
+		//player.setPlayTime(column);
+		if (!changed) 
+		{
+			player.setPlayTime(column);
+		}
+		songPosition = column;
+		
+		
 	}
 	
 	 /** 
@@ -196,6 +207,7 @@ public class CloudAppletController extends Applet {
 			Sequence s = sequencer.getSequence();
 			player.setSequence(s);
 		}
+		player.setPlayTime(songPosition);
 	}
 
 }
