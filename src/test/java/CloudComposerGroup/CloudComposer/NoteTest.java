@@ -1,14 +1,12 @@
 /**
  * Unit test for CloudComposerGroup.Note class!
  */
-import org.junit.Test;
-import org.junit.Before;
-
-import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.matchers.JUnitMatchers.*;
 import CloudComposerGroup.CloudComposer.*;
 
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Before;
+import org.junit.Test;
 
 public class NoteTest {
 
@@ -23,6 +21,13 @@ public class NoteTest {
 	private Note n8;
 	private Note n9;
 	private Note n10;
+	private Note n11;
+	private Note n12;
+	private Note n13;
+	private Note n14;
+	private Note n15;
+	private Note n16;
+
 
 	/** Sets Note objects every time it runs a test	**/
 	@Before
@@ -37,6 +42,12 @@ public class NoteTest {
 		n8 = new Note(2, 2, 2);
 		n9 = new Note(2, 3, 3);
 		n10 = new Note(2, 4, 4);
+		n11 = new Note(2, 4, 9);
+		n12 = new Note(5, 0, 6);
+		n13 = new Note(6, 3, 6);
+		n14 = new Note(7, 2, 8);
+		n15 = new Note(100, 2, 8);
+		n16 = new Note(10000, 0, 5);
 	}
 	
 	/**
@@ -138,4 +149,61 @@ public class NoteTest {
 		String expected = 2 + " " + 4 + " " + 4;
 		assertEquals(expected, actual);
 	}
+	
+	/**
+	 * Test if a Note object is created correctly or not
+	 */
+	@Test
+	public void TestNote11() {
+		String actual = n11.length + " " + n11.instrument + " " + n11.pitch;
+		String expected = 2 + " " + 4 + " " + 9;
+		assertEquals(expected, actual);
+	}
+	/**
+	 * Test if a Note object is created correctly or not
+	 */
+	@Test
+	public void TestNote12() {
+		String actual = n12.length + " " + n12.instrument + " " + n12.pitch;
+		String expected = 5 + " " + 0 + " " + 6;
+		assertEquals(expected, actual);
+	}
+	/**
+	 * Test if a Note object is created correctly or not
+	 */
+	@Test
+	public void TestNote13() {
+		String actual = n13.length + " " + n13.instrument + " " + n13.pitch;
+		String expected = 6 + " " + 3 + " " + 6;
+		assertEquals(expected, actual);
+	}
+	
+	/**
+	 * Test if a Note object is created correctly or not
+	 */
+	@Test
+	public void TestNote14() {
+		String actual = n14.length + " " + n14.instrument + " " + n14.pitch;
+		String expected = 7 + " " + 2 + " " + 8;
+		assertEquals(expected, actual);
+	}
+	/**
+	 * Test if a Note object is created correctly or not
+	 */
+	@Test
+	public void TestNote15() {
+		String actual = n15.length + " " + n15.instrument + " " + n15.pitch;
+		String expected = 100 + " " + 2 + " " + 8;
+		assertEquals(expected, actual);
+	}
+	/**
+	 * Test if a Note object is created correctly or not
+	 */
+	@Test
+	public void TestNote16() {
+		String actual = n16.length + " " + n16.instrument + " " + n16.pitch;
+		String expected = 10000 + " " + 0 + " " + 5;
+		assertEquals(expected, actual);
+	}
+
 }
