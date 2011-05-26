@@ -95,20 +95,14 @@ public class CloudMidiPlayer
 	}
 	
 	/** 
-	 * Plays the sequence previously loaded.
+	 * Plays the sequence previously loaded from the provided position.
 	 * Sets the earlySetString error message if an exception is caught.
 	 */
 	public void play()
 	{
 		pause();
-		try {
-			seq.setSequence(song);
-			guaranteeTempo(bpm);
-			seq.start();
-		} catch (InvalidMidiDataException e) {
-			earlySetString = e.getMessage();
-		}
-		
+		guaranteeTempo(bpm);
+		seq.start();
 	}
 	
 	/** Plays a note using the provided instrument at the given pitch. 
@@ -121,6 +115,7 @@ public class CloudMidiPlayer
 		pause();
 		try {
 			seq.setSequence(noteSequences[inst.value][pitch]);
+			guaranteeTempo(bpm);
 			seq.setTickPosition(0);
 			seq.start();
 		} catch (InvalidMidiDataException e) {
@@ -164,7 +159,6 @@ public class CloudMidiPlayer
 	{
 		seq.stop();
 		seq.setTickPosition(0);
-		
 	}
 	
 	/**
@@ -176,7 +170,7 @@ public class CloudMidiPlayer
 	}
 	
 	/**
-	 *  Sets the current place in the song based on a percentage of the song length.
+	 *  Sets the current column of the song.
 	 * @param column, the location in the song to start playing from
 	 */
 	public void setPlayTime(int column) 
@@ -325,17 +319,6 @@ public class CloudMidiPlayer
 				Sequence s = basicSequence();
 				addNote(s, inst, pitch, 0, (int) TICKSPERFRAME);
 				noteSequences[inst.value][pitch] = s;
-				/*try {
-					s = new Sequence(Sequence.PPQ, (int) TICKSPERFRAME);
-					s.createTrack();
-					setInstrument(s, inst);
-					addNote(s, inst, pitch, 0, (int) TICKSPERFRAME);
-					noteSequences[inst.value][pitch] = s;
-				} catch (InvalidMidiDataException e) {
-					earlySetString = e.getMessage();
-					return;
-				}*/
-				
 			}
 		}
 		

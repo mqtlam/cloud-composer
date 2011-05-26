@@ -543,9 +543,10 @@ public class CloudAppletControllerTest extends TestCase {
 
 	/**
 	 * Test if CloudAppletController controls setting and returning a column correctly
+	 * @throws InvalidMidiDataException 
 	 */
 	@Test
-	public void testSetSongPositionAndCurrentSongPosition01() {
+	public void testSetSongPositionAndCurrentSongPosition01() throws InvalidMidiDataException {
 		int expected = 0;
 		c.setSongPosition(0);
 		int actual = c.currentSongPosition();
@@ -554,9 +555,10 @@ public class CloudAppletControllerTest extends TestCase {
 	
 	/**
 	 * Test if CloudAppletController controls setting and returning a column correctly
+	 * @throws InvalidMidiDataException 
 	 */
 	@Test
-	public void testSetSongPositionAndCurrentSongPosition02() {
+	public void testSetSongPositionAndCurrentSongPosition02() throws InvalidMidiDataException {
 		int expected = 1;
 		c.setSongPosition(1);
 		int actual = c.currentSongPosition();
@@ -565,9 +567,10 @@ public class CloudAppletControllerTest extends TestCase {
 
 	/**
 	 * Test if CloudAppletController controls setting and returning a column correctly
+	 * @throws InvalidMidiDataException 
 	 */
 	@Test
-	public void testSetSongPositionAndCurrentSongPosition03() {
+	public void testSetSongPositionAndCurrentSongPosition03() throws InvalidMidiDataException {
 		int expected = 2;
 		c.setSongPosition(2);
 		int actual = c.currentSongPosition();
@@ -576,9 +579,10 @@ public class CloudAppletControllerTest extends TestCase {
 
 	/**
 	 * Test if CloudAppletController controls setting and returning a column correctly
+	 * @throws InvalidMidiDataException 
 	 */
 	@Test
-	public void testSetSongPositionAndCurrentSongPosition04() {
+	public void testSetSongPositionAndCurrentSongPosition04() throws InvalidMidiDataException {
 		int expected = 5;
 		c.setSongPosition(5);
 		int actual = c.currentSongPosition();
@@ -587,9 +591,10 @@ public class CloudAppletControllerTest extends TestCase {
 
 	/**
 	 * Test if CloudAppletController controls setting and returning a column correctly
+	 * @throws InvalidMidiDataException 
 	 */
 	@Test
-	public void testSetSongPositionAndCurrentSongPosition05() {
+	public void testSetSongPositionAndCurrentSongPosition05() throws InvalidMidiDataException {
 		int expected = 6;
 		c.setSongPosition(6);
 		int actual = c.currentSongPosition();
@@ -598,9 +603,10 @@ public class CloudAppletControllerTest extends TestCase {
 
 	/**
 	 * Test if CloudAppletController controls setting and returning a column correctly
+	 * @throws InvalidMidiDataException 
 	 */
 	@Test
-	public void testSetSongPositionAndCurrentSongPosition06() {
+	public void testSetSongPositionAndCurrentSongPosition06() throws InvalidMidiDataException {
 		int expected = 100;
 		c.setSongPosition(100);
 		int actual = c.currentSongPosition();
@@ -609,9 +615,10 @@ public class CloudAppletControllerTest extends TestCase {
 	
 	/**
 	 * Test if CloudAppletController controls setting and returning a column correctly
+	 * @throws InvalidMidiDataException 
 	 */
 	@Test
-	public void testSetSongPositionAndCurrentSongPosition07() {
+	public void testSetSongPositionAndCurrentSongPosition07() throws InvalidMidiDataException {
 		int expected = 500;
 		c.setSongPosition(500);
 		int actual = c.currentSongPosition();
@@ -620,9 +627,10 @@ public class CloudAppletControllerTest extends TestCase {
 	
 	/**
 	 * Test if CloudAppletController controls setting and returning a column correctly
+	 * @throws InvalidMidiDataException 
 	 */
 	@Test
-	public void testSetSongPositionAndCurrentSongPosition08() {
+	public void testSetSongPositionAndCurrentSongPosition08() throws InvalidMidiDataException {
 		int expected = 1000;
 		c.setSongPosition(1000);
 		int actual = c.currentSongPosition();
@@ -631,9 +639,10 @@ public class CloudAppletControllerTest extends TestCase {
 
 	/**
 	 * Test if CloudAppletController controls setting and returning a column correctly
+	 * @throws InvalidMidiDataException 
 	 */
 	@Test
-	public void testSetSongPositionAndCurrentSongPosition09() {
+	public void testSetSongPositionAndCurrentSongPosition09() throws InvalidMidiDataException {
 		int expected = 10000;
 		c.setSongPosition(10000);
 		int actual = c.currentSongPosition();
@@ -672,6 +681,19 @@ public class CloudAppletControllerTest extends TestCase {
 		c.setTempo((float) 5.1521136);
 		assertEquals((float) 5.1521136, c.getTempo(), (float) 1.115);
 	}
+	
+//	@Test
+//	public void testDownload01() throws InvalidMidiDataException, IOException {
+//		c.player.setSequence(new Sequence(Sequence.SMPTE_25, 0));
+//		c.download("./download/");
+//		
+//	}
+//	
+//	@Test
+//	public void testDownload02() throws InvalidMidiDataException, IOException {
+//		c.player.setSequence(new Sequence(Sequence.PPQ, 0));
+//		c.download("./download/");
+//	}
 	
 	@Test
 	public void testGetSequence() throws InvalidMidiDataException {
