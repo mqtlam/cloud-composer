@@ -45,9 +45,7 @@ function mouseClick(event) {
 	var chk = grid.isSquare(current);
 	if (chk) {
 		var instrument = selector.currentInstrument;
-		if (instrument) {
-			grid.gridClick(chk, selector.currentInstrument);
-		} else {
+		if (!instrument) {
 			alert("you must select an instrument");
 		}
 		
