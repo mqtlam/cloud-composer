@@ -1,0 +1,52 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.acme</groupId>
+	<artifactId>my-jasmine-project</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
+
+	<name>Cloud-Composer-Web</name>
+	<url>http://github.com/searls/jasmine-maven-plugin</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>com.github.searls</groupId>
+				<artifactId>jasmine-maven-plugin</artifactId>
+				<version>1.0.2-beta-2</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>generateManualRunner</goal>
+							<goal>resources</goal>
+							<goal>testResources</goal>
+							<goal>test</goal>
+							<goal>preparePackage</goal>
+						</goals>
+<configuration>
+<preloadSources>
+<source>http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js</source>
+<source>http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js</source>
+</preloadSources>
+</configuration>
+
+						</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.1</version>
+				<configuration>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
