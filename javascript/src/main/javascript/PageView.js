@@ -73,7 +73,7 @@ function mouseClick(event) {
 		var notegrid = grid.serialize();
 		sendNoteGrid(notegrid, "Lilypond.php");
 	} else if (current.id == "downloadBtn") {
-		applet.download("test.midi");
+		applet.download();
 	}
 	
 

@@ -195,15 +195,21 @@ public class CloudMidiPlayer
 	 */
 	public void writeToFile(String location) 
 	{
-		SimpleFTPClient s = new SimpleFTPClient();
-		s.setHost("ftp.publicstaticdroid.com");
-		s.setUser("cc_guest%40publicstaticdroid.com");
-		s.setPassword("compose");
-		s.setRemoteFile(location);
-		s.connect();
+//		SimpleFTPClient s = new SimpleFTPClient();
+//		s.setHost("ftp.publicstaticdroid.com");
+//		s.setUser("cc_guest%40publicstaticdroid.com");
+//		s.setPassword("compose");
+//		s.setRemoteFile(location);
+//		s.connect();
 		
 		setSilentEndNote();
-		s.uploadSequence(song, location);
+		File f = new File(location);
+		try {
+			MidiSystem.write(song, 0, f);
+		} catch (IOException e) {
+			earlySetString = e.getMessage();
+		}
+//		s.uploadSequence(song, location);
 		killSilentEndNote();
 	}
 	
