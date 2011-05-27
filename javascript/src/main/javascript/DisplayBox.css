@@ -1,0 +1,41 @@
+#getLinkText
+{
+	color:black;
+	font-size: 20pt;
+	font-weight: bold;
+}
+
+#getLinkLink
+{
+	color:#444444;
+	font-size: 14pt;
+	font-weight: bold;
+	border: 1px dashed black;
+	background-color: #DDDDDD;
+	background-repeat: no-repeat;
+	background-position:center;
+}
+
+#getLinkButton, #getPdfButton
+{
+	margin: 20px;
+	width: 200px;
+}
+
+#displayCloseButton
+{
+	width: 15px;
+	height: 15px;
+	position: absolute;
+	z-index: 4;
+	right: 4px;
+	top: 4px;
+	background-image: url('images/close_button.gif'), url('../images/close_button.gif') ;
+	background-repeat: no-repeat;
+	cursor: pointer;
+}
+
+#tutorial
+{
+	color:black;
+}
