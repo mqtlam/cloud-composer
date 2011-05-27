@@ -7,6 +7,8 @@ import java.awt.event.WindowEvent;
 
 
 import java.applet.Applet;
+import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
@@ -149,10 +151,6 @@ public class CloudAppletController extends Applet {
 	{
 		updateSequence();
 		Frame f = new MyFrame("MIDI File");
-		//f.setVisible(false);
-		// set frame window size - width & height
-		//f.setSize(100, 100);
-		//f.setLocation(200, 200);
 
 		// create instance of FileDialog
 		FileDialog fd = new FileDialog(f, "Save Midi File", FileDialog.SAVE);
@@ -173,6 +171,7 @@ public class CloudAppletController extends Applet {
 			});
 		}
 		changed = true; // revert changes from download playback fixing
+		updateSequence();
 	}
 
 
@@ -180,6 +179,8 @@ public class CloudAppletController extends Applet {
 
 	//Create a subclass of Frame
 	private class MyFrame extends Frame {
+		private static final long serialVersionUID = 1L;
+
 		MyFrame(String title) {
 			super(title);
 			// create an object to handle window events
