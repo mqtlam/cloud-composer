@@ -3,7 +3,7 @@
 	\set Staff.instrumentName = #"piano"
 	\clef treble
 	\time 4/4
-	 < g' d' >4. < e' g' d'' >8 < e' g' >2 \bar "|."
+	  < g' d' >4.   < e' g' d'' >8   < e' g' >2  \bar "|."
 }
 
 \new Staff

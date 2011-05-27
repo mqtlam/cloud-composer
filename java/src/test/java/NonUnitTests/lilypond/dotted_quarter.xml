@@ -2,17 +2,28 @@
 <notedata>
   <column id="0">
     <piano>
-      {6,3}{6,1}
+      <length>6</length>
+      <pitch>3</pitch>
+      <length>6</length>
+      <pitch>1</pitch>
     </piano>
   </column>
   <column id="6">
     <piano>
-      {2,2}{2,3}{2,6}
+      <length>2</length>
+      <pitch>2</pitch>
+      <length>2</length>
+      <pitch>3</pitch>
+      <length>2</length>
+      <pitch>6</pitch>
     </piano>
   </column>
   <column id="8">
     <piano>
-      {8,2}{8,3}
+      <length>8</length>
+      <pitch>2</pitch>
+      <length>8</length>
+      <pitch>3</pitch>
     </piano>
   </column>
 </notedata>

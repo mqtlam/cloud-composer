@@ -2,37 +2,52 @@
 <notedata>
   <column id="0">
     <piano>
-      {16,3}{16,1}
+      <length>16</length>
+      <pitch>3</pitch>
+      <length>16</length>
+      <pitch>1</pitch>
     </piano>
   </column>
   <column id="16">
     <piano>
-      {8,2}{8,3}{8,6}
+      <length>8</length>
+      <pitch>2</pitch>
+      <length>8</length>
+      <pitch>3</pitch>
+      <length>8</length>
+      <pitch>6</pitch>
     </piano>
   </column>
   <column id="24">
     <piano>
-      {8,2}{8,3}
+      <length>8</length>
+      <pitch>2</pitch>
+      <length>8</length>
+      <pitch>3</pitch>
     </piano>
   </column>
   <column id="32">
     <piano>
-      {4,0}
+      <length>4</length>
+      <pitch>0</pitch>
     </piano>
   </column>
   <column id="36">
     <piano>
-      {4,0}
+      <length>4</length>
+      <pitch>0</pitch>
     </piano>
   </column>
   <column id="40">
     <piano>
-      {4,0}
+      <length>4</length>
+      <pitch>0</pitch>
     </piano>
   </column>
   <column id="44">
     <piano>
-      {4,0}
+      <length>4</length>
+      <pitch>0</pitch>
     </piano>
   </column>
 </notedata>

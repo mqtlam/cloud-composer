@@ -2,79 +2,124 @@
 <notedata>
   <column id="0">
     <piano>
-      {16,2}{16,0}
+      <length>16</length>
+      <pitch>2</pitch>
+      <length>16</length>
+      <pitch>0</pitch>
     </piano>
     <guitar>
-      {16,4}{16,0}
+      <length>16</length>
+      <pitch>4</pitch>
+      <length>16</length>
+      <pitch>0</pitch>
     </guitar>
     <trumpet>
-      {16,3}{16,1}
+      <length>16</length>
+      <pitch>3</pitch>
+      <length>16</length>
+      <pitch>1</pitch>
     </trumpet>
   </column>
   <column id="16">
     <piano>
-      {8,2}{8,3}{8,6}
+      <length>8</length>
+      <pitch>2</pitch>
+      <length>8</length>
+      <pitch>3</pitch>
+      <length>8</length>
+      <pitch>6</pitch>
     </piano>
     <guitar>
-      {8,2}{8,3}{8,6}
+      <length>8</length>
+      <pitch>2</pitch>
+      <length>8</length>
+      <pitch>3</pitch>
+      <length>8</length>
+      <pitch>6</pitch>
     </guitar>
     <trumpet>
-      {8,2}{8,3}{8,6}
+      <length>8</length>
+      <pitch>2</pitch>
+      <length>8</length>
+      <pitch>3</pitch>
+      <length>8</length>
+      <pitch>6</pitch>
     </trumpet>
   </column>
   <column id="24">
     <piano>
-      {8,2}{8,3}
+      <length>8</length>
+      <pitch>2</pitch>
+      <length>8</length>
+      <pitch>3</pitch>
     </piano>
     <guitar>
-      {8,2}{8,3}
+      <length>8</length>
+      <pitch>2</pitch>
+      <length>8</length>
+      <pitch>3</pitch>
     </guitar>
     <trumpet>
-      {8,2}{8,3}
+      <length>8</length>
+      <pitch>2</pitch>
+      <length>8</length>
+      <pitch>3</pitch>
     </trumpet>
   </column>
   <column id="32">
     <piano>
-      {4,0}
+      <length>4</length>
+      <pitch>0</pitch>
     </piano>
     <guitar>
-      {4,0}
+      <length>4</length>
+      <pitch>0</pitch>
     </guitar>
     <trumpet>
-      {4,9}
+      <length>4</length>
+      <pitch>9</pitch>
     </trumpet>
   </column>
   <column id="36">
     <piano>
-      {4,0}
+      <length>4</length>
+      <pitch>0</pitch>
     </piano>
     <guitar>
-      {4,1}
+      <length>4</length>
+      <pitch>1</pitch>
     </guitar>
     <trumpet>
-      {4,8}
+      <length>4</length>
+      <pitch>8</pitch>
     </trumpet>
   </column>
   <column id="40">
     <piano>
-      {4,0}
+      <length>4</length>
+      <pitch>0</pitch>
     </piano>
     <guitar>
-      {4,2}
+      <length>4</length>
+      <pitch>2</pitch>
     </guitar>
     <trumpet>
-      {4,7}
+      <length>4</length>
+      <pitch>7</pitch>
     </trumpet>
   </column>
   <column id="44">
     <piano>
-      {4,0}
+      <length>4</length>
+      <pitch>0</pitch>
     </piano>
     <guitar>
-      {4,3}
+      <length>4</length>
+      <pitch>3</pitch>
     </guitar>
     <trumpet>
-      {4,6}
+      <length>4</length>
+      <pitch>6</pitch>
     </trumpet>
   </column>
 </notedata>
