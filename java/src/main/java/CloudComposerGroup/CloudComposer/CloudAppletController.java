@@ -8,6 +8,8 @@ import java.awt.event.WindowEvent;
 
 import java.applet.Applet;
 import java.io.IOException;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.Sequence;
@@ -140,28 +142,19 @@ public class CloudAppletController extends Applet {
 	  * @throws InvalidMidiDataException if the composition translates to invalid Midi data
 	  * @throws IOException if the file cannot be opened
 	  */ 
-	public void download(String location) throws InvalidMidiDataException, IOException 
+	public void download(final String location) throws InvalidMidiDataException, IOException 
 	{
-		updateSequence();
-		
-		
-//		JFileChooser chooser = new JFileChooser();
-//	    // Note: source for ExampleFileFilter can be found in FileChooserDemo,
-//	    // under the demo/jfc directory in the Java 2 SDK, Standard Edition.
-//		Frame f = new MyFrame("MIDI File");
-//		// make the frame visible
-//		f.setVisible(false);
-//		// set frame window size - width & height
-//		f.setSize(100, 100);
-//		f.setLocation(200, 200);
-//
-//		// create instance of FileDialog
-//		FileDialog fd = new FileDialog(f, "Save Midi File", FileDialog.SAVE);
-//		// make FileDialog visible
-//		fd.setVisible(true);
-//		String filename = fd.getDirectory() + fd.getFile() + ".midi";
-		//System.out.println(filename);
-		player.writeToFile(location);
+		AccessController.doPrivileged(new PrivilegedAction() {
+			public Object run() {
+				try {
+					updateSequence();
+					player.writeToFile(location);
+				} catch (Exception e) {
+					
+				}
+				return null;
+			}
+		});
 	}
 	
 	// Create a subclass of Frame

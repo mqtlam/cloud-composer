@@ -151,7 +151,6 @@ public class SimpleFTPClient
 	{
 		try{
 
-			System.out.println("ftp://"+user+":"+password+"@"+host+":21/"+remoteFile+";type=i");
 			URL url = new URL("ftp://"+user+":"+password+"@"+host+":21/"+remoteFile+";type=i");
 			m_client = url.openConnection();
 

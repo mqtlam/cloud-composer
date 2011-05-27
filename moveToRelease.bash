@@ -60,11 +60,12 @@ fi
 # Build Java files into a .jar file and place in the release directory.
 workingDir="java/src/main/java/CloudComposerGroup/CloudComposer"
 tempDir="CloudComposerGroup/CloudComposer"
-`javac "${workingDir}/"*.java`
 `mkdir -p $tempDir`
-`mv $workingDir/*.class $tempDir/.`
-`jar -cvf MidiPlayer.jar $tempDir/*.class | echo`
-`jarsigner -storepass $password -keypass $password MidiPlayer.jar cloudcomposer | echo`
+`cp $workingDir/*.java $tempDir`
+`javac $tempDir/*.java`
+`rm $tempDir/*.java`
+`jar -cvf MidiPlayer.jar $tempDir/*.class > jarError.txt`
+`jarsigner -storepass $password -keypass $password MidiPlayer.jar cloudcomposer > signerError.txt`
 `rm -r $tempDir`
 `mv MidiPlayer.jar $toDir`
 
