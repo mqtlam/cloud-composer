@@ -709,8 +709,6 @@ public class CloudAppletControllerTest extends TestCase {
 		
 		Track[] t1 = s.getTracks();
 		Track[] t2 = s2.getTracks();
-		System.out.println("s1 " + s.getMicrosecondLength());
-		System.out.println("s2 " + s2.getMicrosecondLength());
 		assertTrue(t1.length == t2.length);
 		for (int i = 0; i < t1.length; i++) {
 			Track track1 = t1[i];
@@ -719,8 +717,6 @@ public class CloudAppletControllerTest extends TestCase {
 			for (int j = 0; j < track1.size(); j++) {
 				MidiEvent m1 = track1.get(j);
 				MidiEvent m2 = track2.get(j);
-				System.out.println(m1.getTick() + "\t" + m2.getTick());
-				
 				assertTrue(m1.getTick() == m2.getTick());
 				byte[] b1 = m1.getMessage().getMessage();
 				byte[] b2 = m2.getMessage().getMessage();
