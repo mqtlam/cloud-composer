@@ -74,6 +74,8 @@ function mouseClick(event) {
 	} else if (current.id == "getPdfButton") {
 		var notegrid = grid.serializeForLilypond();
 		sendNoteGrid(notegrid, "Lilypond.php");
+	} else if (current.id == "downloadbutton") {
+		applet.download();
 	}
 	
 
