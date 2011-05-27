@@ -19,6 +19,7 @@ public class CloudMidiPlayer
 	public static final int OCTAVES = 2;
 	public static final int DEFAULTBPM = 120;
 	private float bpm;
+	private MidiEvent endSong;
 	
 	public static final float TICKSPERFRAME = 4;
 	
@@ -201,8 +202,9 @@ public class CloudMidiPlayer
 		s.setRemoteFile(location);
 		s.connect();
 		
+		setSilentEndNote();
 		s.uploadSequence(song, location);
-		
+		killSilentEndNote();
 	}
 	
 	/** 
@@ -281,6 +283,25 @@ public class CloudMidiPlayer
 		} catch (InvalidMidiDataException e) {
 			earlySetString = e.getMessage();
 		}
+	}
+	
+	private void setSilentEndNote() {
+		try {
+			//ShortMessage m = new ShortMessage();
+			//m.setMessage(ShortMessage.NOTE_ON, SequenceInst.values().length, 0, 0);
+			//song.getTracks()[0].add(new MidiEvent(m, song.getTickLength()));
+			ShortMessage m2 = new ShortMessage();
+			m2.setMessage(ShortMessage.NOTE_OFF, SequenceInst.values().length, 0, 0);
+			endSong = new MidiEvent(m2, song.getTickLength() + 2);
+			song.getTracks()[0].add(endSong);
+		} catch (InvalidMidiDataException e) {
+			earlySetString = e.getMessage();
+		}
+	}
+	
+	private void killSilentEndNote() {
+		song.getTracks()[0].remove(endSong);
+		endSong = null;
 	}
 	
 	/**
