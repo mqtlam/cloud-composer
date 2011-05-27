@@ -24,7 +24,7 @@ if [[ ($# -gt 2) ]]; then
 fi
 
 # Indicates the release milestone and the version number.
-release="featurecomplete"
+release="releasecandidate"
 versionNum=$1
 
 # Indicates what directory we are storing local release info in.
