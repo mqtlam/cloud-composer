@@ -322,6 +322,8 @@ NoteGrid.prototype.changeNoteLength = function(square, instrument) {
 		var note = new Note(column-mainColumn+1, instrument, pitch);
 		var removedNote = this.notes.removeNote(mainColumn, note);
 		this.java.removeFromPlayer(mainColumn, removedNote);
+		
+		this.lastColumn = this.getLastColumn() + 1;
 	}
 }
 
@@ -349,13 +351,11 @@ NoteGrid.prototype.setStartingNote = function(evt, instrument) {
 			} else {
 				this.dragNote = [instrument, pitch, column, -1, pitch, column];
 				/////
-				if (this.lastColumn == this.dragNote[3]+1) {
-					this.lastColumn = this.getLastColumn() + 1;
-				}
 				
 				var removedNote = this.notes.removeNote(column, note);		// <- noteLength maybe wrong, but doesn't matter
 				this.java.removeFromPlayer(column, removedNote);
 				
+				this.lastColumn = this.getLastColumn() + 1;
 				this.dragNote[3] = column + removedNote.noteLength - 1;
 				
 				
