@@ -24,15 +24,21 @@ InstrumentSelector.prototype.createInstrumentView = function (index) {
 	img.style.backgroundImage = "url(" + this.instruments[index].imgURL + ")";
 	img.style.backgroundColor = this.instruments[index].color;
 //	img.style.backgroundImage = "url(images/"+this.instruments[index]+".png)";		
-	bar.appendChild(img);
+	if (bar) {
+		bar.appendChild(img);
+	}
 }
 
 InstrumentSelector.prototype.updateInstrumentView = function () {
 	var bar = document.getElementById("instrumentBar");
 	// first clear all the children.
-	var len = bar.children.length;
+	if (bar && bar.children) {
+		var len = bar.children.length;
+	}
 	for (var a=0; a<len; a++) {
-		bar.removeChild(bar.children[a]);
+		if (bar) {
+			bar.removeChild(bar.children[a]);
+		}
 	}
 
 	// then add all

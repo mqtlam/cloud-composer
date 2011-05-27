@@ -19,7 +19,6 @@ function Drag(id) {
 		
 	}
 
-	}
 }
 
 Drag.prototype.startDragging = function() {

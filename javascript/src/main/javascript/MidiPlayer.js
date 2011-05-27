@@ -142,8 +142,14 @@ function update_bpmValueOnPage(){
 	// get the value from the slider
 	var value = $('#tempo').slider('option', 'value');
 	// set the value on the page
-	bpm.innerHTML = "BPM = " + value;
+	if (bpm) {
+		bpm.innerHTML = "BPM = " + value;
+	}
 	// update bpm of midiplayer
-	applet.setTempo(value);
-	grid.notes.tempo = value;
+	if (applet) { 
+		applet.setTempo(value);
+	}
+	if (grid && grid.notes) {
+		grid.notes.tempo = value;
+	}
 }

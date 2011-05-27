@@ -47,8 +47,10 @@ function NoteGrid(id, cols, instr) {
 ////////////////// create the grid and then add it to the child
 /// adjust columns to become multiple of 16
 	var grid = document.getElementById(id);
-	grid.style.height = this.scrollbarOffsets + this.h + "px";
-	grid.appendChild(this.createGrid(cols));	// must be multiple of 16
+	if (grid && grid.style) {
+		grid.style.height = this.scrollbarOffsets + this.h + "px";	
+		grid.appendChild(this.createGrid(cols));	// must be multiple of 16
+	}
 }
 
 NoteGrid.prototype.createSquare = function (loc_y) {

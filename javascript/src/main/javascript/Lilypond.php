@@ -12,6 +12,9 @@
  *          be converted into sheet music. Nonetheless, 
  *          this parser will try its best to notate what it can.
  *
+ * NOTE:    THIS SCRIPT PARSES THE NEW XML FORMAT, WHICH CONTAINS
+ *          <length> and <pitch> tags, instead of the {length,pitch} pairs!
+ *
  * USAGE:   Pass the composition data to this php file
  *          using the POST variable 'data'.
  *
@@ -106,6 +109,16 @@ define("NOTE_DATA_TEMPO", "tempo");
 define("COL_NAME", "column");
 
 /**
+ * Length tag name.
+ */
+define("LENGTH_NAME", "length");
+
+/**
+ * Pitch tag name.
+ */
+define("PITCH_NAME", "pitch");
+
+/**
  * Column id attribute.
  */
 define("COL_ID", "id");
@@ -169,6 +182,15 @@ $rhythmBuffer = array();
 foreach ($instruments as $instrument => $name)
   $rhythmBuffer[$instrument] = FIRST_COL;
 
+/**
+ * Stores a buffer of {length,pitch}'s per instrument per column.
+ * This exists because the xml file format changed
+ * since the feature complete release.
+ */
+$notesBuffer = "";
+$withinLengthTag = false;
+$withinPitchTag = false;
+
 // }}}
 // {{{ xml functions
 
@@ -183,23 +205,33 @@ function startElemHandler($parser, $name, $attribs) {
     global $currentColumn;
     global $currentInstrument;
     global $tempo;
+    global $notesBuffer;
+    global $withinLengthTag;
+    global $withinPitchTag;
 
     if (strcasecmp($name, NOTE_DATA_NAME) == 0) {
         // <noteData tempo="num"> detected
         $tempo = $attribs[NOTE_DATA_TEMPO];
-    }
-
-    if (strcasecmp($name, COL_NAME) == 0) {
+    } else if (strcasecmp($name, COL_NAME) == 0) {
         // <column id="num"> detected
         $currentCol = $attribs[COL_ID];
+    } else if (strcasecmp($name, LENGTH_NAME) == 0) {
+        // <length> detected
+        $withinLengthTag = true;
+    } else if (strcasecmp($name, PITCH_NAME) == 0) {
+        // <pitch> detected
+        $withinPitchTag = true;
     }
-
+    
     foreach ($instruments as $instr => $instrName)
     {
         if (strcasecmp($name, $instrName) == 0) {
           // <name> detected
           $currentInstrument = $instr;
           $currentColumn[$currentInstrument] = $currentCol;
+          
+          // reset notesBuffer
+          $notesBuffer = "";
         }
     }
 }
@@ -209,17 +241,33 @@ function startElemHandler($parser, $name, $attribs) {
  * e.g. </start>. $name stores the tag name.
  */
 function endElemHandler($parser, $name) {
-/*	global $instruments;
-
-    if (strcasecmp($name, COL_NAME) == 0) {
-        // </column> detected
+    global $instruments;
+    global $currentCol;
+    global $currentColumn;
+    global $currentInstrument;
+    global $tempo;
+    global $notesBuffer;
+    global $withinLengthTag;
+    global $withinPitchTag;
+    
+    if (strcasecmp($name, LENGTH_NAME) == 0) {
+        // </length> detected
+        $withinLengthTag = false;
+    } else if (strcasecmp($name, PITCH_NAME) == 0) {
+        // </pitch> detected
+        $withinPitchTag = false;
     }
+    
     foreach ($instruments as $instr => $instrName)
     {
         if (strcasecmp($name, $instrName) == 0) {
-          // <name> detected
+          // </name> detected          
+          parseNotes();
+          
+          // reset notesBuffer for sanity
+          $notesBuffer = "";
         }
-    }*/
+    }
 }
 
 /**
@@ -228,15 +276,31 @@ function endElemHandler($parser, $name) {
  */
 function characterData($parser, $data) {
     // text data detected
+    global $withinLengthTag;
+    global $withinPitchTag;
+    global $notesBuffer;
+    
+    if ($withinLengthTag)
+      $notesBuffer .= "{{$data},";
+    else if ($withinPitchTag)
+      $notesBuffer .= "{$data}}";
+}
+
+/**
+ * Parses the current notesBuffer into lilypond format.
+ * This is processed per instrument per column.
+ */
+function parseNotes()
+{
     global $pitches;
     global $currentColumn;
     global $rhythmBuffer;
     global $currentInstrument;
     global $newDataPerInstrument;
     global $exactTranscription;
-
-    if (strpos($data, "{") === false)
-      return;
+    global $notesBuffer;
+    
+    $data = $notesBuffer; // "backwards compatibility with previous code"
 
     // {{{ add rests if necessary
     
@@ -258,13 +322,13 @@ function characterData($parser, $data) {
       // fills in rest up to the measure if one exists
       if ($currentColumn[$currentInstrument] > $nextBar) {
         $restDuration = $nextBar - $rhythmBuffer[$currentInstrument];
-        restHelper($restDuration);
+        durationHelper($restDuration, "r");
         
         $restDuration = $currentColumn[$currentInstrument] - $nextBar;
-        restHelper($restDuration);
+        durationHelper($restDuration, "r");
       } else {
         $restDuration = $currentColumn[$currentInstrument] - $rhythmBuffer[$currentInstrument];
-        restHelper($restDuration);
+        durationHelper($restDuration, "r");
       }
       
       $rhythmBuffer[$currentInstrument] = $currentColumn[$currentInstrument];
@@ -307,13 +371,37 @@ function characterData($parser, $data) {
     // {{{ transcribe rhythm
 
     // handles durations longer than whole note
+    durationHelper($duration, $chord);
+
+    // }}}
+}
+
+/**
+ * Appends notes or rests to the composition for the given duration.
+ * $chord is a chord in lilypond notation, or "r" if a rest.
+ */
+function durationHelper($duration, $chord)
+{
+    global $pitches;
+    global $currentColumn;
+    global $rhythmBuffer;
+    global $currentInstrument;
+    global $newDataPerInstrument;
+    global $exactTranscription;
+    
+    // flag if we're inserting notes
+    $usingNotes = strcasecmp($chord, "r") != 0;
+    
+    $inserted = $chord;
     $remainingDuration = $duration;
     while ($remainingDuration > 0)
     {
 
       // consider the current duration as whole note tops
       $currentDuration = min(SIXTEENTH_NOTES_PER_MEASURE, $remainingDuration);
-      $rhythmBuffer[$currentInstrument] += $currentDuration;
+      
+      if ($usingNotes)
+        $rhythmBuffer[$currentInstrument] += $currentDuration;
 
       // if any remaining duration left after the (possible) whole note,
       // use it up in the next iteration of the loop
@@ -326,7 +414,7 @@ function characterData($parser, $data) {
       if ($numQuarterNotes == 1 && $remainingSixteenthNotes == 2)
       {
         // write out the dotted quarter note
-        $newDataPerInstrument[$currentInstrument] .= "{$chord}4.";
+        $newDataPerInstrument[$currentInstrument] .= " {$inserted}4. ";
       }
       else
       {
@@ -334,90 +422,34 @@ function characterData($parser, $data) {
         // {{{ for general notation case
 
         if ($numQuarterNotes == 1)
-          $newDataPerInstrument[$currentInstrument] .= "{$chord}4";
+          $newDataPerInstrument[$currentInstrument] .= " {$inserted}4 ";
         else if ($numQuarterNotes == 2)
-          $newDataPerInstrument[$currentInstrument] .= "{$chord}2";
+          $newDataPerInstrument[$currentInstrument] .= " {$inserted}2 ";
         else if ($numQuarterNotes == 3)
-          $newDataPerInstrument[$currentInstrument] .= "{$chord}2.";
+          $newDataPerInstrument[$currentInstrument] .= " {$inserted}2. ";
         else if ($numQuarterNotes == 4)
-          $newDataPerInstrument[$currentInstrument] .= "{$chord}1";
+          $newDataPerInstrument[$currentInstrument] .= " {$inserted}1 ";
 
-        if ($remainingSixteenthNotes > 0 && $numQuarterNotes > 0)
-          $newDataPerInstrument[$currentInstrument] .= " ~ ";
+        if ($remainingSixteenthNotes > 0 && $numQuarterNotes > 0) {
+          if ($usingNotes)
+            $newDataPerInstrument[$currentInstrument] .= " ~ ";
+          else
+            $newDataPerInstrument[$currentInstrument] .= " ";
+        }
 
         if ($remainingSixteenthNotes == 1)
-          $newDataPerInstrument[$currentInstrument] .= "{$chord}16";
+          $newDataPerInstrument[$currentInstrument] .= " {$inserted}16 ";
         else if ($remainingSixteenthNotes == 2)
-          $newDataPerInstrument[$currentInstrument] .= "{$chord}8";
+          $newDataPerInstrument[$currentInstrument] .= " {$inserted}8 ";
         else if ($remainingSixteenthNotes == 3)
-          $newDataPerInstrument[$currentInstrument] .= "{$chord}8.";
+          $newDataPerInstrument[$currentInstrument] .= " {$inserted}8. ";
 
         // }}}
       }
 
-      if ($remainingDuration > 0)
+      if ($usingNotes && $remainingDuration > 0)
         $newDataPerInstrument[$currentInstrument] .= " ~ ";
 
-    }
-
-    // }}}
-}
-
-/**
- * Appends rests to the composition for the given duration.
- */
-function restHelper($restDuration)
-{
-    global $newDataPerInstrument;
-    global $currentInstrument;
-
-    // handles durations longer than whole note
-    $remainingDuration = $restDuration;
-    while ($remainingDuration > 0)
-    {
-
-      // consider the current duration as whole note tops
-      $currentDuration = min(SIXTEENTH_NOTES_PER_MEASURE, $remainingDuration);
-
-      // if any remaining duration left after the (possible) whole note,
-      // use it up in the next iteration of the loop
-      $remainingDuration -= $currentDuration;
-
-      $numQuarterNotes = (int) ($currentDuration / 4);
-      $remainingSixteenthNotes = $currentDuration % 4;
-
-      // {{{ for very specific notation cases
-      if ($numQuarterNotes == 1 && $remainingSixteenthNotes == 2)
-      {
-        // write out the dotted quarter note
-        $newDataPerInstrument[$currentInstrument] .= " r4. ";
-      }
-      else
-      {
-        // }}}
-        // {{{ for general notation case
-
-        if ($numQuarterNotes == 1)
-          $newDataPerInstrument[$currentInstrument] .= " r4 ";
-        else if ($numQuarterNotes == 2)
-          $newDataPerInstrument[$currentInstrument] .= " r2 ";
-        else if ($numQuarterNotes == 3)
-          $newDataPerInstrument[$currentInstrument] .= " r2. ";
-        else if ($numQuarterNotes == 4)
-          $newDataPerInstrument[$currentInstrument] .= " r1 ";
-
-        if ($remainingSixteenthNotes > 0 && $numQuarterNotes > 0)
-          $newDataPerInstrument[$currentInstrument] .= " ";
-
-        if ($remainingSixteenthNotes == 1)
-          $newDataPerInstrument[$currentInstrument] .= " r16 ";
-        else if ($remainingSixteenthNotes == 2)
-          $newDataPerInstrument[$currentInstrument] .= " r8 ";
-        else if ($remainingSixteenthNotes == 3)
-          $newDataPerInstrument[$currentInstrument] .= " r8. ";
-
-        // }}}
-      }
     }
 }
 
