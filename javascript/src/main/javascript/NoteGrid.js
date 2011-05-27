@@ -349,11 +349,15 @@ NoteGrid.prototype.setStartingNote = function(evt, instrument) {
 			} else {
 				this.dragNote = [instrument, pitch, column, -1, pitch, column];
 				/////
+				if (this.lastColumn == this.dragNote[3]+1) {
+					this.lastColumn = this.getLastColumn() + 1;
+				}
 				
 				var removedNote = this.notes.removeNote(column, note);		// <- noteLength maybe wrong, but doesn't matter
 				this.java.removeFromPlayer(column, removedNote);
 				
 				this.dragNote[3] = column + removedNote.noteLength - 1;
+				
 				
 			}
 		}
@@ -729,6 +733,21 @@ NoteGrid.prototype.isSquare = function(current) {
 	} else {
 		return false;
 	}
+}
+
+NoteGrid.prototype.getLastColumn = function() {
+	var d = this.notes.data;
+	for (var i=d.length-1; i>=0; i--) {
+		var column = d[i];
+
+		for (var instr in column) {
+			var notes = column[instr];
+			if (notes.length > 0 ) {
+				return i;
+			}
+		}
+	}
+	return 0;
 }
 
 /* returns a string version of the current grid (used for submitting form to PHP) */
