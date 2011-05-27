@@ -157,7 +157,7 @@ public class CloudAppletController extends Applet {
 		// make FileDialog visible
 		fd.setVisible(true);
 		if (fd.getFile() != null) {
-			final String filename = fd.getDirectory() + fd.getFile() + ".midi";
+			final String filename = fd.getDirectory() + fd.getFile();
 
 			AccessController.doPrivileged(new PrivilegedExceptionAction() {
 				public Object run() {

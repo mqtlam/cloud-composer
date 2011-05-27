@@ -203,6 +203,8 @@ public class CloudMidiPlayer
 	public void writeToFile(String location) 
 	{
 		setSilentEndNote();
+		if (!location.toLowerCase().endsWith(".midi"))
+			location += ".midi";
 		File f = new File(location);
 		try {
 			MidiSystem.write(song, 0, f);
