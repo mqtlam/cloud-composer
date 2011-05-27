@@ -196,7 +196,10 @@ public class CloudMidiPlayer
 	{
 		File f = new File(location);
 		try {
-			if (f.canWrite() && song != null) 
+			f.setWritable(true);
+			boolean canWrite = f.canWrite();
+			boolean songNotNull = song != null;
+			if (canWrite && songNotNull) 
 				MidiSystem.write(song, 0, f);
 		} catch (IOException e) {
 			earlySetString = e.getMessage();
