@@ -12,6 +12,9 @@
  *          be converted into sheet music. Nonetheless, 
  *          this parser will try its best to notate what it can.
  *
+ * NOTE:    THIS SCRIPT PARSES THE NEW XML FORMAT, WHICH CONTAINS
+ *          <length> and <pitch> tags, instead of the {length,pitch} pairs!
+ *
  * USAGE:   Pass the composition data to this php file
  *          using the POST variable 'data'.
  *
@@ -179,6 +182,15 @@ $rhythmBuffer = array();
 foreach ($instruments as $instrument => $name)
   $rhythmBuffer[$instrument] = FIRST_COL;
 
+/**
+ * Stores a buffer of {length,pitch}'s per instrument per column.
+ * This exists because the xml file format changed
+ * since the feature complete release.
+ */
+$notesBuffer = "";
+$withinLengthTag = false;
+$withinPitchTag = false;
+
 // }}}
 // {{{ xml functions
 
@@ -193,23 +205,22 @@ function startElemHandler($parser, $name, $attribs) {
     global $currentColumn;
     global $currentInstrument;
     global $tempo;
+    global $notesBuffer;
+    global $withinLengthTag;
+    global $withinPitchTag;
 
     if (strcasecmp($name, NOTE_DATA_NAME) == 0) {
         // <noteData tempo="num"> detected
         $tempo = $attribs[NOTE_DATA_TEMPO];
-    }
-
-    if (strcasecmp($name, COL_NAME) == 0) {
+    } else if (strcasecmp($name, COL_NAME) == 0) {
         // <column id="num"> detected
         $currentCol = $attribs[COL_ID];
-    }
-    
-    if (strcasecmp($name, LENGTH_NAME) == 0) {
+    } else if (strcasecmp($name, LENGTH_NAME) == 0) {
         // <length> detected
-    }
-    
-    if (strcasecmp($name, PITCH_NAME) == 0) {
+        $withinLengthTag = true;
+    } else if (strcasecmp($name, PITCH_NAME) == 0) {
         // <pitch> detected
+        $withinPitchTag = true;
     }
     
     foreach ($instruments as $instr => $instrName)
@@ -218,6 +229,9 @@ function startElemHandler($parser, $name, $attribs) {
           // <name> detected
           $currentInstrument = $instr;
           $currentColumn[$currentInstrument] = $currentCol;
+          
+          // reset notesBuffer
+          $notesBuffer = "";
         }
     }
 }
@@ -232,14 +246,26 @@ function endElemHandler($parser, $name) {
     global $currentColumn;
     global $currentInstrument;
     global $tempo;
-
-    if (strcasecmp($name, COL_NAME) == 0) {
-        // </column> detected
+    global $notesBuffer;
+    global $withinLengthTag;
+    global $withinPitchTag;
+    
+    if (strcasecmp($name, LENGTH_NAME) == 0) {
+        // </length> detected
+        $withinLengthTag = false;
+    } else if (strcasecmp($name, PITCH_NAME) == 0) {
+        // </pitch> detected
+        $withinPitchTag = false;
     }
+    
     foreach ($instruments as $instr => $instrName)
     {
         if (strcasecmp($name, $instrName) == 0) {
-          // </name> detected
+          // </name> detected          
+          parseNotes();
+          
+          // reset notesBuffer for sanity
+          $notesBuffer = "";
         }
     }
 }
@@ -250,15 +276,31 @@ function endElemHandler($parser, $name) {
  */
 function characterData($parser, $data) {
     // text data detected
+    global $withinLengthTag;
+    global $withinPitchTag;
+    global $notesBuffer;
+    
+    if ($withinLengthTag)
+      $notesBuffer .= "{{$data},";
+    else if ($withinPitchTag)
+      $notesBuffer .= "{$data}}";
+}
+
+/**
+ * Parses the current notesBuffer into lilypond format.
+ * This is processed per instrument per column.
+ */
+function parseNotes()
+{
     global $pitches;
     global $currentColumn;
     global $rhythmBuffer;
     global $currentInstrument;
     global $newDataPerInstrument;
     global $exactTranscription;
-
-    if (strpos($data, "{") === false)
-      return;
+    global $notesBuffer;
+    
+    $data = $notesBuffer; // "backwards compatibility with previous code"
 
     // {{{ add rests if necessary
     
