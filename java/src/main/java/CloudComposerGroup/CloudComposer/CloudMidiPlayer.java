@@ -20,7 +20,7 @@ public class CloudMidiPlayer
 	public static final int DEFAULTBPM = 120;
 	private static MetaMessage tempoMessage;
 	private float bpm;
-	private MidiEvent endSong;
+	//private MidiEvent endSong;
 	
 	public static final float TICKSPERFRAME = 4;
 	
@@ -205,11 +205,10 @@ public class CloudMidiPlayer
 		setSilentEndNote();
 		File f = new File(location);
 		try {
-			MidiSystem.write(song, 1, f);
+			MidiSystem.write(song, 0, f);
 		} catch (IOException e) {
 			earlySetString = e.getMessage();
 		}
-		killSilentEndNote();
 	}
 	
 	/** 
@@ -294,7 +293,7 @@ public class CloudMidiPlayer
 		try {
 			ShortMessage m2 = new ShortMessage();
 			m2.setMessage(ShortMessage.NOTE_OFF, SequenceInst.values().length, 0, 0);
-			endSong = new MidiEvent(m2, song.getTickLength() + 2);
+			MidiEvent endSong = new MidiEvent(m2, song.getTickLength() + 4);
 			song.getTracks()[0].add(endSong);
 		} catch (InvalidMidiDataException e) {
 			earlySetString = e.getMessage();
@@ -305,10 +304,10 @@ public class CloudMidiPlayer
 	 * Removes the silent end note from the end of the song
 	 * so that the playback in the browser is not affected.
 	 */
-	private void killSilentEndNote() {
-		song.getTracks()[0].remove(endSong);
-		endSong = null;
-	}
+//	private void killSilentEndNote() {
+//		song.getTracks()[0].remove(endSong);
+//		endSong = null;
+//	}
 	
 	/**
 	 * Prepares the Midi System for use. 

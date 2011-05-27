@@ -11,8 +11,12 @@ public class TestDownload {
 		CloudAppletController c = new CloudAppletController();
 		c.init();
 		int[] note = {0, 0, 0, 4};
+		int[] note2 = {0, 5, 4, 8};
 		c.addNote(note);
+		c.addNote(note2);
+		c.removeNote(note2);
 		c.download();
+		System.out.println();
 	}
 	
 //	public static void testDownload () throws InvalidMidiDataException, IOException {
