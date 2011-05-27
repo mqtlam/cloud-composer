@@ -270,8 +270,8 @@ public class CloudAppletController extends Applet {
 			changed = false;
 			Sequence s = sequencer.getSequence();
 			player.setSequence(s);
+			player.setPlayTime(songPosition);
 		}
-		player.setPlayTime(songPosition);
 	}
 
 }
