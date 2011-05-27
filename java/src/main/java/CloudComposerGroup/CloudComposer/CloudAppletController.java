@@ -140,7 +140,7 @@ public class CloudAppletController extends Applet {
 	  * @throws InvalidMidiDataException if the composition translates to invalid Midi data
 	  * @throws IOException if the file cannot be opened
 	  */ 
-	public void download() throws InvalidMidiDataException, IOException 
+	public String download() throws InvalidMidiDataException, IOException 
 	{
 		updateSequence();
 		
@@ -161,7 +161,7 @@ public class CloudAppletController extends Applet {
 		fd.setVisible(true);
 		String filename = fd.getDirectory() + fd.getFile() + ".midi";
 		//System.out.println(filename);
-		player.writeToFile(filename);
+		return player.writeToFile();
 	}
 	
 	// Create a subclass of Frame

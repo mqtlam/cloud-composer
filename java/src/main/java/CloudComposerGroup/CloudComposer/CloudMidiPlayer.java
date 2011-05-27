@@ -191,19 +191,24 @@ public class CloudMidiPlayer
 	 * Writes the currently composed Midi file to the indicated location.
 	 *  Sets the earlySetString error message if an exception is caught.
 	 *  @param location, the String of the place to write the file.
+	 * @throws IOException 
 	 */
-	public void writeToFile(String location) 
+	public String writeToFile() throws IOException 
 	{
-		File f = new File(location);
+		File f = File.createTempFile("midiFile", ".midi");
 		try {
 			f.setWritable(true);
 			boolean canWrite = f.canWrite();
 			boolean songNotNull = song != null;
-			if (canWrite && songNotNull) 
+			if (canWrite && songNotNull) {
 				MidiSystem.write(song, 0, f);
+				return f.getAbsolutePath() + f.getName();
+			}
+			
 		} catch (IOException e) {
 			earlySetString = e.getMessage();
 		} 
+		return "error";
 	}
 	
 	/** 
