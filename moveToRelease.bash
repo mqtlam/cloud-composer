@@ -58,7 +58,7 @@ fi
 fi
 
 # Build Java files into a .jar file and place in the release directory.
-workingDir="src/main/java/CloudComposerGroup/CloudComposer"
+workingDir="java/src/main/java/CloudComposerGroup/CloudComposer"
 tempDir="CloudComposerGroup/CloudComposer"
 `javac "${workingDir}/"*.java`
 `mkdir -p $tempDir`
@@ -69,14 +69,14 @@ tempDir="CloudComposerGroup/CloudComposer"
 `mv MidiPlayer.jar $toDir`
 
 # Change working directory and copy over the web application files.
-workingDir="src/main/webapp"
+workingDir="javascript/src/main/javascript"
 `cp "${workingDir}/"*.html "${toDir}/"`
 `cp "${workingDir}/"*.php "${toDir}/"`
 `cp "${workingDir}/"*.js "${toDir}/include/"`
 `cp "${workingDir}/"*.css "${toDir}/include/"`
 
 # Change the working directory to our resources and copy over the images we use.
-workingDir="src/main/resources"
+workingDir="javascript/src/main/resources"
 `cp "${workingDir}/"* "${toDir}/images/"`
 
 # Begin an FTP session and proceed to copy all the files over.

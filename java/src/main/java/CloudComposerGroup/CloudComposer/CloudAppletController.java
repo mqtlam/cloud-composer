@@ -140,52 +140,52 @@ public class CloudAppletController extends Applet {
 	  * @throws InvalidMidiDataException if the composition translates to invalid Midi data
 	  * @throws IOException if the file cannot be opened
 	  */ 
-	public String download() throws InvalidMidiDataException, IOException 
+	public void download(String location) throws InvalidMidiDataException, IOException 
 	{
 		updateSequence();
 		
 		
-		JFileChooser chooser = new JFileChooser();
-	    // Note: source for ExampleFileFilter can be found in FileChooserDemo,
-	    // under the demo/jfc directory in the Java 2 SDK, Standard Edition.
-		Frame f = new MyFrame("MIDI File");
-		// make the frame visible
-		f.setVisible(false);
-		// set frame window size - width & height
-		f.setSize(100, 100);
-		f.setLocation(200, 200);
-
-		// create instance of FileDialog
-		FileDialog fd = new FileDialog(f, "Save Midi File", FileDialog.SAVE);
-		// make FileDialog visible
-		fd.setVisible(true);
-		String filename = fd.getDirectory() + fd.getFile() + ".midi";
+//		JFileChooser chooser = new JFileChooser();
+//	    // Note: source for ExampleFileFilter can be found in FileChooserDemo,
+//	    // under the demo/jfc directory in the Java 2 SDK, Standard Edition.
+//		Frame f = new MyFrame("MIDI File");
+//		// make the frame visible
+//		f.setVisible(false);
+//		// set frame window size - width & height
+//		f.setSize(100, 100);
+//		f.setLocation(200, 200);
+//
+//		// create instance of FileDialog
+//		FileDialog fd = new FileDialog(f, "Save Midi File", FileDialog.SAVE);
+//		// make FileDialog visible
+//		fd.setVisible(true);
+//		String filename = fd.getDirectory() + fd.getFile() + ".midi";
 		//System.out.println(filename);
-		return player.writeToFile();
+		player.writeToFile(location);
 	}
 	
 	// Create a subclass of Frame
-	private class MyFrame extends Frame {
-		MyFrame(String title) {
-			super(title);
-			// create an object to handle window events
-			MyWindowAdapter adapter = new MyWindowAdapter(this);
-			// register it to receive those events
-			addWindowListener(adapter);
-		}
-	}
-
-	private class MyWindowAdapter extends WindowAdapter {
-		MyFrame myFrame;
-
-		public MyWindowAdapter(MyFrame myFrame) {
-			this.myFrame = myFrame;
-		}
-
-		public void windowClosing(WindowEvent we) {
-			myFrame.setVisible(false);
-		}
-	}
+//	private class MyFrame extends Frame {
+//		MyFrame(String title) {
+//			super(title);
+//			// create an object to handle window events
+//			MyWindowAdapter adapter = new MyWindowAdapter(this);
+//			// register it to receive those events
+//			addWindowListener(adapter);
+//		}
+//	}
+//
+//	private class MyWindowAdapter extends WindowAdapter {
+//		MyFrame myFrame;
+//
+//		public MyWindowAdapter(MyFrame myFrame) {
+//			this.myFrame = myFrame;
+//		}
+//
+//		public void windowClosing(WindowEvent we) {
+//			myFrame.setVisible(false);
+//		}
+//	}
 
 	
 	 /** 
