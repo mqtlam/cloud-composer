@@ -15,7 +15,6 @@ import javax.sound.midi.*;
 public class CloudMidiPlayer 
 {
 	public static final int[] SCALE = {60, 62, 64, 67, 69};
-	public static final int[] INSTRUMENTS = {0, 30, 114, 56, 40};
 	public static final int OCTAVES = 2;
 	public static final int DEFAULTBPM = 120;
 	private float bpm;
@@ -36,11 +35,13 @@ public class CloudMidiPlayer
 	 */
 	public enum SequenceInst 
 	{
-		PIANO(0), GUITAR(1), DRUM(2), TRUMPET(3), VIOLIN(4);
+		PIANO(0,0), GUITAR(1,30), DRUM(2,114), TRUMPET(3,56), VIOLIN(4,40);
 		
 		public final int value;
-		SequenceInst(int value) {
+		public final int instrument;
+		SequenceInst(int value, int instrument) {
 			this.value = value;
+			this.instrument = instrument;
 		}
 		
 	}
@@ -273,7 +274,7 @@ public class CloudMidiPlayer
 	{
 		try {
 			ShortMessage m = new ShortMessage();
-			m.setMessage(ShortMessage.PROGRAM_CHANGE, inst.value, INSTRUMENTS[inst.value], 0);
+			m.setMessage(ShortMessage.PROGRAM_CHANGE, inst.value, inst.instrument, 0);
 			s.getTracks()[0].add(new MidiEvent(m, 0));
 		} catch (InvalidMidiDataException e) {
 			earlySetString = e.getMessage();
