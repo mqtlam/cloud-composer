@@ -36,10 +36,11 @@ Tutorial.prototype.createBubble = function (element, elementID, text,
 	element.style.top = top + "px";
 	element.style.left = left + "px";
 	
-	
-	tutorial.appendChild(element);
+	if (tutorial) {
+		tutorial.appendChild(element);
+	}
 }
-
+	
 Tutorial.prototype.updateTutorialView = function(elementID) {
 	if (this.hasListeningElement() && this.listeningElement.id == elementID) {
 		document.getElementById("tutorial").removeChild(this.listeningElement);
