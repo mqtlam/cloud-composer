@@ -3,6 +3,7 @@ package CloudComposerGroup.CloudComposer;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 
 import javax.sound.midi.*;
 
@@ -188,27 +189,20 @@ public class CloudMidiPlayer
 	}
 	
 	/** 
-	 * Writes the currently composed Midi file to the indicated location.
-	 *  Sets the earlySetString error message if an exception is caught.
+	 * Writes the currently composed Midi file to the indicated file on the FTP server.
 	 *  @param location, the String of the place to write the file.
-	 * @throws IOException 
 	 */
-	public String writeToFile() throws IOException 
+	public void writeToFile(String location) 
 	{
-		File f = File.createTempFile("midiFile", ".midi");
-		try {
-			f.setWritable(true);
-			boolean canWrite = f.canWrite();
-			boolean songNotNull = song != null;
-			if (canWrite && songNotNull) {
-				MidiSystem.write(song, 0, f);
-				return f.getAbsolutePath() + f.getName();
-			}
-			
-		} catch (IOException e) {
-			earlySetString = e.getMessage();
-		} 
-		return "error";
+		SimpleFTPClient s = new SimpleFTPClient();
+		s.setHost("ftp.publicstaticdroid.com");
+		s.setUser("cc_guest%40publicstaticdroid.com");
+		s.setPassword("compose");
+		s.setRemoteFile(location);
+		s.connect();
+		
+		s.uploadSequence(song, location);
+		
 	}
 	
 	/** 
