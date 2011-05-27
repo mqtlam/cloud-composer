@@ -18,8 +18,6 @@ public class CloudMidiPlayer
 	public static final int[] SCALE = {60, 62, 64, 67, 69};
 	public static final int OCTAVES = 2;
 	public static final int DEFAULTBPM = 120;
-	private static final int TEMPOCOMMAND = 0x51;
-	private static final int MPQPERBPM = 60000000;
 	private static MetaMessage tempoMessage;
 	private float bpm;
 	private MidiEvent endSong;
@@ -83,6 +81,8 @@ public class CloudMidiPlayer
 	 */
 	public void setTempo(float bpm)
 	{
+		final int TEMPOCOMMAND = 0x51;
+		final int MPQPERBPM = 60000000;
 		this.bpm = bpm;
 		int tempoInMPQ = (int) (MPQPERBPM / this.bpm);
 		byte[] data = new byte[3];
@@ -95,16 +95,8 @@ public class CloudMidiPlayer
 		} catch (InvalidMidiDataException e) {
 			earlySetString = e.getMessage();
 		}
-		//guaranteeTempo(bpm);
-		//generateNotes();
 		generateNotes();
 	}
-	
-//	private void guaranteeTempo(float bpm)
-//	{
-//		this.bpm = bpm;
-//		seq.setTempoInBPM(bpm);
-//	}
 	
 	/**
 	 * Returns the tempo of the song using the provided BPM.
@@ -121,7 +113,6 @@ public class CloudMidiPlayer
 	public void play()
 	{
 		pause();
-		//guaranteeTempo(bpm);
 		seq.start();
 	}
 	
@@ -135,7 +126,6 @@ public class CloudMidiPlayer
 		pause();
 		try {
 			seq.setSequence(noteSequences[inst.value][pitch]);
-			//guaranteeTempo(bpm);
 			seq.setTickPosition(0);
 			seq.start();
 		} catch (InvalidMidiDataException e) {
@@ -296,6 +286,10 @@ public class CloudMidiPlayer
 		}
 	}
 	
+	/**
+	 * Sets a silent end note to the song so that the downloaded
+	 * version of the song will play all of the notes properly.
+	 */
 	private void setSilentEndNote() {
 		try {
 			ShortMessage m2 = new ShortMessage();
@@ -307,6 +301,10 @@ public class CloudMidiPlayer
 		}
 	}
 	
+	/**
+	 * Removes the silent end note from the end of the song
+	 * so that the playback in the browser is not affected.
+	 */
 	private void killSilentEndNote() {
 		song.getTracks()[0].remove(endSong);
 		endSong = null;

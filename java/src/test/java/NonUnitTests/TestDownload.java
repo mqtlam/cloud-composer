@@ -1,12 +1,13 @@
 import java.io.File;
 import java.io.IOException;
+import java.security.PrivilegedActionException;
 
 import javax.sound.midi.*;
 
 import CloudComposerGroup.CloudComposer.*;
 
 public class TestDownload {
-	public static void main(String[] args) throws InvalidMidiDataException, IOException {
+	public static void main(String[] args) throws InvalidMidiDataException, IOException, PrivilegedActionException {
 		CloudAppletController c = new CloudAppletController();
 		c.init();
 		int[] note = {0, 0, 0, 4};
