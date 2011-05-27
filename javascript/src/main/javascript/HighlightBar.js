@@ -12,5 +12,7 @@ HighlightBar.prototype.move = function (column) {
 }
 
 HighlightBar.prototype.updateDisplay = function () {
-	this.column.className = "highlightbar";
+	if (this && this.column) {
+		this.column.className = "highlightbar";
+	}
 }
