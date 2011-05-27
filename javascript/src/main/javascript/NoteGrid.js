@@ -762,4 +762,3 @@ NoteGrid.prototype.serializeForLilypond = function () {
 	notegridstring += "</noteData>";
 	return notegridstring;
 }
-

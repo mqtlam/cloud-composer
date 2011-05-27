@@ -60,7 +60,7 @@ function mouseClick(event) {
 		midiplayer.onStopClick();
 	} else if (current.id == "playpausebutton") {
 		midiplayer.onPlayPauseClick(grid.numColumns);
-	} else if (current.id == "getlinkbutton") {
+	} else if (current.id == "getlinkBtn") {
 		getlink = new DisplayBox(600, 280, "#CCCCCC", "GetLink");		
 	} else if (current.className == "column_button") {
 		var c = parseInt(current.id);
@@ -72,9 +72,9 @@ function mouseClick(event) {
 		var notegrid = grid.serialize();
 		sendNoteGrid(notegrid, "SaveSession.php");
 	} else if (current.id == "getPdfButton") {
-		var notegrid = grid.serializeForLilypond();
+		var notegrid = grid.serialize();
 		sendNoteGrid(notegrid, "Lilypond.php");
-	} else if (current.id == "downloadbutton") {
+	} else if (current.id == "downloadBtn") {
 		applet.download();
 	}
 	
