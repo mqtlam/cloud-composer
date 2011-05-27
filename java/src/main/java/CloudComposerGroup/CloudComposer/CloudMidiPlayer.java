@@ -18,6 +18,9 @@ public class CloudMidiPlayer
 	public static final int[] SCALE = {60, 62, 64, 67, 69};
 	public static final int OCTAVES = 2;
 	public static final int DEFAULTBPM = 120;
+	private static final int TEMPOCOMMAND = 0x51;
+	private static final int MPQPERBPM = 60000000;
+	private static MetaMessage tempoMessage;
 	private float bpm;
 	private MidiEvent endSong;
 	
@@ -58,6 +61,7 @@ public class CloudMidiPlayer
 		try {
 			loadMidiSystem();
 			noteSequences = new Sequence[getInstruments().length][SCALE.length * OCTAVES];
+			tempoMessage = new MetaMessage();
 			setTempo(DEFAULTBPM);
 		} catch (Exception e) {
 			earlySetString = e.getMessage();
@@ -79,15 +83,28 @@ public class CloudMidiPlayer
 	 */
 	public void setTempo(float bpm)
 	{
-		guaranteeTempo(bpm);
+		this.bpm = bpm;
+		int tempoInMPQ = (int) (MPQPERBPM / this.bpm);
+		byte[] data = new byte[3];
+		data[0] = (byte)((tempoInMPQ >> 16) & 0xFF);
+		data[1] = (byte)((tempoInMPQ >> 8) & 0xFF);
+		data[2] = (byte)(tempoInMPQ & 0xFF);
+		
+		try {
+			tempoMessage.setMessage(TEMPOCOMMAND, data, data.length);
+		} catch (InvalidMidiDataException e) {
+			earlySetString = e.getMessage();
+		}
+		//guaranteeTempo(bpm);
+		//generateNotes();
 		generateNotes();
 	}
 	
-	private void guaranteeTempo(float bpm)
-	{
-		this.bpm = bpm;
-		seq.setTempoInBPM(bpm);
-	}
+//	private void guaranteeTempo(float bpm)
+//	{
+//		this.bpm = bpm;
+//		seq.setTempoInBPM(bpm);
+//	}
 	
 	/**
 	 * Returns the tempo of the song using the provided BPM.
@@ -104,7 +121,7 @@ public class CloudMidiPlayer
 	public void play()
 	{
 		pause();
-		guaranteeTempo(bpm);
+		//guaranteeTempo(bpm);
 		seq.start();
 	}
 	
@@ -118,7 +135,7 @@ public class CloudMidiPlayer
 		pause();
 		try {
 			seq.setSequence(noteSequences[inst.value][pitch]);
-			guaranteeTempo(bpm);
+			//guaranteeTempo(bpm);
 			seq.setTickPosition(0);
 			seq.start();
 		} catch (InvalidMidiDataException e) {
@@ -195,21 +212,13 @@ public class CloudMidiPlayer
 	 */
 	public void writeToFile(String location) 
 	{
-//		SimpleFTPClient s = new SimpleFTPClient();
-//		s.setHost("ftp.publicstaticdroid.com");
-//		s.setUser("cc_guest%40publicstaticdroid.com");
-//		s.setPassword("compose");
-//		s.setRemoteFile(location);
-//		s.connect();
-		
 		setSilentEndNote();
 		File f = new File(location);
 		try {
-			MidiSystem.write(song, 0, f);
+			MidiSystem.write(song, 1, f);
 		} catch (IOException e) {
 			earlySetString = e.getMessage();
 		}
-//		s.uploadSequence(song, location);
 		killSilentEndNote();
 	}
 	
@@ -259,17 +268,13 @@ public class CloudMidiPlayer
 			s.createTrack();
 			for (SequenceInst inst : SequenceInst.values())
 				setInstrument(s, inst);
+			s.getTracks()[0].add(new MidiEvent (tempoMessage, 0));
 		} catch (InvalidMidiDataException e) {
 			earlySetString = e.getMessage();
 		}
 		
 		return s;
 	}
-	
-	/*public int getLastColumn()
-	*{
-	*	return (int) song.getTracks()[0].ticks();
-	*}  This should not be used.*/
 	
 	
 // PRIVATE METHODS
@@ -293,9 +298,6 @@ public class CloudMidiPlayer
 	
 	private void setSilentEndNote() {
 		try {
-			//ShortMessage m = new ShortMessage();
-			//m.setMessage(ShortMessage.NOTE_ON, SequenceInst.values().length, 0, 0);
-			//song.getTracks()[0].add(new MidiEvent(m, song.getTickLength()));
 			ShortMessage m2 = new ShortMessage();
 			m2.setMessage(ShortMessage.NOTE_OFF, SequenceInst.values().length, 0, 0);
 			endSong = new MidiEvent(m2, song.getTickLength() + 2);
