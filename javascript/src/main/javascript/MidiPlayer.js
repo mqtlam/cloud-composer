@@ -4,7 +4,7 @@ function MidiPlayer(inst, num) {
 	this.instruments = inst;
 	this.maxValue = num-1;
 	this.intervalID = 0;
-	this.intervalSpeend = 200;
+	this.intervalSpeed = 200;
 	this.positionTracker = 1;
 	this.basePosition = 0;
 	
@@ -25,7 +25,7 @@ MidiPlayer.prototype.onPlayPauseClick = function (numColumns) {
 		//var g = document.getElementById('grid');
 		//var b = document.getElementsByClassName('highlightbar')[0];
 		//g.scrollLeft = b.offsetLeft;
-		this.intervalID = setInterval("updateSongPosition()", this.intervalSpeend);
+		this.intervalID = setInterval("updateSongPosition()", this.intervalSpeed);
 	} else {
 		playPauseButton.src = "images/Play-Disabled-icon.png";
 		this.inPlayMode = false;
@@ -152,4 +152,7 @@ function update_bpmValueOnPage(){
 	if (grid && grid.notes) {
 		grid.notes.tempo = value;
 	}
+	
+	// updates the interval speed
+	this.intervalSpeed = Math.floor(15000/value);
 }
