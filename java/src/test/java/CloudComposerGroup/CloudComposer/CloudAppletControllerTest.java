@@ -682,24 +682,10 @@ public class CloudAppletControllerTest extends TestCase {
 		assertEquals((float) 5.1521136, c.getTempo(), (float) 1.115);
 	}
 	
-//	@Test
-//	public void testDownload01() throws InvalidMidiDataException, IOException {
-//		c.player.setSequence(new Sequence(Sequence.SMPTE_25, 0));
-//		c.download("./download/");
-//		
-//	}
-//	
-//	@Test
-//	public void testDownload02() throws InvalidMidiDataException, IOException {
-//		c.player.setSequence(new Sequence(Sequence.PPQ, 0));
-//		c.download("./download/");
-//	}
-	
 	/**
 	 * Constructs the Sequence objects for testGetSequencesxx.
 	 */
-	private Sequence buildSequences() throws InvalidMidiDataException {
-		int[] note = {0,0,0,4};
+	private Sequence buildSequences(int[] note) throws InvalidMidiDataException {
 		buildPlayerSequence(note);
 		return buildControlSequence(note);
 	}
@@ -730,7 +716,7 @@ public class CloudAppletControllerTest extends TestCase {
 	 * Tests to make sure that the Player's Sequence is never null.
 	 */
 	@Test
-	public void testGetSequence01() {
+	public void testGetSongSequence01() {
 		Sequence s = c.getSongSequence();
 		assertFalse(s == null);
 	}
@@ -740,8 +726,8 @@ public class CloudAppletControllerTest extends TestCase {
 	 * @throws InvalidMidiDataException
 	 */
 	@Test
-	public void testGetSequence02() throws InvalidMidiDataException {
-		Sequence s = buildSequences();
+	public void testGetSongSequence02() throws InvalidMidiDataException {
+		Sequence s = buildSequences(new int[] {0, 0, 0, 3});
 		Sequence s2 = c.getSongSequence();
 		Track[] t1 = s.getTracks();
 		Track[] t2 = s2.getTracks();
@@ -754,8 +740,8 @@ public class CloudAppletControllerTest extends TestCase {
 	 * @throws InvalidMidiDataException
 	 */
 	@Test
-	public void testGetSequence03() throws InvalidMidiDataException {
-		Sequence s = buildSequences();
+	public void testGetSongSequence03() throws InvalidMidiDataException {
+		Sequence s = buildSequences(new int[] {1, 2, 3, 5});
 		Sequence s2 = c.getSongSequence();
 		Track track1 = s.getTracks()[0];
 		Track track2 = s2.getTracks()[0];
@@ -766,8 +752,9 @@ public class CloudAppletControllerTest extends TestCase {
 	 * Ensures that the Messages that happen in each Sequence are at the same location.
 	 * @throws InvalidMidiDataException
 	 */
-	public void testGetSequence04() throws InvalidMidiDataException {
-		Sequence s = buildSequences();
+	@Test
+	public void testGetSongSequence04() throws InvalidMidiDataException {
+		Sequence s = buildSequences(new int[] {3, 3, 3, 3});
 		Sequence s2 = c.getSongSequence();
 		Track track1 = s.getTracks()[0];
 		Track track2 = s2.getTracks()[0];
@@ -783,8 +770,84 @@ public class CloudAppletControllerTest extends TestCase {
 	 * and make sure they are exactly the same.
 	 * @throws InvalidMidiDataException
 	 */
-	public void testGetSequence05() throws InvalidMidiDataException {
-		Sequence s = buildSequences();
+	@Test
+	public void testGetSongSequence05() throws InvalidMidiDataException {
+		Sequence s = buildSequences(new int[] {4, 9, 1, 11});
+		Sequence s2 = c.getSongSequence();
+		Track track1 = s.getTracks()[0];
+		Track track2 = s2.getTracks()[0];
+		for (int j = 0; j < track1.size(); j++) {
+			MidiEvent m1 = track1.get(j);
+			MidiEvent m2 = track2.get(j);
+			byte[] b1 = m1.getMessage().getMessage();
+			byte[] b2 = m2.getMessage().getMessage();
+			assertTrue(b1.length == b2.length);
+			for (int k = 0; k < b1.length; k++) {
+				assertTrue(b1[k] == b2[k]);
+			}
+		}
+	}
+	
+	/**
+	 * Tests to make sure that the Player's Sequence is never null.
+	 * @throws InvalidMidiDataException 
+	 */
+	@Test
+	public void testUpdateSequence01() throws InvalidMidiDataException {
+		c.updateSequence();
+		Sequence s = c.getSongSequence();
+		assertFalse(s == null);
+	}
+	
+	/**
+	 * Ensures the track lengths are equivalent and are always 1.
+	 * @throws InvalidMidiDataException
+	 */
+	@Test
+	public void testUpdateSequence02() throws InvalidMidiDataException {
+		Sequence s = buildSequences(new int[] {0, 0, 0, 4});
+		c.addNote(new int[] {1, 1, 1, 2});
+		Sequence s2 = c.getSongSequence();
+		Track[] t1 = s.getTracks();
+		Track[] t2 = s2.getTracks();
+		assertTrue(t1.length == t2.length);
+		assertTrue(t1.length == 1);
+	}
+	
+	/**
+	 * Ensures that the number of nothing is erroneously added to the song data.
+	 * @throws InvalidMidiDataException
+	 */
+	@Test
+	public void testUpdateSequence03() throws InvalidMidiDataException {
+		Sequence s = buildSequences(new int[] {0, 0, 0, 4});
+		c.updateSequence();
+		Sequence s2 = c.getSongSequence();
+		Track track1 = s.getTracks()[0];
+		Track track2 = s2.getTracks()[0];
+		assertTrue(track1.size() == track2.size());
+	}
+	
+	/**
+	 * Ensures that the Messages that happen in each Sequence are at the same location.
+	 * @throws InvalidMidiDataException
+	 */
+	@Test
+	public void testUpdateSequence04() throws InvalidMidiDataException {
+		Sequence s = buildSequences(new int[] {0, 0, 0, 2});
+		Sequence s2 = c.getSongSequence();
+		Track track1 = s.getTracks()[0];
+		Track track2 = s2.getTracks()[0];
+		for (int j = 0; j < track1.size(); j++) {
+			MidiEvent m1 = track1.get(j);
+			MidiEvent m2 = track2.get(j);
+			assertTrue(m1.getTick() == m2.getTick());
+		}
+	}
+	
+	@Test
+	public void testUpdateSequence05() throws InvalidMidiDataException {
+		Sequence s = buildSequences(new int[] {1, 1, 1, 2});
 		Sequence s2 = c.getSongSequence();
 		Track track1 = s.getTracks()[0];
 		Track track2 = s2.getTracks()[0];
