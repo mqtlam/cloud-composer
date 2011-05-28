@@ -570,6 +570,7 @@ function saveFile($data, $filename)
 
 /**
  * Generates the PDF using Lilypond.
+
  * Assumes the lily file is already created.
  */
 function generatePDF($filename)
