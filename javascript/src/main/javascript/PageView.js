@@ -61,7 +61,12 @@ function mouseClick(event) {
 		var c = parseInt(current.id);
 		midiplayer.setSongPosition(c);
 	} else if (current.id == "displayCloseButton") {
-		// remove the GetLink Box
+		// if closing the browser notice, bring up the tutorial after closing it
+		if (current.parentNode.children[1].children[0].id == "browserInfo") {
+			new DisplayBox(700, 400, "#EEEEEE", "Tutorial", "");
+		}
+		
+		// remove notice box
 		document.body.removeChild(current.parentNode.parentNode);
 	} else if (current.id == "getLinkButton") {
 		var notegrid = grid.serialize();
@@ -159,7 +164,6 @@ function sortAndPrintNotes() {
 }
 
 function loadUI() {
-
 	setEvents();
 	var instrumentsList = [
 			new Instrument("piano", "images/piano.png", "red"),
@@ -182,11 +186,29 @@ function loadUI() {
 	shareReferences()
 	
 	loadSession();
-	alertBrowserInfo();
+	
+	// Checks the cookie, and if visited before, don't show browser info
+	if (document.cookie == "") {
+		if (getBrowser()[0] != "Firefox") {
+			alertBrowserInfo();
+		} else{
+			new DisplayBox(700, 400, "#EEEEEE", "Tutorial", "");
+		}
+	}
+	createCookie();
 }
 
 function shareReferences() {
 	grid.java = midiplayer;
+}
+
+// cookie related functions
+// creates a cookie for a month
+function createCookie() {
+	var date = new Date();
+	date.setMonth(date.getMonth()+1);
+	
+	document.cookie = "cloudcomposer=comeback; expires" + date.toGMTString() + "; path=/";
 }
 
 ///////// FUNCTION CALLs
