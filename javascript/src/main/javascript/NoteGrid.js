@@ -736,15 +736,24 @@ NoteGrid.prototype.isSquare = function(current) {
 	}
 }
 
+var a;
+// computes the last Column occupied by a note
 NoteGrid.prototype.getLastColumn = function() {
-	var d = this.notes.data;
-	for (var i=d.length-1; i>=0; i--) {
-		var column = d[i];
-
-		for (var instr in column) {
-			var notes = column[instr];
-			if (notes.length > 0 ) {
-				return i;
+	var grid = document.getElementById("inner_grid");
+	
+	for (var i=grid.children.length-2; i>=0; i--) {
+		var measure = grid.children[i];
+		for (var m=this.measureWidth-1; m>=0; m--) {
+			var col = measure.children[m];
+			if (col == undefined) { alert("what");a = measure;}
+			for (var o=this.octaves; o>=1; o--) {
+				var oct = col.children[o];
+				for (var p=this.pitches-1; p>=0; p--) {
+					var str = oct.children[p].className;
+					if (str.indexOf("Lengthy")>=0 || str.indexOf("Main")>=0) {
+						return i*this.measureWidth + m;
+					}
+				}
 			}
 		}
 	}
