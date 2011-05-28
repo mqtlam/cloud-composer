@@ -1,23 +1,23 @@
 <?xml version="1.0" ?>
 <notedata>
   <column id="0">
-    <piano>
+    <instrument name="piano">
       <length>16</length>
       <pitch>0</pitch>
       <length>16</length>
       <pitch>3</pitch>
       <length>8</length>
       <pitch>4</pitch>
-    </piano>
+    </instrument>
   </column>
   <column id="8">
-    <piano>
+    <instrument name="piano">
       <length>4</length>
       <pitch>0</pitch>
       <length>4</length>
       <pitch>3</pitch>
       <length>4</length>
       <pitch>4</pitch>
-    </piano>
+    </instrument>
   </column>
 </notedata>

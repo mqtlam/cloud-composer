@@ -1,115 +1,115 @@
 <?xml version="1.0" ?>
 <notedata>
   <column id="0">
-    <piano>
+    <instrument name="piano">
       <length>1</length>
       <pitch>3</pitch>
       <length>1</length>
       <pitch>1</pitch>
-    </piano>
+    </instrument>
   </column>
   <column id="1">
-    <piano>
+    <instrument name="piano">
       <length>1</length>
       <pitch>3</pitch>
       <length>1</length>
       <pitch>1</pitch>
-    </piano>
+    </instrument>
   </column>
   <column id="2">
-    <piano>
+    <instrument name="piano">
       <length>1</length>
       <pitch>3</pitch>
       <length>1</length>
       <pitch>1</pitch>
-    </piano>
+    </instrument>
   </column>
   <column id="3">
-    <piano>
+    <instrument name="piano">
       <length>1</length>
       <pitch>3</pitch>
       <length>1</length>
       <pitch>1</pitch>
-    </piano>
+    </instrument>
   </column>
   <column id="4">
-    <piano>
+    <instrument name="piano">
       <length>1</length>
       <pitch>4</pitch>
       <length>1</length>
       <pitch>2</pitch>
       <length>1</length>
       <pitch>6</pitch>
-    </piano>
+    </instrument>
   </column>
   <column id="5">
-    <piano>
+    <instrument name="piano">
       <length>1</length>
       <pitch>4</pitch>
       <length>1</length>
       <pitch>2</pitch>
       <length>1</length>
       <pitch>6</pitch>
-    </piano>
+    </instrument>
   </column>
   <column id="6">
-    <piano>
+    <instrument name="piano">
       <length>1</length>
       <pitch>4</pitch>
       <length>1</length>
       <pitch>2</pitch>
       <length>1</length>
       <pitch>6</pitch>
-    </piano>
+    </instrument>
   </column>
   <column id="7">
-    <piano>
+    <instrument name="piano">
       <length>1</length>
       <pitch>4</pitch>
       <length>1</length>
       <pitch>2</pitch>
       <length>1</length>
       <pitch>6</pitch>
-    </piano>
+    </instrument>
   </column>
   <column id="8">
-    <piano>
+    <instrument name="piano">
       <length>2</length>
       <pitch>3</pitch>
       <length>2</length>
       <pitch>2</pitch>
       <length>2</length>
       <pitch>0</pitch>
-    </piano>
+    </instrument>
   </column>
   <column id="10">
-    <piano>
+    <instrument name="piano">
       <length>2</length>
       <pitch>3</pitch>
       <length>2</length>
       <pitch>2</pitch>
       <length>2</length>
       <pitch>0</pitch>
-    </piano>
+    </instrument>
   </column>
   <column id="12">
-    <piano>
+    <instrument name="piano">
       <length>2</length>
       <pitch>3</pitch>
       <length>2</length>
       <pitch>2</pitch>
       <length>2</length>
       <pitch>0</pitch>
-    </piano>
+    </instrument>
   </column>
   <column id="14">
-    <piano>
+    <instrument name="piano">
       <length>2</length>
       <pitch>3</pitch>
       <length>2</length>
       <pitch>2</pitch>
       <length>2</length>
       <pitch>0</pitch>
-    </piano>
+    </instrument>
   </column>
 </notedata>

@@ -1,125 +1,125 @@
 <?xml version="1.0" ?>
 <notedata>
   <column id="0">
-    <piano>
+    <instrument name="piano">
       <length>16</length>
       <pitch>2</pitch>
       <length>16</length>
       <pitch>0</pitch>
-    </piano>
-    <guitar>
+    </instrument>
+    <instrument name="guitar">
       <length>16</length>
       <pitch>4</pitch>
       <length>16</length>
       <pitch>0</pitch>
-    </guitar>
-    <trumpet>
+    </instrument>
+    <instrument name="trumpet">
       <length>16</length>
       <pitch>3</pitch>
       <length>16</length>
       <pitch>1</pitch>
-    </trumpet>
+    </instrument>
   </column>
   <column id="16">
-    <piano>
+    <instrument name="piano">
       <length>8</length>
       <pitch>2</pitch>
       <length>8</length>
       <pitch>3</pitch>
       <length>8</length>
       <pitch>6</pitch>
-    </piano>
-    <guitar>
+    </instrument>
+    <instrument name="guitar">
       <length>8</length>
       <pitch>2</pitch>
       <length>8</length>
       <pitch>3</pitch>
       <length>8</length>
       <pitch>6</pitch>
-    </guitar>
-    <trumpet>
+    </instrument>
+    <instrument name="trumpet">
       <length>8</length>
       <pitch>2</pitch>
       <length>8</length>
       <pitch>3</pitch>
       <length>8</length>
       <pitch>6</pitch>
-    </trumpet>
+    </instrument>
   </column>
   <column id="24">
-    <piano>
+    <instrument name="piano">
       <length>8</length>
       <pitch>2</pitch>
       <length>8</length>
       <pitch>3</pitch>
-    </piano>
-    <guitar>
+    </instrument>
+    <instrument name="guitar">
       <length>8</length>
       <pitch>2</pitch>
       <length>8</length>
       <pitch>3</pitch>
-    </guitar>
-    <trumpet>
+    </instrument>
+    <instrument name="trumpet">
       <length>8</length>
       <pitch>2</pitch>
       <length>8</length>
       <pitch>3</pitch>
-    </trumpet>
+    </instrument>
   </column>
   <column id="32">
-    <piano>
+    <instrument name="piano">
       <length>4</length>
       <pitch>0</pitch>
-    </piano>
-    <guitar>
+    </instrument>
+    <instrument name="guitar">
       <length>4</length>
       <pitch>0</pitch>
-    </guitar>
-    <trumpet>
+    </instrument>
+    <instrument name="trumpet">
       <length>4</length>
       <pitch>9</pitch>
-    </trumpet>
+    </instrument>
   </column>
   <column id="36">
-    <piano>
+    <instrument name="piano">
       <length>4</length>
       <pitch>0</pitch>
-    </piano>
-    <guitar>
+    </instrument>
+    <instrument name="guitar">
       <length>4</length>
       <pitch>1</pitch>
-    </guitar>
-    <trumpet>
+    </instrument>
+    <instrument name="trumpet">
       <length>4</length>
       <pitch>8</pitch>
-    </trumpet>
+    </instrument>
   </column>
   <column id="40">
-    <piano>
+    <instrument name="piano">
       <length>4</length>
       <pitch>0</pitch>
-    </piano>
-    <guitar>
+    </instrument>
+    <instrument name="guitar">
       <length>4</length>
       <pitch>2</pitch>
-    </guitar>
-    <trumpet>
+    </instrument>
+    <instrument name="trumpet">
       <length>4</length>
       <pitch>7</pitch>
-    </trumpet>
+    </instrument>
   </column>
   <column id="44">
-    <piano>
+    <instrument name="piano">
       <length>4</length>
       <pitch>0</pitch>
-    </piano>
-    <guitar>
+    </instrument>
+    <instrument name="guitar">
       <length>4</length>
       <pitch>3</pitch>
-    </guitar>
-    <trumpet>
+    </instrument>
+    <instrument name="trumpet">
       <length>4</length>
       <pitch>6</pitch>
-    </trumpet>
+    </instrument>
   </column>
 </notedata>
