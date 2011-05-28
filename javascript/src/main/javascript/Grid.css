@@ -27,7 +27,7 @@ Grid {
  
 .grid_square
 {
-	background-position = 2px 2px;
+	background-position: 2px 2px;
 	background-repeat:no-repeat;
 }
  
