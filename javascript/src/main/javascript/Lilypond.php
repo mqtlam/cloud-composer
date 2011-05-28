@@ -119,6 +119,16 @@ define("LENGTH_NAME", "length");
 define("PITCH_NAME", "pitch");
 
 /**
+ * Instrument tag name.
+ */
+define("INSTRUMENT_TAG", "instrument");
+
+/**
+ * Name attribute for instrument tag.
+ */
+define("INSTRUMENT_NAME_ATTRIBUTE", "name");
+
+/**
  * Column id attribute.
  */
 define("COL_ID", "id");
@@ -221,9 +231,16 @@ function startElemHandler($parser, $name, $attribs) {
     } else if (strcasecmp($name, PITCH_NAME) == 0) {
         // <pitch> detected
         $withinPitchTag = true;
+    } else if (strcasecmp($name, INSTRUMENT_TAG) == 0) {
+        // <instrument> detected
+        $currentInstrument = $attribs[INSTRUMENT_NAME_ATTRIBUTE];
+        $currentColumn[$currentInstrument] = $currentCol;
+        
+        // reset notesBuffer
+        $notesBuffer = "";
     }
     
-    foreach ($instruments as $instr => $instrName)
+    /*foreach ($instruments as $instr => $instrName)
     {
         if (strcasecmp($name, $instrName) == 0) {
           // <name> detected
@@ -233,7 +250,7 @@ function startElemHandler($parser, $name, $attribs) {
           // reset notesBuffer
           $notesBuffer = "";
         }
-    }
+    }*/
 }
 
 /**
@@ -256,8 +273,15 @@ function endElemHandler($parser, $name) {
     } else if (strcasecmp($name, PITCH_NAME) == 0) {
         // </pitch> detected
         $withinPitchTag = false;
+    } else if (strcasecmp($name, INSTRUMENT_TAG) == 0) {
+        // </instrument> detected          
+        parseNotes();
+        
+        // reset notesBuffer for sanity
+        $notesBuffer = "";
     }
     
+    /*
     foreach ($instruments as $instr => $instrName)
     {
         if (strcasecmp($name, $instrName) == 0) {
@@ -267,7 +291,7 @@ function endElemHandler($parser, $name) {
           // reset notesBuffer for sanity
           $notesBuffer = "";
         }
-    }
+    }*/
 }
 
 /**
