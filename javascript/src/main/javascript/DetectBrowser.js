@@ -20,8 +20,8 @@ function alertBrowserInfo() {
 	var browserInfo = getBrowser();
 	var str = "<div id=\"browserInfo\">"
 			+ "<h1>Your browser is " + browserInfo[0] + " " + browserInfo[1] + "</h1>"
-			+ "<p>Cloud-Composer is based and tested on <span>Firefox platform</span>, therefore it works the best on Firefox browser. <br />"
-			+ "However Cloud-Composer should also work in Chrome, Safari and Opera browser.<br />"
+			+ "<p>Cloud-Composer is based and tested on <span>Firefox 4.0+ platform</span>, therefore it works the best on Firefox browser. <br />"
+			+ "However Cloud-Composer should also work in the most recent version of Chrome, Safari and Opera browser.<br />"
 			+ "<br />"
 			+ "If you are using Internet Explorer, please visit Cloud-Composer using another web browser, such as "
 			+ "<a href=\"http://getfirefox.com/\">Firefox</a>, "
