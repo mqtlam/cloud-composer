@@ -1,0 +1,18 @@
+#browserInfo
+{
+	color: #000000;
+	vertical-align:middle;
+	margin: 10px;
+	
+}
+
+#browserInfo > h1
+{
+	text-align:center;
+}
+
+#browserInfo span
+{
+	text-decoration:underline;
+	font-weight:bold;
+}
