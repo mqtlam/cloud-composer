@@ -788,6 +788,7 @@ public class CloudAppletControllerTest extends TestCase {
 		}
 	}
 	
+	@Test
 	public void testUpdateSequence01() throws InvalidMidiDataException {
 		c.updateSequence();
 		Sequence s = c.getSongSequence();
@@ -818,10 +819,10 @@ public class CloudAppletControllerTest extends TestCase {
 		c.addNote(new int[] {2, 9, 1, 4});
 		c.updateSequence();
 		Sequence s2 = c.getSongSequence();
-		assertFalse(s.equals(s2));
 		Track track1 = s.getTracks()[0];
 		Track track2 = s2.getTracks()[0];
 		assertFalse(track1.size() == track2.size());
+	
 	}
 	
 	@Test
@@ -834,17 +835,31 @@ public class CloudAppletControllerTest extends TestCase {
 		c.addNote(new int[] {2, 7, 1, 4});
 		c.updateSequence();
 		Sequence s2 = c.getSongSequence();
-		assertFalse(s.equals(s2));
+		Track track1 = s.getTracks()[0];
+		Track track2 = s2.getTracks()[0];
+		assertFalse(track1.size() == track2.size());
 	}
 	
 	@Test
 	public void testUpdateSequence06() throws InvalidMidiDataException {
-		Sequence s = buildSequences(new int[] {0, 0, 0, 10});
+		Sequence s = buildSequences(new int[] {4, 9, 1, 11});
 		c.addNote(new int[] {1, 1, 1, 2});
 		c.removeNote(new int[] {1, 1, 1, 2});
 		c.updateSequence();
 		Sequence s2 = c.getSongSequence();
-		assertTrue(s.equals(s2));
+		Track track1 = s.getTracks()[0];
+		Track track2 = s2.getTracks()[0];
+		for (int j = 0; j < track1.size(); j++) {
+			MidiEvent m1 = track1.get(j);
+			MidiEvent m2 = track2.get(j);
+			byte[] b1 = m1.getMessage().getMessage();
+			byte[] b2 = m2.getMessage().getMessage();
+			assertTrue(b1.length == b2.length);
+			for (int k = 0; k < b1.length; k++) {
+				assertTrue(b1[k] == b2[k]);
+			}
+		}
 	}
+
 
 }
