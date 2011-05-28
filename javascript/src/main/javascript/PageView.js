@@ -4,7 +4,6 @@
 
 // Set Disable Tutorial to true in order to skip tutorials
 var DISABLE_JAVA = false;
-var DISABLE_TUTORIAL = false;
 
 // reference to the grid object
 var grid;
@@ -39,8 +38,6 @@ function setEvents() {
 // Listens for a normal mouse click events
 function mouseClick(event) {
 	var current = event.target;
-	var tutorialChecker = current.className == "" ? current.id : current.className;
-	tutorial.updateTutorialView(tutorialChecker);
 
 	var chk = grid.isSquare(current);
 	if (chk) {
@@ -74,6 +71,8 @@ function mouseClick(event) {
 		sendNoteGrid(notegrid, "Lilypond.php");
 	} else if (current.id == "downloadBtn") {
 		applet.download();
+	} else if (current.id == "header_center") {
+		new DisplayBox(700, 400, "#EEEEEE", "Tutorial");
 	}
 	
 
@@ -171,7 +170,6 @@ function loadUI() {
 	var initialNumColumns = 112;
 	
 	applet = DISABLE_JAVA ? new Dummy() : document.getElementById('javaApplet');
-	tutorial = DISABLE_TUTORIAL ? new Dummy() : new Tutorial();
 		
 	selector = new InstrumentSelector(instrumentsList);
 			

@@ -14,6 +14,11 @@
 	margin-bottom:2px;
 }
 
+#instrumentBar > span:hover
+{
+	opacity:0.5;
+}
+
 .instrumentSelected
 {
 	width:44px;
