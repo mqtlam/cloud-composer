@@ -27,8 +27,8 @@ describe("NoteGrid", function() {
 		var initialNumColumns = 112;
 		
 		grid = new NoteGrid("grid", initialNumColumns, instrumentsList);
-		var notegridstring = grid.serializeForLilypond();
-		expect(notegridstring).toBe("<?xml version=\"1.0\"?><noteData></noteData>");
+		var notegridstring = grid.serialize();
+		expect(notegridstring).toBe("<?xml version=\"1.0\"?><noteData tempo=\"80\"></noteData>");
 		
 	});
 });
