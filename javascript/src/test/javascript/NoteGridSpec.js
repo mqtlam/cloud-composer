@@ -1,4 +1,3 @@
-/*
 describe("NoteGrid", function() {
 	it("serializes empty grid to submit to PHP", function() {
 		
@@ -32,4 +31,4 @@ describe("NoteGrid", function() {
 		expect(notegridstring).toBe("<?xml version=\"1.0\"?><noteData></noteData>");
 		
 	});
-});*/
+});
