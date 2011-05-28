@@ -56,14 +56,14 @@ function mouseClick(event) {
 	} else if (current.id == "playpausebutton") {
 		midiplayer.onPlayPauseClick(grid.numColumns);
 	} else if (current.id == "getlinkBtn") {
-		getlink = new DisplayBox(600, 280, "#CCCCCC", "GetLink", "");		
+		getlink = new DisplayBox(600, 280, "#CCCCCC", "GetLink", "");
 	} else if (current.className == "column_button") {
 		var c = parseInt(current.id);
 		midiplayer.setSongPosition(c);
 	} else if (current.id == "displayCloseButton") {
 		// if closing the browser notice, bring up the tutorial after closing it
 		if (current.parentNode.children[1].children[0].id == "browserInfo") {
-			new DisplayBox(700, 400, "#EEEEEE", "Tutorial", "");
+			alertTutorial();
 		}
 		
 		// remove notice box
@@ -77,7 +77,7 @@ function mouseClick(event) {
 	} else if (current.id == "downloadBtn") {
 		applet.download();
 	} else if (current.id == "header_center") {
-		new DisplayBox(700, 400, "#EEEEEE", "Tutorial", "");
+		alertTutorial();
 	}
 	
 
@@ -192,7 +192,7 @@ function loadUI() {
 		if (getBrowser()[0] != "Firefox") {
 			alertBrowserInfo();
 		} else{
-			new DisplayBox(700, 400, "#EEEEEE", "Tutorial", "");
+			alertTutorial();
 		}
 	}
 	createCookie();
