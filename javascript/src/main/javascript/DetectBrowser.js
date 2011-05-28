@@ -31,5 +31,5 @@ function alertBrowserInfo() {
 			+ "</p>"
 			+ "</div>";
 
-	new DisplayBox(600, 300, "#DDDDDD", "BrowserInfo", str);
+	new DisplayBox(600, 300, "#DDDDDD", "", str);
 }
