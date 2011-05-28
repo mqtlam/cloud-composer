@@ -1,0 +1,11 @@
+#tutorial
+{
+	color: #222222;
+	font-family:arial, sans-serif;
+}
+
+#tutorial > h2
+{
+	text-align:center;
+}
+
