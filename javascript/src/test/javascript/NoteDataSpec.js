@@ -1,10 +1,10 @@
-/*describe("NoteData", function() {
+describe("NoteData", function() {
 	it("checks if any notes are present", function() {
 		noteData = new NoteData(112);
 		
 		expect(noteData.hasAnyInstruments()).toBe(false);
 	});
-});*/
+});
 /*
 describe("NoteData", function() {
 	it("checks if a note can be added", function()) {
