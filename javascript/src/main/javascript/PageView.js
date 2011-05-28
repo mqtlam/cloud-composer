@@ -56,7 +56,7 @@ function mouseClick(event) {
 	} else if (current.id == "playpausebutton") {
 		midiplayer.onPlayPauseClick(grid.numColumns);
 	} else if (current.id == "getlinkBtn") {
-		getlink = new DisplayBox(600, 280, "#CCCCCC", "GetLink");		
+		getlink = new DisplayBox(600, 280, "#CCCCCC", "GetLink", "");		
 	} else if (current.className == "column_button") {
 		var c = parseInt(current.id);
 		midiplayer.setSongPosition(c);
@@ -72,7 +72,7 @@ function mouseClick(event) {
 	} else if (current.id == "downloadBtn") {
 		applet.download();
 	} else if (current.id == "header_center") {
-		new DisplayBox(700, 400, "#EEEEEE", "Tutorial");
+		new DisplayBox(700, 400, "#EEEEEE", "Tutorial", "");
 	}
 	
 
@@ -159,6 +159,7 @@ function sortAndPrintNotes() {
 }
 
 function loadUI() {
+
 	setEvents();
 	var instrumentsList = [
 			new Instrument("piano", "images/piano.png", "red"),
@@ -181,7 +182,7 @@ function loadUI() {
 	shareReferences()
 	
 	loadSession();
-	
+	alertBrowserInfo();
 }
 
 function shareReferences() {

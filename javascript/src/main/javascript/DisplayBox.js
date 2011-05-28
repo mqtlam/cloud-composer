@@ -1,10 +1,11 @@
 // this file lets you create a pop up window with specific size, disabling everything else.
 
-function DisplayBox (w, h, color, cont) {
+function DisplayBox (w, h, color, cont, extra) {
 	this.windowWidth = w;
 	this.windowHeight = h;
 	this.bgcolor = color;
 	this.content = cont;
+	this.extraContent = extra;
 	this.back;
 	this.myWindow;
 	
@@ -67,6 +68,7 @@ DisplayBox.prototype.updateBackground = function (obj) {
 
 DisplayBox.prototype.getContents = function (container) {
 	var xmlhttp;
+	var temp = this.extraContent;
 	
 	// code for IE7+, Firefox, Chrome, Opera, Safari
 	if (window.XMLHttpRequest) {
@@ -77,7 +79,7 @@ DisplayBox.prototype.getContents = function (container) {
 	xmlhttp.onreadystatechange = function() {		
 		if (xmlhttp.readyState==4 && xmlhttp.status==200) {
 			var a = document.createElement("div");
-			a.innerHTML = xmlhttp.responseText;
+			a.innerHTML = xmlhttp.responseText + temp;
 			container.appendChild(a);
 		}
 	}
