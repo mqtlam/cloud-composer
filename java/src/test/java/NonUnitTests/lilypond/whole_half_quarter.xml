@@ -1,0 +1,53 @@
+<?xml version="1.0" ?>
+<notedata>
+  <column id="0">
+    <instrument name="piano">
+      <length>16</length>
+      <pitch>3</pitch>
+      <length>16</length>
+      <pitch>1</pitch>
+    </instrument>
+  </column>
+  <column id="16">
+    <instrument name="piano">
+      <length>8</length>
+      <pitch>2</pitch>
+      <length>8</length>
+      <pitch>3</pitch>
+      <length>8</length>
+      <pitch>6</pitch>
+    </instrument>
+  </column>
+  <column id="24">
+    <instrument name="piano">
+      <length>8</length>
+      <pitch>2</pitch>
+      <length>8</length>
+      <pitch>3</pitch>
+    </instrument>
+  </column>
+  <column id="32">
+    <instrument name="piano">
+      <length>4</length>
+      <pitch>0</pitch>
+    </instrument>
+  </column>
+  <column id="36">
+    <instrument name="piano">
+      <length>4</length>
+      <pitch>0</pitch>
+    </instrument>
+  </column>
+  <column id="40">
+    <instrument name="piano">
+      <length>4</length>
+      <pitch>0</pitch>
+    </instrument>
+  </column>
+  <column id="44">
+    <instrument name="piano">
+      <length>4</length>
+      <pitch>0</pitch>
+    </instrument>
+  </column>
+</notedata>
