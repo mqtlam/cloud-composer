@@ -232,12 +232,17 @@ function startElemHandler($parser, $name, $attribs) {
         // <pitch> detected
         $withinPitchTag = true;
     } else if (strcasecmp($name, INSTRUMENT_TAG) == 0) {
-        // <instrument> detected
-        $currentInstrument = $attribs[INSTRUMENT_NAME_ATTRIBUTE];
-        $currentColumn[$currentInstrument] = $currentCol;
-        
-        // reset notesBuffer
-        $notesBuffer = "";
+        foreach ($instruments as $instr => $instrName)
+        {
+            if (strcasecmp($attribs[INSTRUMENT_NAME_ATTRIBUTE], $instrName) == 0) {
+              // <name> detected
+              $currentInstrument = $instr;
+              $currentColumn[$currentInstrument] = $currentCol;
+              
+              // reset notesBuffer
+              $notesBuffer = "";
+            }
+        }
     }
     
     /*foreach ($instruments as $instr => $instrName)
