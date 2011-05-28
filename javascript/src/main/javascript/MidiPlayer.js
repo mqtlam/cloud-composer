@@ -83,8 +83,6 @@ function updateSongPosition() {
 	var g = document.getElementById('grid');
 	var b = document.getElementsByClassName('highlightbar')[0];
 	var p = applet.currentSongPosition();
-
-	$("#header_left")[0].innerHTML = p;
 	
 	if (midiplayer.notePosition != midiplayer.basePosition && (p == midiplayer.maxValue || p == grid.lastColumn)) {
 		midiplayer.reset(midiplayer.basePosition);

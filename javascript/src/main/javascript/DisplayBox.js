@@ -69,22 +69,28 @@ DisplayBox.prototype.updateBackground = function (obj) {
 DisplayBox.prototype.getContents = function (container) {
 	var xmlhttp;
 	var temp = this.extraContent;
+	var a = document.createElement("div");
 	
-	// code for IE7+, Firefox, Chrome, Opera, Safari
-	if (window.XMLHttpRequest) {
-		xmlhttp = new XMLHttpRequest();
-	}
-	
-	xmlhttp.open("GET", this.content + ".html", true);
-	xmlhttp.onreadystatechange = function() {		
-		if (xmlhttp.readyState==4 && xmlhttp.status==200) {
-			var a = document.createElement("div");
-			a.innerHTML = xmlhttp.responseText + temp;
-			container.appendChild(a);
+	if (temp != "") {
+		a.innerHTML = temp;
+	} else {
+		// code for IE7+, Firefox, Chrome, Opera, Safari
+		if (window.XMLHttpRequest) {
+			xmlhttp = new XMLHttpRequest();
 		}
+	
+		xmlhttp.open("GET", this.content + ".html", true);
+		xmlhttp.onreadystatechange = function() {		
+			if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+				a.innerHTML = xmlhttp.responseText;
+			}
+		}
+	
+		xmlhttp.send();	
 	}
 	
-	xmlhttp.send();
+	
+	container.appendChild(a);
 }
 
 
