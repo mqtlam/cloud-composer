@@ -42,7 +42,7 @@ Tutorial.prototype.createBubble = function (element, elementID, text,
 }
 	
 Tutorial.prototype.updateTutorialView = function(elementID) {
-	if (this.hasListeningElement() && this.listeningElement.id == elementID) {
+	if (this.hasListeningElement() && (this.listeningElement.id == elementID || elementID.indexOf("bubble") >= 0)) {
 		document.getElementById("tutorial").removeChild(this.listeningElement);
 		
 		var n = this.getIndex(elementID, this.elementIDList) + 1;

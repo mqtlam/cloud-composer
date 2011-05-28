@@ -83,6 +83,8 @@ function updateSongPosition() {
 	var g = document.getElementById('grid');
 	var b = document.getElementsByClassName('highlightbar')[0];
 	var p = applet.currentSongPosition();
+
+	$("#header_left")[0].innerHTML = p;
 	
 	if (midiplayer.notePosition != midiplayer.basePosition && (p == midiplayer.maxValue || p == grid.lastColumn)) {
 		midiplayer.reset(midiplayer.basePosition);
@@ -154,5 +156,5 @@ function update_bpmValueOnPage(){
 	}
 	
 	// updates the interval speed
-	this.intervalSpeed = Math.floor(15000/value);
+	//midiplayer.intervalSpeed = Math.floor(15000/parseInt(value));
 }
