@@ -522,23 +522,37 @@ public class CloudMidiPlayerTest extends TestCase {
 	}
 	
 	/**
-	 * Test whether CloudMidiPlayer returns a Sequence object correctly 
+	 * Test whether CloudMidiPlayer returns the basic Sequence object correctly 
 	 * 
 	 * @throws InvalidMidiDataException
 	 */
 	@Test
-	public void testBasicSequence00() throws InvalidMidiDataException {
+	public void testBasicSequence01() throws InvalidMidiDataException {
 		Sequence actual = CloudMidiPlayer.basicSequence();
 		Sequence expected = new Sequence(Sequence.PPQ, (int) CloudMidiPlayer.TICKSPERFRAME);
 		expected.createTrack();
 		for (CloudMidiPlayer.SequenceInst inst : CloudMidiPlayer.SequenceInst.values())
 			setInstrument(expected, inst);
 		
-		
 		Track[] t1 = actual.getTracks();
 		Track[] t2 = expected.getTracks();
 		assertTrue(t1.length == t2.length);
 		assertTrue(t1.length == 1);
+		assertTrue(t1[0].size() == t2[0].size());
+	}
+	
+	/**
+	 * Test whether CloudMidiPlayer returns the basic Sequence object correctly 
+	 * 
+	 * @throws InvalidMidiDataException
+	 */
+	@Test
+	public void testBasicSequence02() throws InvalidMidiDataException {
+		Sequence actual = CloudMidiPlayer.basicSequence();
+		Sequence expected = new Sequence(Sequence.PPQ, (int) CloudMidiPlayer.TICKSPERFRAME);
+		expected.createTrack();
+		for (CloudMidiPlayer.SequenceInst inst : CloudMidiPlayer.SequenceInst.values())
+			setInstrument(expected, inst);
 		
 		Track track1 = actual.getTracks()[0];
 		Track track2 = expected.getTracks()[0];
@@ -546,6 +560,33 @@ public class CloudMidiPlayerTest extends TestCase {
 			MidiEvent m1 = track1.get(j);
 			MidiEvent m2 = track2.get(j);
 			assertTrue(m1.getTick() == m2.getTick());
+		}
+	}
+	
+	/**
+	 * Test whether CloudMidiPlayer returns the basic Sequence object correctly 
+	 * 
+	 * @throws InvalidMidiDataException
+	 */
+	@Test
+	public void testBasicSequence03() throws InvalidMidiDataException {
+		Sequence actual = CloudMidiPlayer.basicSequence();
+		Sequence expected = new Sequence(Sequence.PPQ, (int) CloudMidiPlayer.TICKSPERFRAME);
+		expected.createTrack();
+		for (CloudMidiPlayer.SequenceInst inst : CloudMidiPlayer.SequenceInst.values())
+			setInstrument(expected, inst);
+		
+		Track track1 = actual.getTracks()[0];
+		Track track2 = expected.getTracks()[0];
+		for (int j = 0; j < track1.size(); j++) {
+			MidiEvent m1 = track1.get(j);
+			MidiEvent m2 = track2.get(j);
+			byte[] b1 = m1.getMessage().getMessage();
+			byte[] b2 = m2.getMessage().getMessage();
+			assertTrue(b1.length == b2.length);
+			for (int k = 0; k < b1.length; k++) {
+				assertTrue(b1[k] == b2[k]);
+			}
 		}
 	}
 	
