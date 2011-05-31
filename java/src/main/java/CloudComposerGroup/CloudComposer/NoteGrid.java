@@ -85,19 +85,6 @@ public class NoteGrid {
 		}
 	}
 	
-//	/**
-//	 * Returns true if it removes all the notes of a particular column.
-//	 * Otherwise, false.
-//	 * 
-//	 * @param column, integer that represents a column of the note grid
-//	 * @requires column >= 0
-//	 * @modifies this
-//	 */
-//	public boolean removeAllNotes(int column) {
-//		size -= grid.get(column).size();
-//		return grid.remove(column) != null;
-//	}
-	
 	/**
 	 * Returns a copy of a list of notes of given column
 	 * 
