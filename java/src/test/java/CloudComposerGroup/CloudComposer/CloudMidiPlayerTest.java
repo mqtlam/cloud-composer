@@ -1,7 +1,10 @@
 import CloudComposerGroup.CloudComposer.*;
 
 import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.MidiEvent;
 import javax.sound.midi.Sequence;
+import javax.sound.midi.ShortMessage;
+import javax.sound.midi.Track;
 
 import junit.framework.TestCase;
 
@@ -517,4 +520,46 @@ public class CloudMidiPlayerTest extends TestCase {
 		int stopPos = column + 4;
 		CloudMidiPlayer.addNote(seq, inst, pitch, column, stopPos);
 	}
+	
+	/**
+	 * Test whether CloudMidiPlayer returns a Sequence object correctly 
+	 * 
+	 * @throws InvalidMidiDataException
+	 */
+	@Test
+	public void testBasicSequence00() throws InvalidMidiDataException {
+		Sequence actual = CloudMidiPlayer.basicSequence();
+		Sequence expected = new Sequence(Sequence.PPQ, (int) CloudMidiPlayer.TICKSPERFRAME);
+		expected.createTrack();
+		for (CloudMidiPlayer.SequenceInst inst : CloudMidiPlayer.SequenceInst.values())
+			setInstrument(expected, inst);
+		
+		
+		Track[] t1 = actual.getTracks();
+		Track[] t2 = expected.getTracks();
+		assertTrue(t1.length == t2.length);
+		assertTrue(t1.length == 1);
+		
+		Track track1 = actual.getTracks()[0];
+		Track track2 = expected.getTracks()[0];
+		for (int j = 0; j < track1.size(); j++) {
+			MidiEvent m1 = track1.get(j);
+			MidiEvent m2 = track2.get(j);
+			assertTrue(m1.getTick() == m2.getTick());
+		}
+	}
+	
+	/**
+	 * Helping method for testBasicSequence to set instruments into a sequence
+	 * 
+	 * @param s, sequence object
+	 * @param inst, SequenceInst object
+	 * @throws InvalidMidiDataException
+	 */
+	private void setInstrument(Sequence s, CloudMidiPlayer.SequenceInst inst) throws InvalidMidiDataException {
+		ShortMessage m = new ShortMessage();
+		m.setMessage(ShortMessage.PROGRAM_CHANGE, inst.value, CloudMidiPlayer.INSTRUMENTS[inst.value], 0);
+		s.getTracks()[0].add(new MidiEvent(m, 0));
+	}
+
 }
