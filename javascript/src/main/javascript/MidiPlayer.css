@@ -6,12 +6,22 @@
 	width:100%;
 }
 
-#playbackButtons > img
+#playbackButtons > div
 {
 	height: 50px;
 	width: 50px;
 	cursor: pointer;
+	float:left;
 }
+
+#playback_play {	background-image:url('../images/Play-Disabled-icon-color.png'); }
+#playback_pause { background-image:url('../images/Pause-Disabled-icon-color.png'); }
+#playback_stop { background-image:url('../images/Stop-Disabled-icon-color.png'); }
+
+#playback_play:hover {	background-image:url('../images/Play-Disabled-icon.png'); }
+#playback_pause:hover { background-image:url('../images/Pause-Disabled-icon.png'); }
+#playback_stop:hover { background-image:url('../images/Stop-Disabled-icon.png'); }
+
 
 #playbackButtons
 {
