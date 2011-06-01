@@ -40,11 +40,13 @@ body > div
 	font-size:11pt;
 	font-family:arial, verdana, sans-serif;
 	cursor:pointer;
+	color:#FFFF99;
+	text-decoration:underline;
 }
 
 #header_center:hover
 {
-	color: #448866;
+	color: #CCFF99;
 }
 
 #header_right
@@ -132,6 +134,7 @@ body > div
 #footer > *
 {
 	float:right;
+	margin-left: 18px;
 }
 
 #output
@@ -143,3 +146,5 @@ body > div
 	overflow:scroll;
 }
 
+a { color: #FFFF99; }
+a:hover { color: #CCFF99; }

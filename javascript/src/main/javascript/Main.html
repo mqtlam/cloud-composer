@@ -1,3 +1,12 @@
+<!--
+	CSE 403 Cloud Composer Group (https://code.google.com/p/cloud-composer/wiki/CloudComposer)
+	Eui Min Jung, Hannah Hemmaplardh, James Vaughan, Jared Clement, Junebae Kye, Jungryul Choi, Michael Lam
+
+	This Main.html is contains the composer website.
+
+
+-->
+
 <html>
 	<head>
 		<title>Cloud Composer, CSE 403</title>
@@ -37,13 +46,14 @@
 	
 	<body>
 		<div id="header">
-			<!-- Buttons go here-->
 			<div id="header_left">
 				<h1>Cloud Composer</h1>
 			</div>
+			
 			<div id="header_center">
 				Help
 			</div>
+			
 			<div id="header_right">
 				<button id="getlinkBtn">Get Link</button>
 				<button id="downloadBtn">Download</button>
@@ -55,11 +65,6 @@
 					<div id="tempo">
 						<!-- Slider goes here-->
 					</div>
-				</div>
-				
-				<div>
-					Tutorial
-					<!-- Tutorial display Button -->
 				</div>
 			</div>
 		</div>
@@ -75,7 +80,6 @@
 				</div>
 			
 				<div id="midiplayer">
-					<!-- Midi player goes here-->
                 	<div id="playbackButtons">
 						<div id="playback_stop"></div>
 						<div id="playback_play"></div>
@@ -84,6 +88,8 @@
 					<div id="playbackSliderContainer">
 						<div id="playbackSlider"></div>
 					</div>
+					
+					<!-- Actual Java Midi player is invisible -->
 					<applet id="javaApplet" code="CloudComposerGroup/CloudComposer/CloudAppletController.class" width="1" height="1" archive="MidiPlayer.jar"></applet>
 				</div>
 			</div>
@@ -94,6 +100,7 @@
 		<div id="footer">
 			<!-- Contact information goes here-->
 			<p>&copy; Cloud Composer</p>
+			<p>Visit Cloud Composer Group at our <a href="https://code.google.com/p/cloud-composer/wiki/CloudComposer">Wiki</a></p>
 		</div>
 		
 	</body>

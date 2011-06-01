@@ -75,7 +75,7 @@ Grid {
 	margin-left:1px;
 }
 
-/* Measure */
+/* Measure & Extender*/
 #grid > div > div
 {
 	float:left;
@@ -90,8 +90,14 @@ Grid {
 
 #extender
 {
+	background-image:url('../images/extender_arrow.png');
+	background-repeat:no-repeat;
+	background-position:center;
 	background-color:#444444;
-	float:left;
 	margin-top:1px;
 	cursor:pointer;
+}
+#extender:hover
+{
+	background-color:#AAAAAA;
 }
