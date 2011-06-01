@@ -51,9 +51,9 @@ function mouseClick(event) {
 	} else if (current.className == "instrumentContainer") {
 		selector.setActiveInstrument(current.id);
 		grid.updateMainImage(selector.currentInstrument.instrumentName);
-	} else if (current.id == "stopbutton") { // 
+	} else if (current.id == "playback_stop") { // 
 		midiplayer.onStopClick();
-	} else if (current.id == "playpausebutton") {
+	} else if (current.id == "playback_play" || current.id == "playback_pause") {
 		midiplayer.onPlayPauseClick(grid.numColumns);
 	} else if (current.id == "getlinkBtn") {
 		getlink = new DisplayBox(600, 280, "#CCCCCC", "GetLink", "");

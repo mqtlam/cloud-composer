@@ -462,7 +462,7 @@ NoteGrid.prototype.setEndingNote = function(evt, instrument) {
 			
 			this.notes.addNote(this.dragNote[2], note);
 			this.java.addToPlayer(this.dragNote[2], note);
-			this.lastColumn = Math.max(this.lastColumn, this.dragNote[3]+1);
+			this.lastColumn = Math.max(this.lastColumn, this.dragNote[3]+2);
 
 			
 			endSquare = this.getSquare(this.dragNote[3], this.dragNote[1]);
@@ -487,7 +487,7 @@ NoteGrid.prototype.setEndingNote = function(evt, instrument) {
 			if (this.dragNote[1] == pitch && this.dragNote[3] == column) {
 				this.notes.addNote(this.dragNote[2], note);
 				this.java.addToPlayer(this.dragNote[2], note);
-				this.lastColumn = Math.max(this.lastColumn, this.dragNote[3]+1);
+				this.lastColumn = Math.max(this.lastColumn, this.dragNote[3]+2);
 				
 				// set the main square
 				var mainSquare = this.getSquare(this.dragNote[2], this.dragNote[1]);
@@ -749,7 +749,7 @@ NoteGrid.prototype.getLastColumn = function() {
 				for (var p=this.pitches-1; p>=0; p--) {
 					var str = oct.children[p].className;
 					if (str.indexOf("Lengthy")>=0 || str.indexOf("Main")>=0) {
-						return i*this.measureWidth + m;
+						return i*this.measureWidth + m + 1;
 					}
 				}
 			}
