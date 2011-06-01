@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://cloud-composer.com/" />
+<title>BoundaryNoteTest</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">BoundaryNoteTest</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>http://cloud-composer.com/Main.html</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>piano</td>
+	<td></td>
+</tr>
+<!--//////////////////////////////-->
+<!--// BOUNDARY ADDING NOTES //-->
+<!--//////////////////////////////-->
+<tr>
+	<td>store</td>
+	<td>0</td>
+	<td>x</td>
+</tr>
+<tr>
+	<td>while</td>
+	<td>storedVars['x'] &lt; 10</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseDown</td>
+	<td>//div[@id='column0']/div/div[@id='square${x}']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseOver</td>
+	<td>//div[@id='column0']/div/div[@id='square${x}']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseUp</td>
+	<td>//div[@id='column0']/div/div[@id='square${x}']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertElementPresent</td>
+	<td>//div[@id='column0']/div/div[@id='square${x}'][@style='background-image: url(&quot;images/thumbnail_piano.png&quot;);']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>storedVars['x'] = ${x} + 1;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>1</td>
+	<td>x</td>
+</tr>
+<tr>
+	<td>while</td>
+	<td>storedVars['x'] &lt; 111</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseDown</td>
+	<td>//div[@id='column${x}']/div/div[@id='square9']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseOver</td>
+	<td>//div[@id='column${x}']/div/div[@id='square9']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseUp</td>
+	<td>//div[@id='column${x}']/div/div[@id='square9']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertElementPresent</td>
+	<td>//div[@id='column${x}']/div/div[@id='square9'][@style='background-image: url(&quot;images/thumbnail_piano.png&quot;);']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseDown</td>
+	<td>//div[@id='column${x}']/div/div[@id='square0']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseOver</td>
+	<td>//div[@id='column${x}']/div/div[@id='square0']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseUp</td>
+	<td>//div[@id='column${x}']/div/div[@id='square0']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertElementPresent</td>
+	<td>//div[@id='column${x}']/div/div[@id='square0'][@style='background-image: url(&quot;images/thumbnail_piano.png&quot;);']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>storedVars['x'] = ${x} + 1;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>0</td>
+	<td>x</td>
+</tr>
+<tr>
+	<td>while</td>
+	<td>storedVars['x'] &lt; 10</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseDown</td>
+	<td>//div[@id='column111']/div/div[@id='square${x}']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseOver</td>
+	<td>//div[@id='column111']/div/div[@id='square${x}']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseUp</td>
+	<td>//div[@id='column111']/div/div[@id='square${x}']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertElementPresent</td>
+	<td>//div[@id='column111']/div/div[@id='square${x}'][@style='background-image: url(&quot;images/thumbnail_piano.png&quot;);']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>storedVars['x'] = ${x} + 1;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--/////////////////////////////////-->
+<!--// BOUNDARY REMOVING NOTES //-->
+<!--/////////////////////////////////-->
+<tr>
+	<td>store</td>
+	<td>0</td>
+	<td>x</td>
+</tr>
+<tr>
+	<td>while</td>
+	<td>storedVars['x'] &lt; 10</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseDown</td>
+	<td>//div[@id='column0']/div/div[@id='square${x}']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseUp</td>
+	<td>//div[@id='column0']/div/div[@id='square${x}']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertElementNotPresent</td>
+	<td>//div[@id='column0']/div/div[@id='square${x}'][@style='background-image: url(&quot;images/thumbnail_piano.png&quot;);']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>storedVars['x'] = ${x} + 1;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>1</td>
+	<td>x</td>
+</tr>
+<tr>
+	<td>while</td>
+	<td>storedVars['x'] &lt; 111</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseDown</td>
+	<td>//div[@id='column${x}']/div/div[@id='square9']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseUp</td>
+	<td>//div[@id='column${x}']/div/div[@id='square9']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertElementNotPresent</td>
+	<td>//div[@id='column${x}']/div/div[@id='square9'][@style='background-image: url(&quot;images/thumbnail_piano.png&quot;);']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseDown</td>
+	<td>//div[@id='column${x}']/div/div[@id='square0']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseUp</td>
+	<td>//div[@id='column${x}']/div/div[@id='square0']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertElementNotPresent</td>
+	<td>//div[@id='column${x}']/div/div[@id='square0'][@style='background-image: url(&quot;images/thumbnail_piano.png&quot;);']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>storedVars['x'] = ${x} + 1;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>0</td>
+	<td>x</td>
+</tr>
+<tr>
+	<td>while</td>
+	<td>storedVars['x'] &lt; 10</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseDown</td>
+	<td>//div[@id='column111']/div/div[@id='square${x}']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseUp</td>
+	<td>//div[@id='column111']/div/div[@id='square${x}']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertElementNotPresent</td>
+	<td>//div[@id='column111']/div/div[@id='square${x}'][@style='background-image: url(&quot;images/thumbnail_piano.png&quot;);']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>storedVars['x'] = ${x} + 1;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>
