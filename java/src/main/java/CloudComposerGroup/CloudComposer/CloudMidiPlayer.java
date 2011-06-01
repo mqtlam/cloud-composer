@@ -142,8 +142,8 @@ public class CloudMidiPlayer
 	{
 		song = s;
 		try {
+			setSilentEndNote(s);
 			seq.setSequence(song);
-			setSilentEndNote();
 		} catch (InvalidMidiDataException e) {
 			earlySetString = e.getMessage();
 		}
@@ -204,7 +204,6 @@ public class CloudMidiPlayer
 	 */
 	public void writeToFile(String location) 
 	{
-		setSilentEndNote();
 		if (!location.toLowerCase().endsWith(".midi"))
 			location += ".midi";
 		File f = new File(location);
@@ -294,12 +293,12 @@ public class CloudMidiPlayer
 	 * Sets a silent end note to the song so that the downloaded
 	 * version of the song will play all of the notes properly.
 	 */
-	private void setSilentEndNote() {
+	public static void setSilentEndNote(Sequence s) {
 		try {
 			ShortMessage m2 = new ShortMessage();
 			m2.setMessage(ShortMessage.NOTE_OFF, SequenceInst.values().length, 0, 0);
-			MidiEvent endSong = new MidiEvent(m2, song.getTickLength() + 4);
-			song.getTracks()[0].add(endSong);
+			MidiEvent endSong = new MidiEvent(m2, s.getTickLength() + 4);
+			s.getTracks()[0].add(endSong);
 		} catch (InvalidMidiDataException e) {
 			earlySetString = e.getMessage();
 		}
