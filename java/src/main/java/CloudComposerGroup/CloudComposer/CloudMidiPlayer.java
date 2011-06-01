@@ -32,6 +32,8 @@ public class CloudMidiPlayer
 	
 	public static String earlySetString; // Stores last error for use by front end.
 	
+	private static MidiEvent[][] lastOffs;
+	
 	/** 
 	 * Set of enum values for the list of instruments Cloud Composer supports.
 	 * @author James Vaughan
@@ -61,6 +63,7 @@ public class CloudMidiPlayer
 			noteSequences = new Sequence[getInstruments().length][SCALE.length * OCTAVES];
 			tempoMessage = new MetaMessage();
 			setTempo(DEFAULTBPM);
+			lastOffs = new MidiEvent[SequenceInst.values().length][SCALE.length*OCTAVES];
 		} catch (Exception e) {
 			earlySetString = e.getMessage();
 		}
@@ -229,6 +232,8 @@ public class CloudMidiPlayer
 	public static void addNote(Sequence s, SequenceInst inst, 
 						 int pitch, int startPos, int stopPos) 
 	{
+		if (lastOffs == null)
+			lastOffs = new MidiEvent[SequenceInst.values().length][SCALE.length*OCTAVES];
 		Track t = s.getTracks()[0];
 		int realPitch = pitch / SCALE.length * 12 + SCALE[pitch % SCALE.length];
 
@@ -237,9 +242,14 @@ public class CloudMidiPlayer
 			m.setMessage(ShortMessage.NOTE_ON, inst.value, realPitch, 100);
 			t.add(new MidiEvent(m, startPos));
 			
+			if (lastOffs[inst.value][pitch] != null && 2*startPos-stopPos+1 == lastOffs[inst.value][pitch].getTick()) {
+				t.remove(lastOffs[inst.value][pitch]);
+			}
 			ShortMessage m2 = new ShortMessage();
 			m2.setMessage(ShortMessage.NOTE_OFF, inst.value, realPitch, 100);
-			t.add(new MidiEvent(m2, stopPos));
+			MidiEvent e = new MidiEvent(m2, stopPos);
+			t.add(e);
+			lastOffs[inst.value][pitch] = e;
 		} catch (InvalidMidiDataException e) {
 			earlySetString = e.getMessage();
 		}
