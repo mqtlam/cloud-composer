@@ -8,9 +8,10 @@ function MidiPlayer(inst, num) {
 	this.positionTracker = 1;
 	this.basePosition = 0;
 	
-	createTempoSlider(120);
+	createTempoSlider(120, this);
 	createPlayerSlider(0);
 }
+
 
 MidiPlayer.prototype.onPlayPauseClick = function (numColumns) {
 	this.updatePlayback(numColumns);		// updates the max value of the playback
@@ -84,7 +85,7 @@ function updateSongPosition() {
 	var b = document.getElementsByClassName('highlightbar')[0];
 	var p = applet.currentSongPosition();
 	
-	if (midiplayer.notePosition != midiplayer.basePosition && (p == midiplayer.maxValue || p == grid.lastColumn)) {
+	if (midiplayer.notePosition != midiplayer.basePosition && (p == midiplayer.maxValue || p >= grid.lastColumn)) {
 		midiplayer.reset(midiplayer.basePosition);
 		g.scrollLeft = midiplayer.baseScroll;
 		
@@ -104,7 +105,7 @@ MidiPlayer.prototype.updatePlayback = function (numColumn) {
 	$('#playbackSlider').slider('option', 'max', numColumn);
 }
 
-function createTempoSlider(initialValue) {
+function createTempoSlider(initialValue, player) {
 	$("#tempo").slider({
 		// Initializing values
 		animate: false,
@@ -116,11 +117,11 @@ function createTempoSlider(initialValue) {
 		
 		// when value is changed
 		change: function(event, ui){
-			update_bpmValueOnPage();
+			update_bpmValueOnPage(player);
 		}
 	});
 	
-	update_bpmValueOnPage();
+	update_bpmValueOnPage(player);
 }
 
 function createPlayerSlider(initialValue) {	
@@ -136,7 +137,7 @@ function createPlayerSlider(initialValue) {
 	$("#playbackSlider").slider("disable");
 }
 
-function update_bpmValueOnPage(){
+function update_bpmValueOnPage(player){
 	// get the location to update
 	var bpm = document.getElementById("sliderValue");
 	// get the value from the slider
@@ -154,5 +155,5 @@ function update_bpmValueOnPage(){
 	}
 	
 	// updates the interval speed
-	//midiplayer.intervalSpeed = Math.floor(15000/parseInt(value));
+	player.intervalSpeed = Math.floor(15000/parseInt(value));
 }
