@@ -146,5 +146,5 @@ body > div
 	overflow:scroll;
 }
 
-a { color: #FFFF99; }
-a:hover { color: #CCFF99; }
+#footer a { color: #FFFF99; }
+#footer a:hover { color: #CCFF99; }
