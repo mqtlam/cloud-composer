@@ -323,7 +323,7 @@ NoteGrid.prototype.changeNoteLength = function(square, instrument) {
 		var removedNote = this.notes.removeNote(mainColumn, note);
 		this.java.removeFromPlayer(mainColumn, removedNote);
 		
-		this.lastColumn = this.getLastColumn();
+		this.lastColumn = this.getLastColumn() + 1;
 	}
 }
 
@@ -355,7 +355,7 @@ NoteGrid.prototype.setStartingNote = function(evt, instrument) {
 				var removedNote = this.notes.removeNote(column, note);		// <- noteLength maybe wrong, but doesn't matter
 				this.java.removeFromPlayer(column, removedNote);
 				
-				this.lastColumn = this.getLastColumn();
+				this.lastColumn = this.getLastColumn() + 1;
 				this.dragNote[3] = column + removedNote.noteLength - 1;
 				
 				
@@ -462,7 +462,7 @@ NoteGrid.prototype.setEndingNote = function(evt, instrument) {
 			
 			this.notes.addNote(this.dragNote[2], note);
 			this.java.addToPlayer(this.dragNote[2], note);
-			this.lastColumn = Math.max(this.lastColumn, this.dragNote[3]);
+			this.lastColumn = Math.max(this.lastColumn, this.dragNote[3]+2);
 
 			
 			endSquare = this.getSquare(this.dragNote[3], this.dragNote[1]);
@@ -487,7 +487,7 @@ NoteGrid.prototype.setEndingNote = function(evt, instrument) {
 			if (this.dragNote[1] == pitch && this.dragNote[3] == column) {
 				this.notes.addNote(this.dragNote[2], note);
 				this.java.addToPlayer(this.dragNote[2], note);
-				this.lastColumn = Math.max(this.lastColumn, this.dragNote[3]);
+				this.lastColumn = Math.max(this.lastColumn, this.dragNote[3]+2);
 				
 				// set the main square
 				var mainSquare = this.getSquare(this.dragNote[2], this.dragNote[1]);
