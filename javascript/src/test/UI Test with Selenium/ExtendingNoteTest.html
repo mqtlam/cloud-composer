@@ -1,0 +1,629 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://cloud-composer.com/" />
+<title>ExtendingNoteTest</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">ExtendingNoteTest</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>http://cloud-composer.com/Main.html</td>
+	<td></td>
+</tr>
+<!--//////////////////////////////-->
+<!--//   EXTENDING NOTE TEST   ///-->
+<!--//////////////////////////////-->
+<!--// PIANO NOTE TEST-->
+<tr>
+	<td>store</td>
+	<td>2</td>
+	<td>x</td>
+</tr>
+<tr>
+	<td>while</td>
+	<td>storedVars['x'] &lt; 13</td>
+	<td></td>
+</tr>
+<!--//add a piano note-->
+<tr>
+	<td>click</td>
+	<td>piano</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseDown</td>
+	<td>//div[@id='column0']/div/div[@id='square9']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>0</td>
+	<td>y</td>
+</tr>
+<tr>
+	<td>while</td>
+	<td>storedVars['y'] &lt; ${x}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseOver</td>
+	<td>//div[@id='column${y}']/div/div[@id='square9']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>storedVars['y'] = ${y} + 1;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>storedVars['y'] = ${y} - 1;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseUp</td>
+	<td>//div[@id='column${y}']/div/div[@id='square9']</td>
+	<td></td>
+</tr>
+<!--// note check-->
+<tr>
+	<td>assertElementPresent</td>
+	<td>//div[@id='column0']/div/div[@id='square9'][@class='grid_square pianoMain']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>1</td>
+	<td>y</td>
+</tr>
+<tr>
+	<td>while</td>
+	<td>storedVars['y'] &lt; (${x} - 1)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertElementPresent</td>
+	<td>//div[@id='column${y}']/div/div[@id='square9'][@class='grid_square pianoLengthyNote']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>storedVars['y'] = ${y} + 1;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertElementPresent</td>
+	<td>//div[@id='column${y}']/div/div[@id='square9'][@class='grid_square pianoLengthyNote pianoExtendable']</td>
+	<td></td>
+</tr>
+<!--// remove a piano note-->
+<tr>
+	<td>mouseDown</td>
+	<td>//div[@id='column0']/div/div[@id='square9']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseUp</td>
+	<td>//div[@id='column0']/div/div[@id='square9']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertElementNotPresent</td>
+	<td>//div[@id='grid']/div[@id='inner_grid']/div/div/div/div[@style='background-image: url(&quot;images/thumbnail_piano.png&quot;);']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>storedVars['x'] = ${x} + 1;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--// END LOOP-->
+<!--////////////////////-->
+<!--// GUITAR NOTE TEST-->
+<tr>
+	<td>store</td>
+	<td>2</td>
+	<td>x</td>
+</tr>
+<tr>
+	<td>while</td>
+	<td>storedVars['x'] &lt; 13</td>
+	<td></td>
+</tr>
+<!--//add a guitar note-->
+<tr>
+	<td>click</td>
+	<td>guitar</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseDown</td>
+	<td>//div[@id='column0']/div/div[@id='square9']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>0</td>
+	<td>y</td>
+</tr>
+<tr>
+	<td>while</td>
+	<td>storedVars['y'] &lt; ${x}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseOver</td>
+	<td>//div[@id='column${y}']/div/div[@id='square9']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>storedVars['y'] = ${y} + 1;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>storedVars['y'] = ${y} - 1;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseUp</td>
+	<td>//div[@id='column${y}']/div/div[@id='square9']</td>
+	<td></td>
+</tr>
+<!--// note check-->
+<tr>
+	<td>assertElementPresent</td>
+	<td>//div[@id='column0']/div/div[@id='square9'][@class='grid_square guitarMain']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>1</td>
+	<td>y</td>
+</tr>
+<tr>
+	<td>while</td>
+	<td>storedVars['y'] &lt; (${x} - 1)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertElementPresent</td>
+	<td>//div[@id='column${y}']/div/div[@id='square9'][@class='grid_square guitarLengthyNote']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>storedVars['y'] = ${y} + 1;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertElementPresent</td>
+	<td>//div[@id='column${y}']/div/div[@id='square9'][@class='grid_square guitarLengthyNote guitarExtendable']</td>
+	<td></td>
+</tr>
+<!--// remove a guitar note-->
+<tr>
+	<td>mouseDown</td>
+	<td>//div[@id='column0']/div/div[@id='square9']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseUp</td>
+	<td>//div[@id='column0']/div/div[@id='square9']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertElementNotPresent</td>
+	<td>//div[@id='grid']/div[@id='inner_grid']/div/div/div/div[@style='background-image: url(&quot;images/thumbnail_guitar.png&quot;);']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>storedVars['x'] = ${x} + 1;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--// END LOOP-->
+<!--////////////////////-->
+<!--// DRUM NOTE TEST-->
+<tr>
+	<td>store</td>
+	<td>2</td>
+	<td>x</td>
+</tr>
+<tr>
+	<td>while</td>
+	<td>storedVars['x'] &lt; 13</td>
+	<td></td>
+</tr>
+<!--//add a drum note-->
+<tr>
+	<td>click</td>
+	<td>drum</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseDown</td>
+	<td>//div[@id='column0']/div/div[@id='square9']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>0</td>
+	<td>y</td>
+</tr>
+<tr>
+	<td>while</td>
+	<td>storedVars['y'] &lt; ${x}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseOver</td>
+	<td>//div[@id='column${y}']/div/div[@id='square9']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>storedVars['y'] = ${y} + 1;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>storedVars['y'] = ${y} - 1;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseUp</td>
+	<td>//div[@id='column${y}']/div/div[@id='square9']</td>
+	<td></td>
+</tr>
+<!--// note check-->
+<tr>
+	<td>assertElementPresent</td>
+	<td>//div[@id='column0']/div/div[@id='square9'][@class='grid_square drumMain']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>1</td>
+	<td>y</td>
+</tr>
+<tr>
+	<td>while</td>
+	<td>storedVars['y'] &lt; (${x} - 1)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertElementPresent</td>
+	<td>//div[@id='column${y}']/div/div[@id='square9'][@class='grid_square drumLengthyNote']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>storedVars['y'] = ${y} + 1;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertElementPresent</td>
+	<td>//div[@id='column${y}']/div/div[@id='square9'][@class='grid_square drumLengthyNote drumExtendable']</td>
+	<td></td>
+</tr>
+<!--// remove a drum note-->
+<tr>
+	<td>mouseDown</td>
+	<td>//div[@id='column0']/div/div[@id='square9']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseUp</td>
+	<td>//div[@id='column0']/div/div[@id='square9']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertElementNotPresent</td>
+	<td>//div[@id='grid']/div[@id='inner_grid']/div/div/div/div[@style='background-image: url(&quot;images/thumbnail_drum.png&quot;);']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>storedVars['x'] = ${x} + 1;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--// END LOOP-->
+<!--////////////////////-->
+<!--// TRUMPET NOTE TEST-->
+<tr>
+	<td>store</td>
+	<td>2</td>
+	<td>x</td>
+</tr>
+<tr>
+	<td>while</td>
+	<td>storedVars['x'] &lt; 13</td>
+	<td></td>
+</tr>
+<!--//add a trumpet note-->
+<tr>
+	<td>click</td>
+	<td>trumpet</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseDown</td>
+	<td>//div[@id='column0']/div/div[@id='square9']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>0</td>
+	<td>y</td>
+</tr>
+<tr>
+	<td>while</td>
+	<td>storedVars['y'] &lt; ${x}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseOver</td>
+	<td>//div[@id='column${y}']/div/div[@id='square9']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>storedVars['y'] = ${y} + 1;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>storedVars['y'] = ${y} - 1;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseUp</td>
+	<td>//div[@id='column${y}']/div/div[@id='square9']</td>
+	<td></td>
+</tr>
+<!--// note check-->
+<tr>
+	<td>assertElementPresent</td>
+	<td>//div[@id='column0']/div/div[@id='square9'][@class='grid_square trumpetMain']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>1</td>
+	<td>y</td>
+</tr>
+<tr>
+	<td>while</td>
+	<td>storedVars['y'] &lt; (${x} - 1)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertElementPresent</td>
+	<td>//div[@id='column${y}']/div/div[@id='square9'][@class='grid_square trumpetLengthyNote']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>storedVars['y'] = ${y} + 1;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertElementPresent</td>
+	<td>//div[@id='column${y}']/div/div[@id='square9'][@class='grid_square trumpetLengthyNote trumpetExtendable']</td>
+	<td></td>
+</tr>
+<!--// remove a trumpet note-->
+<tr>
+	<td>mouseDown</td>
+	<td>//div[@id='column0']/div/div[@id='square9']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseUp</td>
+	<td>//div[@id='column0']/div/div[@id='square9']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertElementNotPresent</td>
+	<td>//div[@id='grid']/div[@id='inner_grid']/div/div/div/div[@style='background-image: url(&quot;images/thumbnail_trumpet.png&quot;);']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>storedVars['x'] = ${x} + 1;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--// END LOOP-->
+<!--////////////////////-->
+<!--// VIOLIN NOTE TEST-->
+<tr>
+	<td>store</td>
+	<td>2</td>
+	<td>x</td>
+</tr>
+<tr>
+	<td>while</td>
+	<td>storedVars['x'] &lt; 13</td>
+	<td></td>
+</tr>
+<!--//add a violin note-->
+<tr>
+	<td>click</td>
+	<td>violin</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseDown</td>
+	<td>//div[@id='column0']/div/div[@id='square9']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>0</td>
+	<td>y</td>
+</tr>
+<tr>
+	<td>while</td>
+	<td>storedVars['y'] &lt; ${x}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseOver</td>
+	<td>//div[@id='column${y}']/div/div[@id='square9']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>storedVars['y'] = ${y} + 1;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>storedVars['y'] = ${y} - 1;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseUp</td>
+	<td>//div[@id='column${y}']/div/div[@id='square9']</td>
+	<td></td>
+</tr>
+<!--// note check-->
+<tr>
+	<td>assertElementPresent</td>
+	<td>//div[@id='column0']/div/div[@id='square9'][@class='grid_square violinMain']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>1</td>
+	<td>y</td>
+</tr>
+<tr>
+	<td>while</td>
+	<td>storedVars['y'] &lt; (${x} - 1)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertElementPresent</td>
+	<td>//div[@id='column${y}']/div/div[@id='square9'][@class='grid_square violinLengthyNote']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>storedVars['y'] = ${y} + 1;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertElementPresent</td>
+	<td>//div[@id='column${y}']/div/div[@id='square9'][@class='grid_square violinLengthyNote violinExtendable']</td>
+	<td></td>
+</tr>
+<!--// remove a violin note-->
+<tr>
+	<td>mouseDown</td>
+	<td>//div[@id='column0']/div/div[@id='square9']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseUp</td>
+	<td>//div[@id='column0']/div/div[@id='square9']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertElementNotPresent</td>
+	<td>//div[@id='grid']/div[@id='inner_grid']/div/div/div/div[@style='background-image: url(&quot;images/thumbnail_violin.png&quot;);']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>storedVars['x'] = ${x} + 1;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--// END LOOP-->
+
+</tbody></table>
+</body>
+</html>
