@@ -89,6 +89,7 @@ function updateSongPosition() {
 	var p = applet.currentSongPosition();
 	
 	if (midiplayer.notePosition != midiplayer.basePosition && (p == midiplayer.maxValue || p >= grid.lastColumn)) {
+		applet.pause();
 		midiplayer.reset(midiplayer.basePosition);
 		g.scrollLeft = midiplayer.baseScroll;
 		
