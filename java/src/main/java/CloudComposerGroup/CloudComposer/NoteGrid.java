@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 /**
  * This class is for creating a note grid to contain
  * all the notes of a song
@@ -25,7 +26,7 @@ public class NoteGrid {
 	 * Constructs a NoteGrid object
 	 */
 	public NoteGrid() {
-		grid = new HashMap<Integer, ArrayList<Note>>();
+		grid = new TreeMap<Integer, ArrayList<Note>>();
 		size = 0;
 		biggestCol = -1;
 		prevNoteLength = -1;
