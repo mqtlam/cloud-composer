@@ -133,7 +133,8 @@ public class CloudMidiPlayer
 		}
 	}
 	
-	/** Sets the song to the provided sequence
+	/** Sets the song to the provided sequence.
+	 * Adds an empty note to ensure the last note is fully played.
 	 * Sets the earlySetString error message if an exception is caught.
 	 * @param s, the sequence to load as the song
 	 */
@@ -142,6 +143,7 @@ public class CloudMidiPlayer
 		song = s;
 		try {
 			seq.setSequence(song);
+			setSilentEndNote();
 		} catch (InvalidMidiDataException e) {
 			earlySetString = e.getMessage();
 		}
@@ -263,6 +265,7 @@ public class CloudMidiPlayer
 		} catch (InvalidMidiDataException e) {
 			earlySetString = e.getMessage();
 		}
+		
 		
 		return s;
 	}

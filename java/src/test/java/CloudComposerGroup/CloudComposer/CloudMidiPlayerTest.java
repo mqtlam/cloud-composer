@@ -1,6 +1,7 @@
 import CloudComposerGroup.CloudComposer.*;
 
 import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.MetaMessage;
 import javax.sound.midi.MidiEvent;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.ShortMessage;
@@ -522,6 +523,42 @@ public class CloudMidiPlayerTest extends TestCase {
 	}
 	
 	/**
+	 * Required private method for setting tempo.
+	 * @param s, sequence to add tempo message to
+	 */
+	private static void setTempo(Sequence s) {
+		float bpm = 120;
+		MetaMessage tempoMessage = new MetaMessage();
+		final int TEMPOCOMMAND = 0x51;
+		final int MPQPERBPM = 60000000;
+		int tempoInMPQ = (int) (MPQPERBPM / bpm);
+		byte[] data = new byte[3];
+		data[0] = (byte)((tempoInMPQ >> 16) & 0xFF);
+		data[1] = (byte)((tempoInMPQ >> 8) & 0xFF);
+		data[2] = (byte)(tempoInMPQ & 0xFF);
+		
+		try {
+			tempoMessage.setMessage(TEMPOCOMMAND, data, data.length);
+			s.getTracks()[0].add(new MidiEvent (tempoMessage, 0));
+		} catch (InvalidMidiDataException e) {
+			assertTrue("Problem with setting the tempo", false);
+		}
+	}
+	
+	/**
+	 * Helping method for testBasicSequence to set instruments into a sequence
+	 * 
+	 * @param s, sequence object
+	 * @param inst, SequenceInst object
+	 * @throws InvalidMidiDataException
+	 */
+	private void setInstrument(Sequence s, CloudMidiPlayer.SequenceInst inst) throws InvalidMidiDataException {
+		ShortMessage m = new ShortMessage();
+		m.setMessage(ShortMessage.PROGRAM_CHANGE, inst.value, inst.instrument, 0);
+		s.getTracks()[0].add(new MidiEvent(m, 0));
+	}
+	
+	/**
 	 * Test whether CloudMidiPlayer returns the basic Sequence object correctly 
 	 * 
 	 * @throws InvalidMidiDataException
@@ -533,6 +570,7 @@ public class CloudMidiPlayerTest extends TestCase {
 		expected.createTrack();
 		for (CloudMidiPlayer.SequenceInst inst : CloudMidiPlayer.SequenceInst.values())
 			setInstrument(expected, inst);
+		setTempo(expected);
 		
 		Track[] t1 = actual.getTracks();
 		Track[] t2 = expected.getTracks();
@@ -553,6 +591,7 @@ public class CloudMidiPlayerTest extends TestCase {
 		expected.createTrack();
 		for (CloudMidiPlayer.SequenceInst inst : CloudMidiPlayer.SequenceInst.values())
 			setInstrument(expected, inst);
+		setTempo(expected);
 		
 		Track track1 = actual.getTracks()[0];
 		Track track2 = expected.getTracks()[0];
@@ -575,6 +614,7 @@ public class CloudMidiPlayerTest extends TestCase {
 		expected.createTrack();
 		for (CloudMidiPlayer.SequenceInst inst : CloudMidiPlayer.SequenceInst.values())
 			setInstrument(expected, inst);
+		setTempo(expected);
 		
 		Track track1 = actual.getTracks()[0];
 		Track track2 = expected.getTracks()[0];
@@ -590,17 +630,6 @@ public class CloudMidiPlayerTest extends TestCase {
 		}
 	}
 	
-	/**
-	 * Helping method for testBasicSequence to set instruments into a sequence
-	 * 
-	 * @param s, sequence object
-	 * @param inst, SequenceInst object
-	 * @throws InvalidMidiDataException
-	 */
-	private void setInstrument(Sequence s, CloudMidiPlayer.SequenceInst inst) throws InvalidMidiDataException {
-		ShortMessage m = new ShortMessage();
-		m.setMessage(ShortMessage.PROGRAM_CHANGE, inst.value, CloudMidiPlayer.INSTRUMENTS[inst.value], 0);
-		s.getTracks()[0].add(new MidiEvent(m, 0));
-	}
+	
 
 }

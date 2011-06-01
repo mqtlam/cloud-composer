@@ -860,6 +860,40 @@ public class CloudAppletControllerTest extends TestCase {
 			}
 		}
 	}
+	
+	@Test
+	public void testAddBunchesOfNotes() throws InvalidMidiDataException {
+		Sequence s = c.player.basicSequence();
+		
+		for (int i = 0; i < 50; i++) {
+			int[] note = {0,0,i,i+1};
+			c.addNote(note);
+			c.player.addNote(s, c.player.getInstruments()[0], 0, i, i+1);
+			Note n = c.grid.getNotes(i).get(0);
+			System.out.println(i + ": " + n.length);
+		}
+		c.updateSequence();
+		Sequence s2 = c.getSongSequence();
+		Track track1 = s.getTracks()[0];
+		Track track2 = s2.getTracks()[0];
+		for (int j = 0; j < track1.size(); j++) {
+			MidiEvent m1 = track1.get(j);
+			MidiEvent m2 = track2.get(j);
+			byte[] b1 = m1.getMessage().getMessage();
+			byte[] b2 = m2.getMessage().getMessage();
+			assertTrue(b1.length == b2.length);
+			boolean active = false;
+			for (int k = 0; k < b1.length; k++) {
+				System.out.println("j = " + j + " k = " + k);
+				if (b1[k] != b2[k] || active) {
+					System.out.println(b1[k] + " " + b2[k]);
+					active = true;
+				}
+				//assertTrue("Failed event "+j+" byte "+k,b1[k] == b2[k]);
+			}
+		}
+		
+	}
 
 
 }
