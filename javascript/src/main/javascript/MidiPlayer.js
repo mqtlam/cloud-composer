@@ -15,24 +15,25 @@ function MidiPlayer(inst, num) {
 
 MidiPlayer.prototype.onPlayPauseClick = function (numColumns) {
 	this.updatePlayback(numColumns);		// updates the max value of the playback
-	var playPauseButton = document.getElementById("playpausebutton");
 	
-	if (!this.inPlayMode) {
-		playPauseButton.src = "images/Pause-Disabled-icon.png";
-		this.inPlayMode = true;
-		// actually play
-		applet.play();
-			
-		//var g = document.getElementById('grid');
-		//var b = document.getElementsByClassName('highlightbar')[0];
-		//g.scrollLeft = b.offsetLeft;
-		this.intervalID = setInterval("updateSongPosition()", this.intervalSpeed);
-	} else {
-		playPauseButton.src = "images/Play-Disabled-icon.png";
-		this.inPlayMode = false;
-		applet.pause();
-		clearInterval(this.intervalID);
-		// actually pause
+	if (grid.lastColumn != 0 ) {
+		if (!this.inPlayMode) {
+			document.getElementById("playback_play").id = "playback_pause";
+			this.inPlayMode = true;
+			// actually play
+			applet.play();
+				
+			//var g = document.getElementById('grid');
+			//var b = document.getElementsByClassName('highlightbar')[0];
+			//g.scrollLeft = b.offsetLeft;
+			this.intervalID = setInterval("updateSongPosition()", this.intervalSpeed);
+		} else {
+			document.getElementById("playback_pause").id = "playback_play";
+			this.inPlayMode = false;
+			applet.pause();
+			clearInterval(this.intervalID);
+			// actually pause
+		}
 	}
 }
 
@@ -47,7 +48,9 @@ MidiPlayer.prototype.reset = function (to) {
 	$('#playbackSlider').slider('option', 'value', to);
 	highlightbar.move(to);
 	clearInterval(this.intervalID);
-	document.getElementById("playpausebutton").src = "images/Play-Disabled-icon.png";
+	if (document.getElementById("playback_pause")) {
+		document.getElementById("playback_pause").id = "playback_play";
+	}
 	this.inPlayMode = false;
 	this.setSongPosition(to);
 }
