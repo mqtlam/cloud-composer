@@ -899,9 +899,7 @@ public class CloudAppletControllerTest extends TestCase {
 		for (int i = 0; i < 50; i++) {
 			int[] note = {0,0,i,i+1};
 			c.addNote(note);
-			CloudMidiPlayer.addNote(s, c.player.getInstruments()[0], 0, i, i+1);
-			Note n = c.grid.getNotes(i).get(0);
-			System.out.println(i + ": " + n.length);
+			CloudMidiPlayer.addNote(s, c.player.getInstruments()[0], 0, i, i+2);
 		}
 		c.updateSequence();
 		Sequence s2 = c.getSongSequence();
