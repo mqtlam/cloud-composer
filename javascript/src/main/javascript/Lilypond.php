@@ -477,22 +477,22 @@ function durationHelper($duration, $chord)
       {
         // }}}
         // {{{ for general notation case
-
-        if ($numQuarterNotes == 1)
+        
+        switch($numQuarterNotes)
         {
-          $_newDataPerInstrument[$_currentInstrument] .= " {$inserted}4 ";
-        }
-        else if ($numQuarterNotes == 2)
-        {
-          $_newDataPerInstrument[$_currentInstrument] .= " {$inserted}2 ";
-        }
-        else if ($numQuarterNotes == 3)
-        {
-          $_newDataPerInstrument[$_currentInstrument] .= " {$inserted}2. ";
-        }
-        else if ($numQuarterNotes == 4)
-        {
-          $_newDataPerInstrument[$_currentInstrument] .= " {$inserted}1 ";
+          case 1:
+            $_newDataPerInstrument[$_currentInstrument] .= " {$inserted}4 ";
+            break;
+          case 2:
+            $_newDataPerInstrument[$_currentInstrument] .= " {$inserted}2 ";
+            break;
+          case 3:
+            $_newDataPerInstrument[$_currentInstrument] .= " {$inserted}2. ";
+            break;
+          case 4:
+            $_newDataPerInstrument[$_currentInstrument] .= " {$inserted}1 ";
+            break;
+          default:
         }
 
         if ($remainingSixteenthNotes > 0 && $numQuarterNotes > 0)
@@ -506,18 +506,19 @@ function durationHelper($duration, $chord)
             $_newDataPerInstrument[$_currentInstrument] .= " ";
           }
         }
-
-        if ($remainingSixteenthNotes == 1)
+        
+        switch ($remainingSixteenthNotes)
         {
-          $_newDataPerInstrument[$_currentInstrument] .= " {$inserted}16 ";
-        }
-        else if ($remainingSixteenthNotes == 2)
-        {
-          $_newDataPerInstrument[$_currentInstrument] .= " {$inserted}8 ";
-        }
-        else if ($remainingSixteenthNotes == 3)
-        {
-          $_newDataPerInstrument[$_currentInstrument] .= " {$inserted}8. ";
+          case 1:
+            $_newDataPerInstrument[$_currentInstrument] .= " {$inserted}16 ";
+            break;
+          case 2:
+            $_newDataPerInstrument[$_currentInstrument] .= " {$inserted}8 ";
+            break;
+          case 3:
+            $_newDataPerInstrument[$_currentInstrument] .= " {$inserted}8. ";
+            break;
+          default:
         }
 
         // }}}
