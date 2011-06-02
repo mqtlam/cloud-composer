@@ -40,6 +40,11 @@
 // {{{ constants
 
 /**
+ * Path on server pointing to the location of the Lilypond binary executable.
+ */
+define("LILYPOND_BINARY_PATH", "~/lilypond/usr/bin/lilypond");
+
+/**
  * URL of website for displaying to user
  */
 define("WEBSITE_URL", "http://" . $_SERVER['SERVER_NAME'] . substr($_SERVER['PHP_SELF'], 0, strrpos($_SERVER['PHP_SELF'], "/")) . "/");
@@ -50,14 +55,9 @@ define("WEBSITE_URL", "http://" . $_SERVER['SERVER_NAME'] . substr($_SERVER['PHP
 define("SAVE_DIRECTORY", "songs/");
 
 /**
- * Lilypond file extension type
+ * Message to display in pdf for compositions that cannot be transcribed note for note.
  */
-define("LILY_FILE_EXTENSION", ".ly");
-
-/**
- * PDF file extension type
- */
-define("PDF_FILE_EXTENSION", ".pdf");
+define("SIMPLIFIED_TRANSCRIPTION_MESSAGE", "NOTE: This is a simplified transcription of the composition.");
 
 /**
  * POST parameter to pass data to this php file.
@@ -69,6 +69,16 @@ define("DATA_PARAM", "data");
  * It is also the output filename.
  */
 define("TEST_PARAM", "testfile");
+
+/**
+ * Lilypond file extension type
+ */
+define("LILY_FILE_EXTENSION", ".ly");
+
+/**
+ * PDF file extension type
+ */
+define("PDF_FILE_EXTENSION", ".pdf");
 
 /**
  * All instruments here. TODO: abstract out along with other files?
@@ -551,7 +561,7 @@ function interpretData($data)
     }
     
     if (!$_exactTranscription)
-      $_newData .= "\\markup {\n\tNOTE: This is a simplified transcription of the composition.\n}\n";
+      $_newData .= "\\markup {\n\t" . SIMPLIFIED_TRANSCRIPTION_MESSAGE . "\n}\n";
 
     // }}}
 
@@ -579,7 +589,7 @@ function saveFile($data, $filename)
  */
 function generatePdf($filename)
 {
-  $output = shell_exec('~/lilypond/usr/bin/lilypond ' . SAVE_DIRECTORY . $filename . LILY_FILE_EXTENSION);
+  $output = shell_exec(LILYPOND_BINARY_PATH . ' ' . SAVE_DIRECTORY . $filename . LILY_FILE_EXTENSION);
 	shell_exec('mv *.pdf songs/');
 	shell_exec('mv *.ps songs/');
 }
