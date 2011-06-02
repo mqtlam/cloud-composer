@@ -1,4 +1,11 @@
-// this file detects the browser type
+/*
+	CSE 403 Cloud Composer Group (https://code.google.com/p/cloud-composer/wiki/CloudComposer)
+	Eui Min Jung, Hannah Hemmaplardh, James Vaughan, Jared Clement, Junebae Kye, Jungryul Choi, Michael Lam
+	
+	Includes the functions that detects the browser
+*/
+
+// detects the browser type
 function getBrowser() {
 	var info = navigator.userAgent;
 	var browsers = ["Firefox", "MSIE", "Opera", "Chrome", "Safari"];
@@ -16,6 +23,7 @@ function getBrowser() {
 	}
 }
 
+// alert browser info into a display box
 function alertBrowserInfo() {
 	var browserInfo = getBrowser();
 	var str = "<div id=\"browserInfo\">"

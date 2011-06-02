@@ -1,4 +1,9 @@
-// this file lets you create a pop up window with specific size, disabling everything else.
+/*
+	CSE 403 Cloud Composer Group (https://code.google.com/p/cloud-composer/wiki/CloudComposer)
+	Eui Min Jung, Hannah Hemmaplardh, James Vaughan, Jared Clement, Junebae Kye, Jungryul Choi, Michael Lam
+	
+	
+*/
 
 function GetLink (w, h, color) {
 	this.windowWidth = w;

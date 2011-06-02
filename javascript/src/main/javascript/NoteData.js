@@ -1,6 +1,8 @@
 /*
-	Cloud Composer. Eui Jung. May 5, 2011
-		Contains the definition for Note Object
+	CSE 403 Cloud Composer Group (https://code.google.com/p/cloud-composer/wiki/CloudComposer)
+	Eui Min Jung, Hannah Hemmaplardh, James Vaughan, Jared Clement, Junebae Kye, Jungryul Choi, Michael Lam
+
+	contains the note data object
 
 //	Basically 3-D array:
 	ArrayList<Map<Integer, ArrayList<Note>>> data;
@@ -14,6 +16,8 @@
 //  int tempo;
 
 */
+
+// constructor
 function NoteData(col) {
 	this.data = [];
 	for (var i=0; i<col; i++) {
@@ -23,6 +27,7 @@ function NoteData(col) {
 	this.tempo = 80;			// tempo
 }
 
+// adds extra columns at the end
 NoteData.prototype.addColumns = function (col) {
 	for (var i=0; i<col; i++) {
 		this.data.push([]);
@@ -30,7 +35,7 @@ NoteData.prototype.addColumns = function (col) {
 }
 
 
-// adds the note
+// adds the note to the data structure
 NoteData.prototype.addNote = function (column, note) {
 	var noteArray = this.data[column][note.instrument.instrumentName];
 	var index = this.getIndex(column, note);
@@ -66,6 +71,7 @@ NoteData.prototype.removeNote = function (column, note) {
 	}
 }
 
+// changes the note length at given place
 NoteData.prototype.changeNoteLength = function (column, note, len) {
 	var index = this.getIndex(column, note);
 	this.data[column][note.instrument.instrumentName][index].changeLength(len);
@@ -135,7 +141,7 @@ NoteData.prototype.output = function () {
 //	}
 }
 
-/* returns a string version of the current column of the grid */
+// returns a string version of the current column of the grid
 NoteData.prototype.serializeColumn = function (column) {		
 	var columnstring = "";
 	
@@ -150,7 +156,7 @@ NoteData.prototype.serializeColumn = function (column) {
 	return columnstring;
 }
 
-/* returns a string version of the current instrument's notes in the given column of the grid */
+// returns a string version of the current instrument's notes in the given column of the grid
 NoteData.prototype.serializeInstrument = function (column, instr) {
 	var instrumentstring = "";
 	
@@ -170,6 +176,7 @@ NoteData.prototype.serializeInstrument = function (column, instr) {
 	return instrumentstring;
 }
 
+// checks if a column has any instruments
 NoteData.prototype.hasAnyInstruments = function(column) {
 	for (var instr in this.data[column]) {
 		if (this.data[column][instr] && this.data[column][instr].length > 0) {

@@ -1,5 +1,11 @@
-// this file lets you create a pop up window with specific size, disabling everything else.
+/*
+	CSE 403 Cloud Composer Group (https://code.google.com/p/cloud-composer/wiki/CloudComposer)
+	Eui Min Jung, Hannah Hemmaplardh, James Vaughan, Jared Clement, Junebae Kye, Jungryul Choi, Michael Lam
+	
+	DisplayBox creates a pop up element with specific size, disabling everything else
+*/
 
+// constructor: takes in width, height, background color, and name of the file to put in or string content 
 function DisplayBox (w, h, color, cont, extra) {
 	this.windowWidth = w;
 	this.windowHeight = h;
@@ -12,6 +18,7 @@ function DisplayBox (w, h, color, cont, extra) {
 	this.createWindow();
 }
 
+// actually creates the elements necessary for pop up
 DisplayBox.prototype.createWindow = function() {
 	this.back = this.createBackground();
 	var container = this.back;
@@ -32,10 +39,12 @@ DisplayBox.prototype.createWindow = function() {
 	container.appendChild(this.myWindow);
 }
 
+// remove the element
 DisplayBox.prototype.removeWindow = function () {
 	document.body.removeChild(this.back);
 }
 
+// creates the background element that disables all the original page
 DisplayBox.prototype.createBackground = function () {
 	var back = document.body;
 	var box = document.createElement("div");
@@ -54,6 +63,7 @@ DisplayBox.prototype.createBackground = function () {
 	return box;
 }
 
+// resize the background element according to the resizing of the window
 DisplayBox.prototype.updateBackground = function (obj) {
 	window.onresize = function () {
 		var back = document.body;
@@ -66,6 +76,8 @@ DisplayBox.prototype.updateBackground = function (obj) {
 	}
 }
 
+// if string content is given, use it as the content
+// otherwise, grab the given file name fron the server using ajax and use it as content
 DisplayBox.prototype.getContents = function (container) {
 	var xmlhttp;
 	var temp = this.extraContent;
@@ -93,7 +105,7 @@ DisplayBox.prototype.getContents = function (container) {
 	container.appendChild(a);
 }
 
-
+// makes a button for closing the pop up
 DisplayBox.prototype.makeCloseButton = function () {
 	var cb = document.createElement("div");
 	cb.id = "displayCloseButton";

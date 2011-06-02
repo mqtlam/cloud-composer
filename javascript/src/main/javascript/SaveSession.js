@@ -1,3 +1,10 @@
+/*
+	CSE 403 Cloud Composer Group (https://code.google.com/p/cloud-composer/wiki/CloudComposer)
+	Eui Min Jung, Hannah Hemmaplardh, James Vaughan, Jared Clement, Junebae Kye, Jungryul Choi, Michael Lam
+	
+	sends note data in xml format to the php file
+*/
+
 // called when user clicks save session button
 function sendNoteGrid(notegrid, dest) {
 	$("#getLinkLink")[0].innerHTML = "";
@@ -17,33 +24,3 @@ function sendNoteGrid(notegrid, dest) {
 	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	xmlhttp.send("data="+notegrid);
 }
-
-
-/* called by LinkURL box */
-/* copies given text */
-/*
-function copyToClipboard(linkURL) {  
-if (window.clipboardData)   
-     window.clipboardData.setData("Text", linkURL);  
-	else if (window.netscape) {  
-	     netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');  
-	     var clip = Components.classes['@mozilla.org/widget/clipboard;1'].createInstance(Components.interfaces.nsIClipboard);  
-	     if (!clip)  
-	          return false;  
-	     var trans = Components.classes['@mozilla.org/widget/transferable;1'].createInstance(Components.interfaces.nsITransferable);  
-	     if (!trans)  
-	          return false;  
-	     trans.addDataFlavor('text/unicode');  
-	     var str = new Object();  
-	     var len = new Object();  
-	     var str = Components.classes["@mozilla.org/supports-string;1"].createInstance(Components.interfaces.nsISupportsString);  
-	     str.data=linkURL;  
-	     trans.setTransferData("text/unicode",str,linkURL.length*2);  
-	     var clipid=Components.interfaces.nsIClipboard;  
-	     if (!clipid)  
-	          return false;  
-	     clip.setData(trans,null,clipid.kGlobalClipboard);  
-	}  
-	return false;  
-}
-*/

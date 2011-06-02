@@ -1,5 +1,12 @@
-// Contains functions related to the grid
+/*
+	CSE 403 Cloud Composer Group (https://code.google.com/p/cloud-composer/wiki/CloudComposer)
+	Eui Min Jung, Hannah Hemmaplardh, James Vaughan, Jared Clement, Junebae Kye, Jungryul Choi, Michael Lam
+	
+	contains functions for creating the grid and
+	Event handlers for mouse clicking for adding/removing/changing note
+*/
 
+// constructor, contains many private variables that can be adjusted
 function NoteGrid(id, cols, instr) {
 	// initiated values
 	this.numColumns = 0;								// current number of columns
@@ -53,7 +60,7 @@ function NoteGrid(id, cols, instr) {
 	}
 }
 
-/* creates a single square, with class name of grid_square */
+// creates a single square, with class name of grid_square
 NoteGrid.prototype.createSquare = function (loc_y) {
 	var sq = document.createElement("div");
 	
@@ -64,7 +71,7 @@ NoteGrid.prototype.createSquare = function (loc_y) {
 
 }
 
-/* creates an octave. Our Octave contains 5 pitches (pentatonic scale)  */
+// creates an octave. Our Octave contains 5 pitches (pentatonic scale) 
 NoteGrid.prototype.createOctave = function (octaveID) {
 	var octave = document.createElement("div");
 	octave.style.overflow = "hidden";
@@ -76,8 +83,8 @@ NoteGrid.prototype.createOctave = function (octaveID) {
 	return octave;
 }
 
-/* 	Column contains 2 octaves in our program.
-	column includes a selector for highlight bar at the top */
+// 	Column contains 2 octaves in our program.
+//	column includes a selector for highlight bar at the top
 NoteGrid.prototype.createColumn = function (loc_x) {
 	var column = document.createElement("div");
 	column.id = "column" + loc_x;
@@ -99,10 +106,9 @@ NoteGrid.prototype.createColumn = function (loc_x) {
 	return column;
 }
 
-/*
-	Measure divides squares horizontally.
-	Technically, measure should be 16, but we are using 4 for easy viewing.
-*/
+
+//	Measure divides squares horizontally.
+//	Technically, measure should be 16, but we are using 4 for easy viewing.
 NoteGrid.prototype.createMeasure = function (numMeasure) {
 	var measure = document.createElement("div");
 
@@ -117,7 +123,7 @@ NoteGrid.prototype.createMeasure = function (numMeasure) {
 	return measure;
 }
 
-/*	Makes the bar that will allow users to generate more squares at the end */
+//	Makes the bar that will allow users to generate more squares at the end
 NoteGrid.prototype.createExtender = function () {
 	var btn = document.createElement("div");
 	btn.id = "extender";
@@ -128,7 +134,7 @@ NoteGrid.prototype.createExtender = function () {
 	return btn;
 }
 
-/*	Creates the container for the overall grid inside of existing "grid" div */
+//	Creates the container for the overall grid inside of existing "grid" div
 NoteGrid.prototype.createGrid = function (cols) {
 	var innerGrid = document.createElement("div"); 	
 	var tempW = cols*(this.size + this.margin) 
@@ -160,7 +166,7 @@ NoteGrid.prototype.createInstrumentSquare = function (instrumentID) {
 	return innerSquare;
 }
 
-/*	Creates more squares at the end. */
+//	Creates more squares at the end.
 NoteGrid.prototype.extendGrid = function (bar) {
 	// APPend columns, make sure to check if you are at the limit later
 	// MUST APPEND ALL COLUMNS
@@ -183,14 +189,14 @@ NoteGrid.prototype.extendGrid = function (bar) {
 	bar.style.backgroundColor = this.extenderColor;
 }
 
-/*	updates the total number of columns */
+//	updates the total number of columns
 NoteGrid.prototype.updateColumnNumber = function (addition) {
 	this.numColumns = this.numColumns + addition;
 	this.notes.addColumns(addition);
 }
 
-/*	Creates indicator images that tells you what instruments occupy the square 
-	Fresh updates the indicator image.	*/
+//	Creates indicator images that tells you what instruments occupy the square 
+//	Fresh updates the indicator image.
 NoteGrid.prototype.updateDisplay = function(column, pitch) {	// column, pitch
 	var instrumentsToDisplay = this.getInstruments(this.notes.getInstruments(column, pitch));
 	var square = this.getSquare(column, pitch);
@@ -199,12 +205,12 @@ NoteGrid.prototype.updateDisplay = function(column, pitch) {	// column, pitch
 	square.appendChild(this.createInstrumentIndicator(instrumentsToDisplay));
 }
 
-/*	TODO: never gets called?	*/
+//	TODO: never gets called
 NoteGrid.prototype.updateIndicator = function(square, instrumentsList) {
 	square.appendChild(this.createInstrumentIndicator(instrumentsList));
 }
 
-/*	actually creates the instruments indicator.*/
+//	actually creates the instruments indicator.
 NoteGrid.prototype.createInstrumentIndicator = function (instrs) {
 	var len = this.instruments.length;
 	var side = Math.floor((this.raw_size-3)/len) - 1;
@@ -230,7 +236,7 @@ NoteGrid.prototype.createInstrumentIndicator = function (instrs) {
 	return holder;
 }
 
-/*	updates the note images on the grid	*/
+//	updates the note images on the grid
 NoteGrid.prototype.updateMainImage = function(instrumentName) {
 	for (var j=0; j<this.instruments.length; j++) {
 		// removes the image on the main square
@@ -258,7 +264,7 @@ NoteGrid.prototype.updateMainImage = function(instrumentName) {
 	}
 }
 
-/*	creates the adjuster that lets user change the length of a note	*/
+//	creates the adjuster that lets user change the length of a note
 NoteGrid.prototype.createAdjuster = function() {
 	var btn = document.createElement("div");
 	btn.className = "adjuster";
@@ -279,7 +285,7 @@ NoteGrid.prototype.createInstrumentImg = function (instrumnet) {
 	return holder;
 }
 
-/*	To load an existing session, simulate adding of notes*/
+//	To load an existing session, simulate adding of notes
 NoteGrid.prototype.manuallyAddNote = function(instrument, pitch, column, noteLength) {
 	this.setStartingNote(this.getSquare(column, pitch), instrument);
 	
@@ -294,9 +300,9 @@ NoteGrid.prototype.manuallyAddNote = function(instrument, pitch, column, noteLen
 }
 
 
-/*	Note Length 
-	When clicked on the adjuster, this method gets triggered
-	it simulates the state where note is just created and dragged until the position of the event */
+//	Note Length 
+//	When clicked on the adjuster, this method gets triggered
+//	it simulates the state where note is just created and dragged until the position of the event 
 NoteGrid.prototype.changeNoteLength = function(square, instrument) {
 	// find the main note
 	// fake create dragNote and also store it in tempNote
@@ -327,7 +333,7 @@ NoteGrid.prototype.changeNoteLength = function(square, instrument) {
 	}
 }
 
-/*	Gets called when mouse is down on the grid square */
+//	Gets called when mouse is down on the grid square
 NoteGrid.prototype.setStartingNote = function(evt, instrument) {
 	var square = evt;
 	
@@ -370,6 +376,7 @@ NoteGrid.prototype.setStartingNote = function(evt, instrument) {
 	}
 }
 
+// Gets called while mouse is moving. only does something if mouse is on down
 NoteGrid.prototype.setIntermediateNote = function(evt, instrument) {
 	if (this.dragNote) {
 		var square = evt;
@@ -436,8 +443,7 @@ NoteGrid.prototype.setIntermediateNote = function(evt, instrument) {
 	}
 }
 
-
-
+// gets called on mouse up, ends a user event by either adding a note or reverting a note
 NoteGrid.prototype.setEndingNote = function(evt, instrument) {
 	if (this.dragNote) {
 		var endSquare;
@@ -463,6 +469,7 @@ NoteGrid.prototype.setEndingNote = function(evt, instrument) {
 			this.notes.addNote(this.dragNote[2], note);
 			this.java.addToPlayer(this.dragNote[2], note);
 			this.lastColumn = Math.max(this.lastColumn, this.dragNote[3]+2);
+
 
 			
 			endSquare = this.getSquare(this.dragNote[3], this.dragNote[1]);
@@ -514,12 +521,13 @@ NoteGrid.prototype.setEndingNote = function(evt, instrument) {
 	}
 }
 
+// sets the tempo
 NoteGrid.prototype.setTempo = function (t) {
 	this.notes.tempo = t;
 	$('#tempo').slider('option', 'value', t);
 }
 
-
+// helper method, sets the images of the lengthy notes
 NoteGrid.prototype.setIntermediateNotes = function() {
 	if (this.dragNote) {
 		var square = this.getSquare(this.dragNote[2], this.dragNote[1]);
@@ -556,7 +564,7 @@ NoteGrid.prototype.setAdjuster = function(obj, instrumentName) {
 	}
 }
 
-
+// TODO: never called?
 NoteGrid.prototype.resetNote = function() {
 	if (this.dragNote) {
 	
@@ -574,6 +582,7 @@ NoteGrid.prototype.resetNote = function() {
 	}
 }
 
+// revert the note
 NoteGrid.prototype.revertNote = function() {
 	if (this.dragNote) {
 		var endSquare = this.getSquare(this.dragNote[3], this.dragNote[1]);
@@ -597,7 +606,7 @@ NoteGrid.prototype.revertNote = function() {
 }
 
 
-
+// checks for conflicting note when changing length of a note
 NoteGrid.prototype.noteConflict = function() {
 	if (this.dragNote) {
 		for (var i=this.dragNote[2]; i<=this.dragNote[3]; i++) {
@@ -620,6 +629,7 @@ NoteGrid.prototype.noteConflict = function() {
 	}
 }
 
+// clear instruments images if necessary
 NoteGrid.prototype.clearBackImage = function() {
 	if (this.dragNote) {
 		// reset background Image and then remove dragNote
@@ -656,6 +666,7 @@ NoteGrid.prototype.clearBackImage = function() {
 	}
 }
 
+// add back images to the current note
 NoteGrid.prototype.addBackImage = function() {
 	if (this.dragNote) {
 		// reset background Image and then remove dragNote
@@ -671,6 +682,7 @@ NoteGrid.prototype.getInt = function (str) {
 	return str.match(/\d+/)[0];
 }
 
+// look up the index of the instrument from its list
 NoteGrid.prototype.lookUpInstrumentIndex = function (instrumentName) {
 	for (var i=0; i<this.instruments.length; i++) {
 		if (this.instruments[i].instrumentName == instrumentName) {
@@ -680,6 +692,7 @@ NoteGrid.prototype.lookUpInstrumentIndex = function (instrumentName) {
 	return -1;
 }
 
+// get the instrument objects list from instrument names
 NoteGrid.prototype.getInstruments = function (instrumentNameList) {
 	var newList = [];
 	for (var i=0; i<this.instruments.length; i++) {
@@ -692,11 +705,12 @@ NoteGrid.prototype.getInstruments = function (instrumentNameList) {
 	return newList;
 }
 
+// reverse the pitch for array index
 NoteGrid.prototype.reversePitch = function (i) {
 	return (this.pitches*this.octaves - i - 1);
 }
 
-/* checks if a note is already placed */
+// checks if a note is already placed
 NoteGrid.prototype.checkNote = function (a, b) {
 	var string = a+":"+b;
 	for (var i = 0; i < this.notes.length; i++) {
@@ -707,6 +721,7 @@ NoteGrid.prototype.checkNote = function (a, b) {
 	return -1;
 }
 
+// gets the square object at given column and pitch
 NoteGrid.prototype.getSquare = function(column, pitch) {
 	var col = document.getElementById("column"+column);
 	var square = col.getElementsByClassName("grid_square")[this.reversePitch(pitch)];
@@ -714,6 +729,7 @@ NoteGrid.prototype.getSquare = function(column, pitch) {
 	return square;
 }
 
+// find the main square that corresponds to the selected column, pitch and instrument
 NoteGrid.prototype.findMainSquare = function(column, pitch, instrumentName) {
 	var square = this.getSquare(column, pitch);
 	while (square.className.indexOf(instrumentName+"LengthyNote") >= 0) {
@@ -723,6 +739,7 @@ NoteGrid.prototype.findMainSquare = function(column, pitch, instrumentName) {
 	return square;
 }
 
+// checks if given is a square
 NoteGrid.prototype.isSquare = function(current) {
 	// if move out of browser, className is undefined
 	if (current && current.className && current.className.indexOf("grid_square") == 0) {
@@ -736,6 +753,7 @@ NoteGrid.prototype.isSquare = function(current) {
 	}
 }
 
+// compute the last column that is occupied
 NoteGrid.prototype.getLastColumn = function() {
 	var grid = document.getElementById("inner_grid");
 	
@@ -758,7 +776,7 @@ NoteGrid.prototype.getLastColumn = function() {
 	return 0;
 }
 
-/* returns a string version of the current grid (used for submitting form to PHP) */
+// returns a string version of the current grid (used for submitting form to PHP)
 NoteGrid.prototype.serialize = function () {
 	var notegridstring = "<?xml version=\"1.0\"?>";
 	notegridstring += "<noteData tempo=\"" + this.notes.tempo + "\">";

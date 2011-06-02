@@ -1,7 +1,14 @@
-//	Cloud Composer. Eui Jung. May 5, 2011
-//	Contains the definition for Note Object
+/*
+	CSE 403 Cloud Composer Group (https://code.google.com/p/cloud-composer/wiki/CloudComposer)
+	Eui Min Jung, Hannah Hemmaplardh, James Vaughan, Jared Clement, Junebae Kye, Jungryul Choi, Michael Lam
 
+	Note Object
+		note length
+		Instrument Object
+		pitch		
+*/
 
+// constructor
 function Note(len, inst, pitch) {
 	this.noteLength = len;
 	this.instrument = inst;
@@ -15,6 +22,7 @@ Note.prototype.equals = function (note) {
 		&& this.pitch == note.pitch;
 }
 	
+// method for changing note length
 Note.prototype.changeLength = function (newLength) {
 	this.noteLength = newLength;
 }

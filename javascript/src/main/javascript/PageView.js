@@ -1,3 +1,9 @@
+/*
+	CSE 403 Cloud Composer Group (https://code.google.com/p/cloud-composer/wiki/CloudComposer)
+	Eui Min Jung, Hannah Hemmaplardh, James Vaughan, Jared Clement, Junebae Kye, Jungryul Choi, Michael Lam
+
+	Main javascript, it loads all the necessary event handlers and UI components
+*/
 // Developer options:
 // set Diable Java to true to disable midiplayer (for linux environment)
 // During, Disable Java mode, playback does not work.
@@ -65,7 +71,6 @@ function mouseClick(event) {
 		if (current.parentNode.children[1].children[0].id == "browserInfo") {
 			alertTutorial();
 		}
-		
 		// remove notice box
 		document.body.removeChild(current.parentNode.parentNode);
 	} else if (current.id == "getLinkButton") {
@@ -83,7 +88,7 @@ function mouseClick(event) {
 
 }
 
-// Setting note length
+// mouse down event, start of 'a user event'
 function mouseDown(event) {
 	if (selector.currentInstrument) {		
 		var current = event.target;
@@ -100,6 +105,7 @@ function mouseDown(event) {
 	}
 }
 
+// mouse up event, end of 'a user event'
 function mouseUp(event) {
 	var current = event.target;
 	var chk = grid.isSquare(current);
@@ -110,6 +116,7 @@ function mouseUp(event) {
 	}
 }
 
+// mouse over event, intermediate event status
 function mouseOver(event) {
 	if (selector.currentInstrument) {
 		var current = event.target;
@@ -123,12 +130,12 @@ function mouseOver(event) {
 	}
 }
 
-var a;
+// TODO
 function mousemove(event) {
-	a = event;
 	$("#header_left")[0].innerHTML = event;
 }
 
+// TODO
 function rollOver(event) {
 	var current = event.target;
 	if (current.className == "grid_square") {  
@@ -141,6 +148,7 @@ function rollOver(event) {
 	}
 }
 
+// TODO 
 function rollOut(event) { 
 	var current = event.target;
 	if (current.className == "grid_square") { 
@@ -155,14 +163,17 @@ function rollOut(event) {
 	}
 }
 
+// TODO
 function printNotes() {
 	document.getElementById('output').textContent = notes;
 }
 
+// TODO
 function sortAndPrintNotes() {
 	document.getElementById('output').textContent = notes.sort();
 }
 
+// Loads the UI
 function loadUI() {
 	setEvents();
 	var instrumentsList = [
@@ -198,6 +209,7 @@ function loadUI() {
 	createCookie();
 }
 
+// exchanges data between different object
 function shareReferences() {
 	grid.java = midiplayer;
 }
@@ -210,13 +222,8 @@ function createCookie() {
 	
 	document.cookie = "cloudcomposer=comeback; expires" + date.toGMTString() + "; path=/";
 }
-
-///////// FUNCTION CALLs
 	
 	
 /// LOAD events
 window.onload = loadUI;
 
-
-	
-	

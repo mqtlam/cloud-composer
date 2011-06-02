@@ -1,3 +1,11 @@
+/*
+	CSE 403 Cloud Composer Group (https://code.google.com/p/cloud-composer/wiki/CloudComposer)
+	Eui Min Jung, Hannah Hemmaplardh, James Vaughan, Jared Clement, Junebae Kye, Jungryul Choi, Michael Lam
+	
+	contains the functions that performs midi playback
+*/
+
+// constructor, accepts possible instruments in an array, and the total number of columns
 function MidiPlayer(inst, num) {
 	this.inPlayMode = false; 
 	this.notePosition = 0; // where song is during playback
@@ -12,7 +20,7 @@ function MidiPlayer(inst, num) {
 	createPlayerSlider(0);
 }
 
-
+// event handler for play or pause button, either plays or pause the playback
 MidiPlayer.prototype.onPlayPauseClick = function (numColumns) {
 	this.updatePlayback(numColumns);		// updates the max value of the playback
 	
@@ -37,6 +45,7 @@ MidiPlayer.prototype.onPlayPauseClick = function (numColumns) {
 	}
 }
 
+// event handler for stop button, returns the focus of the grid to the origin
 MidiPlayer.prototype.onStopClick = function () {
 	var g = document.getElementById('grid');
 	g.scrollLeft = 0;
@@ -44,6 +53,7 @@ MidiPlayer.prototype.onStopClick = function () {
 	this.reset(0);
 }
 
+// set the current position to 'to'
 MidiPlayer.prototype.reset = function (to) {
 	$('#playbackSlider').slider('option', 'value', to);
 	highlightbar.move(to);
@@ -55,6 +65,7 @@ MidiPlayer.prototype.reset = function (to) {
 	this.setSongPosition(to);
 }
 
+// add a given note to Java, at given column 
 MidiPlayer.prototype.addToPlayer = function (column, note) {
 	var i = this.instruments.indexOf(note.instrument);
 	var p = note.pitch;
@@ -63,12 +74,14 @@ MidiPlayer.prototype.addToPlayer = function (column, note) {
 	applet.addNote([i, p, column, column + note.noteLength - 1]);
 }
 
+// remove a given note from the given column
 MidiPlayer.prototype.removeFromPlayer = function (column, note) {
 	var i = this.instruments.indexOf(note.instrument);
 	var p = note.pitch;
 	applet.removeNote([i, p, column, column + note.noteLength - 1]);
 }
 
+// set current song position
 MidiPlayer.prototype.setSongPosition = function(pos) {
 	this.notePosition = pos;
 	this.basePosition = pos;
@@ -82,7 +95,8 @@ MidiPlayer.prototype.setSongPosition = function(pos) {
 	this.positionTracker = Math.floor(column.offsetLeft/g.offsetWidth)+1;
 }
 
-
+// updates the song position, (changing location of highlight bar and playback bar)
+// stops when end of the song is reached
 function updateSongPosition() {
 	var g = document.getElementById('grid');
 	var b = document.getElementsByClassName('highlightbar')[0];
@@ -104,11 +118,13 @@ function updateSongPosition() {
 	}
 }
 
+// update the max number of columns
 MidiPlayer.prototype.updatePlayback = function (numColumn) {
 	this.maxValue = numColumn;
 	$('#playbackSlider').slider('option', 'max', numColumn);
 }
 
+// creates the tempo slider
 function createTempoSlider(initialValue, player) {
 	$("#tempo").slider({
 		// Initializing values
@@ -128,6 +144,7 @@ function createTempoSlider(initialValue, player) {
 	update_bpmValueOnPage(player);
 }
 
+// creates the playback slider
 function createPlayerSlider(initialValue) {	
 	$("#playbackSlider").slider({
 		// Initializing values
@@ -141,6 +158,7 @@ function createPlayerSlider(initialValue) {
 	$("#playbackSlider").slider("disable");
 }
 
+// updates the tempo
 function update_bpmValueOnPage(player){
 	// get the location to update
 	var bpm = document.getElementById("sliderValue");

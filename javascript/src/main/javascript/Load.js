@@ -1,6 +1,16 @@
+/*
+	CSE 403 Cloud Composer Group (https://code.google.com/p/cloud-composer/wiki/CloudComposer)
+	Eui Min Jung, Hannah Hemmaplardh, James Vaughan, Jared Clement, Junebae Kye, Jungryul Choi, Michael Lam
+	
+	Loads an old session from a XML file
+*/
+
 var SESSION = "session";
+
+// figure out the location of the xml file
 var SERVER = "http://"+window.location.hostname+window.location.pathname.substr(0, window.location.pathname.lastIndexOf("/"))+"/songs/";
 
+// check if the parameters were passed
 function checkSession() {
 	var url = window.location.search;
 	var params = url.split("&");
@@ -15,6 +25,7 @@ function checkSession() {
 	return false;
 }
 
+// load the session from the xml file using ajax
 function loadSession() {
 	var sessionID = checkSession();
 	if (sessionID) {
@@ -34,6 +45,7 @@ function loadSession() {
 	}
 }
 
+// given XML data, manually add notes to the grid, simulating the mouse clicking and dragging
 function addSessionData(xml) {
 	var head = xml.getElementsByTagName("noteData")[0];
 	var columns = head.getElementsByTagName("column");
