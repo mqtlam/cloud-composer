@@ -244,18 +244,6 @@ function startElemHandler($parser, $name, $attribs) {
             }
         }
     }
-    
-    /*foreach ($INSTRUMENTS as $instr => $instrName)
-    {
-        if (strcasecmp($name, $instrName) == 0) {
-          // <name> detected
-          $_currentInstrument = $instr;
-          $_currentColumn[$_currentInstrument] = $_currentCol;
-          
-          // reset notesBuffer
-          $_notesBuffer = "";
-        }
-    }*/
 }
 
 /**
@@ -285,18 +273,6 @@ function endElemHandler($parser, $name) {
         // reset notesBuffer for sanity
         $_notesBuffer = "";
     }
-    
-    /*
-    foreach ($INSTRUMENTS as $instr => $instrName)
-    {
-        if (strcasecmp($name, $instrName) == 0) {
-          // </name> detected          
-          parseNotes();
-          
-          // reset notesBuffer for sanity
-          $_notesBuffer = "";
-        }
-    }*/
 }
 
 /**
@@ -547,7 +523,8 @@ function interpretData($data)
     // {{{ parse XML
 
     // new xml parser object
-    $xmlParser = xml_parser_create() or die("XML SAX NOT SUPPORTED");
+    $xmlParser = xml_parser_create()
+      or die("XML SAX NOT SUPPORTED");
     xml_set_element_handler($xmlParser, "startElemHandler", "endElemHandler");
     xml_set_character_data_handler($xmlParser, "characterData");
     xml_parser_set_option($xmlParser, XML_OPTION_CASE_FOLDING, 0);
@@ -591,7 +568,6 @@ function saveFile($data, $filename)
 {
     // write data
     $fileHandler = fopen(SAVE_DIRECTORY . $filename . LILY_FILE_EXTENSION, 'w');
-//        or die("CANNOT OPEN FILE");
     $dataToWrite = $data;
     fwrite($fileHandler, $dataToWrite);
     fclose($fileHandler);
@@ -599,17 +575,13 @@ function saveFile($data, $filename)
 
 /**
  * Generates the PDF using Lilypond.
-
  * Assumes the lily file is already created.
  */
 function generatePdf($filename)
 {
   $output = shell_exec('~/lilypond/usr/bin/lilypond ' . SAVE_DIRECTORY . $filename . LILY_FILE_EXTENSION);
-//    or die("PDF GENERATION FAILED");
 	shell_exec('mv *.pdf songs/');
 	shell_exec('mv *.ps songs/');
-  // check if generated file exists
-  //return file_exists(SAVE_DIRECTORY . $filename . LILY_FILE_EXTENSION);
 }
 
 /**
@@ -643,7 +615,7 @@ if (isset($_GET[TEST_PARAM]))
 // Save .ly file
 saveFile($lilydata, $filename);
 
-// Generate PDF file from .ly file
+// Generate pdf file from .ly file
 generatePdf($filename);
 
 // Display the link
