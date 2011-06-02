@@ -1,0 +1,18 @@
+/*
+	CSE 403 Cloud Composer Group (https://code.google.com/p/cloud-composer/wiki/CloudComposer)
+	Eui Min Jung, Hannah Hemmaplardh, James Vaughan, Jared Clement, Junebae Kye, Jungryul Choi, Michael Lam
+	
+	Styling for tutorial
+*/
+
+#tutorial
+{
+	color: #222222;
+	font-family:arial, sans-serif;
+}
+
+#tutorial > h2
+{
+	text-align:center;
+}
+

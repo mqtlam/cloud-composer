@@ -1,0 +1,25 @@
+/*
+	CSE 403 Cloud Composer Group (https://code.google.com/p/cloud-composer/wiki/CloudComposer)
+	Eui Min Jung, Hannah Hemmaplardh, James Vaughan, Jared Clement, Junebae Kye, Jungryul Choi, Michael Lam
+	
+	Styling for browser info box
+*/
+
+#browserInfo
+{
+	color: #000000;
+	vertical-align:middle;
+	margin: 10px;
+	
+}
+
+#browserInfo > h1
+{
+	text-align:center;
+}
+
+#browserInfo span
+{
+	text-decoration:underline;
+	font-weight:bold;
+}

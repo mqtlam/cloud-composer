@@ -1,0 +1,50 @@
+<!--
+	CSE 403 Cloud Composer Group (https://code.google.com/p/cloud-composer/wiki/CloudComposer)
+	Eui Min Jung, Hannah Hemmaplardh, James Vaughan, Jared Clement, Junebae Kye, Jungryul Choi, Michael Lam
+	
+	Page that explains the possible problem with Linux Platform
+-->
+
+<html>
+	<head>
+		<title>Issues</title>
+		<style type="text/css">
+			body {background-color:#1BAEE8;}
+			p.solution{text-indent:25px;}
+			p.command{text-indent:50px;}
+		</style>
+	</head>
+	<body>
+		<h1>Issues</h1>
+		<p>
+			<b>javax.sound.midi.MidiUnavailableException on GNU Linux System</b>
+		</p>
+		<p class="solution">
+			On some GNU linux systems, MIDI module is not loaded initially. In this case, you have to load "Sound Sequence" module.
+		</p>
+		<p class="solution">
+			To check whether if "Sound Sequence" Module is already loaded, execute the following command on a console.
+		</p>
+		<p class="command">
+			<i>$lsmod | grep snd_seq</i>
+		</p>
+		<p class="solution">
+			This command will show you loaded modules on Kernel. "Sound Sequence" Module is snd_seq.
+		</p>
+		<p class="solution">
+			If the name is not on the list, then execute the following command to load "Sound Sequence" Module on Kernel. (as root)
+		</p>
+		<p class="command">
+			$modprobe snd_seq
+		</p>
+		<p class="solution">
+			And, download alsa-oss on your system first. Here is the <a href=ftp://ftp.alsa-project.org/pub/oss-lib/>Link</a>.
+		</p>
+		<p class="solution">
+			The following command executes FireFox with alsa-oss as wrapper.
+		</p>
+		<p class="command">
+			$aoss firefox
+		</p>
+	</body>	
+</html>
