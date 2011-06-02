@@ -81,7 +81,7 @@ define("LILY_FILE_EXTENSION", ".ly");
 define("PDF_FILE_EXTENSION", ".pdf");
 
 /**
- * All instruments here. TODO: abstract out along with other files?
+ * All instruments here.
  */
 $INSTRUMENTS = array(   "PIANO"     => "piano",
                         "VIOLIN"    => "violin",
@@ -90,7 +90,7 @@ $INSTRUMENTS = array(   "PIANO"     => "piano",
                         "DRUM"      => "drum" );
 
 /**
- * All pitches here. TODO: abstract out along with other files?
+ * All pitches here.
  */
 $PITCHES = array(   0   => "c'",  // c4 = 60
                     1   => "d'",
@@ -191,8 +191,8 @@ foreach ($INSTRUMENTS as $instrument => $name)
 /**
  * Stores the current position state, used to compute rests.
  */
-$_currentCol = FIRST_COLUMN;
-$_currentColumn = array();
+$_currentCol = FIRST_COLUMN; // single for parsing
+$_currentColumn = array();  // per instrument
 foreach ($INSTRUMENTS as $instrument => $name)
 {
   $_currentColumn[$instrument] = FIRST_COLUMN;
@@ -674,7 +674,7 @@ function displayLink($filename)
 }
 
 // }}}
-// {{{ SAVE SESSION AND DISPLAY LINK
+// {{{ *** THE SCRIPT BELOW: SAVE SESSION AND DISPLAY LINK ***
 
 // This is for easy debugging purposes.
 $data = $_POST[DATA_PARAM];
