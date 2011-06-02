@@ -241,7 +241,7 @@ function startElemHandler($parser, $name, $attribs)
         // <noteData tempo="num"> detected
         $_tempo = $attribs[NOTE_DATA_TEMPO_ATTR];
     }
-    else if (strcasecmp($name, COLUMN_TAG) == 0) =
+    else if (strcasecmp($name, COLUMN_TAG) == 0)
     {
         // <column id="num"> detected
         $_currentCol = $attribs[COLUMN_ID_ATTR];
