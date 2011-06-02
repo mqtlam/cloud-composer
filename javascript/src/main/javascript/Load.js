@@ -28,7 +28,7 @@ function checkSession() {
 // load the session from the xml file using ajax
 function loadSession() {
 	var sessionID = checkSession();
-	if (sessionID) {
+	if (sessionID && applet.player && applet.player.earlySetString == "") {
 		//////// LOAD the xml data through ajax call
 		var xmlhttp;
 		var linkURL;

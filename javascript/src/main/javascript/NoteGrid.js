@@ -343,7 +343,7 @@ NoteGrid.prototype.setStartingNote = function(evt, instrument) {
 	var note = new Note(1, instrument, pitch);
 	var index = this.notes.getIndex(column, note);
 
-	if (applet.player.earlySetString == "") {
+	if (applet.player && applet.player.earlySetString == "") {
 
 		// can't place a note if it's a part of the note is there.
 		if (square.className.indexOf(instrument.instrumentName+"LengthyNote") < 0) {
