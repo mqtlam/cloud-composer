@@ -169,7 +169,7 @@ function update_bpmValueOnPage(player){
 		bpm.innerHTML = "BPM = " + value;
 	}
 	// update bpm of midiplayer
-	if (applet) { 
+	if (applet.player && applet.player.earlySetString == "") { 
 		applet.setTempo(value);
 	}
 	if (grid && grid.notes) {
