@@ -73,7 +73,7 @@ define("TEST_PARAM", "testfile");
 /**
  * All instruments here. TODO: abstract out along with other files?
  */
-$instruments = array(   "PIANO"     => "piano",
+$INSTRUMENTS = array(   "PIANO"     => "piano",
                         "VIOLIN"    => "violin",
                         "GUITAR"    => "guitar",
                         "TRUMPET"   => "trumpet",
@@ -82,7 +82,7 @@ $instruments = array(   "PIANO"     => "piano",
 /**
  * All pitches here. TODO: abstract out along with other files?
  */
-$pitches = array(   0   => "c'",  // c4 = 60
+$PITCHES = array(   0   => "c'",  // c4 = 60
                     1   => "d'",
                     2   => "e'",
                     3   => "g'",
@@ -96,27 +96,27 @@ $pitches = array(   0   => "c'",  // c4 = 60
 /**
  * Note data tag name.
  */
-define("NOTE_DATA_NAME", "noteData");
+define("NOTE_DATA_TAG", "noteData");
 
 /**
  * Note data tempo attribute.
  */
-define("NOTE_DATA_TEMPO", "tempo");
+define("NOTE_DATA_TEMPO_ATTR", "tempo");
 
 /**
  * Column tag name.
  */
-define("COL_NAME", "column");
+define("COLUMN_TAG", "column");
 
 /**
  * Length tag name.
  */
-define("LENGTH_NAME", "length");
+define("LENGTH_TAG", "length");
 
 /**
  * Pitch tag name.
  */
-define("PITCH_NAME", "pitch");
+define("PITCH_TAG", "pitch");
 
 /**
  * Instrument tag name.
@@ -126,17 +126,17 @@ define("INSTRUMENT_TAG", "instrument");
 /**
  * Name attribute for instrument tag.
  */
-define("INSTRUMENT_NAME_ATTRIBUTE", "name");
+define("INSTRUMENT_NAME_ATTR", "name");
 
 /**
  * Column id attribute.
  */
-define("COL_ID", "id");
+define("COLUMN_ID_ATTR", "id");
 
 /**
  * Index of first column in note grid.
  */
-define("FIRST_COL", 0);
+define("FIRST_COLUMN", 0);
 
 /**
  * How many sixteenth notes per measure, used for time signature calculation.
@@ -162,7 +162,7 @@ $tempo = 0;
 /**
  * Stores the current instrument as a state from the XML parser.
  */
-$currentInstrument = $instruments['PIANO'];
+$currentInstrument = $INSTRUMENTS['PIANO'];
 
 /**
  * Stores the entire transcription as a string to be written.
@@ -179,10 +179,10 @@ foreach ($instruments as $instrument => $name)
 /**
  * Stores the current position state, used to compute rests.
  */
-$currentCol = FIRST_COL;
+$currentCol = FIRST_COLUMN;
 $currentColumn = array();
 foreach ($instruments as $instrument => $name)
-  $currentColumn[$instrument] = FIRST_COL;
+  $currentColumn[$instrument] = FIRST_COLUMN;
 
 /**
  * Stores the total amount of rhythms processed,
@@ -190,7 +190,7 @@ foreach ($instruments as $instrument => $name)
  */
 $rhythmBuffer = array();
 foreach ($instruments as $instrument => $name)
-  $rhythmBuffer[$instrument] = FIRST_COL;
+  $rhythmBuffer[$instrument] = FIRST_COLUMN;
 
 /**
  * Stores a buffer of {length,pitch}'s per instrument per column.
@@ -210,7 +210,7 @@ $withinPitchTag = false;
  * $attribs is an array of attributes.
  */
 function startElemHandler($parser, $name, $attribs) {
-    global $instruments;
+    global $INSTRUMENTS;
     global $currentCol;
     global $currentColumn;
     global $currentInstrument;
@@ -219,22 +219,22 @@ function startElemHandler($parser, $name, $attribs) {
     global $withinLengthTag;
     global $withinPitchTag;
 
-    if (strcasecmp($name, NOTE_DATA_NAME) == 0) {
+    if (strcasecmp($name, NOTE_DATA_TAG) == 0) {
         // <noteData tempo="num"> detected
-        $tempo = $attribs[NOTE_DATA_TEMPO];
-    } else if (strcasecmp($name, COL_NAME) == 0) {
+        $tempo = $attribs[NOTE_DATA_TEMPO_ATTR];
+    } else if (strcasecmp($name, COLUMN_TAG) == 0) {
         // <column id="num"> detected
-        $currentCol = $attribs[COL_ID];
-    } else if (strcasecmp($name, LENGTH_NAME) == 0) {
+        $currentCol = $attribs[COLUMN_ID_ATTR];
+    } else if (strcasecmp($name, LENGTH_TAG) == 0) {
         // <length> detected
         $withinLengthTag = true;
-    } else if (strcasecmp($name, PITCH_NAME) == 0) {
+    } else if (strcasecmp($name, PITCH_TAG) == 0) {
         // <pitch> detected
         $withinPitchTag = true;
     } else if (strcasecmp($name, INSTRUMENT_TAG) == 0) {
         foreach ($instruments as $instr => $instrName)
         {
-            if (strcasecmp($attribs[INSTRUMENT_NAME_ATTRIBUTE], $instrName) == 0) {
+            if (strcasecmp($attribs[INSTRUMENT_NAME_ATTR], $instrName) == 0) {
               // <name> detected
               $currentInstrument = $instr;
               $currentColumn[$currentInstrument] = $currentCol;
@@ -263,7 +263,7 @@ function startElemHandler($parser, $name, $attribs) {
  * e.g. </start>. $name stores the tag name.
  */
 function endElemHandler($parser, $name) {
-    global $instruments;
+    global $INSTRUMENTS;
     global $currentCol;
     global $currentColumn;
     global $currentInstrument;
@@ -272,10 +272,10 @@ function endElemHandler($parser, $name) {
     global $withinLengthTag;
     global $withinPitchTag;
     
-    if (strcasecmp($name, LENGTH_NAME) == 0) {
+    if (strcasecmp($name, LENGTH_TAG) == 0) {
         // </length> detected
         $withinLengthTag = false;
-    } else if (strcasecmp($name, PITCH_NAME) == 0) {
+    } else if (strcasecmp($name, PITCH_TAG) == 0) {
         // </pitch> detected
         $withinPitchTag = false;
     } else if (strcasecmp($name, INSTRUMENT_TAG) == 0) {
@@ -321,7 +321,7 @@ function characterData($parser, $data) {
  */
 function parseNotes()
 {
-    global $pitches;
+    global $PITCHES;
     global $currentColumn;
     global $rhythmBuffer;
     global $currentInstrument;
@@ -411,7 +411,7 @@ function parseNotes()
  */
 function durationHelper($duration, $chord)
 {
-    global $pitches;
+    global $PITCHES;
     global $currentColumn;
     global $rhythmBuffer;
     global $currentInstrument;
@@ -535,10 +535,10 @@ function generateFileName()
  */
 function interpretData($data)
 {
+    global $INSTRUMENTS;
+    global $PITCHES;
     global $newData;
     global $newDataPerInstrument;
-    global $instruments;
-    global $pitches;
     global $exactTranscription;
     global $tempo;
 
@@ -602,7 +602,7 @@ function saveFile($data, $filename)
 
  * Assumes the lily file is already created.
  */
-function generatePDF($filename)
+function generatePdf($filename)
 {
   $output = shell_exec('~/lilypond/usr/bin/lilypond ' . SAVE_DIRECTORY . $filename . LILY_FILE_EXTENSION);
 //    or die("PDF GENERATION FAILED");
@@ -644,7 +644,7 @@ if (isset($_GET[TEST_PARAM]))
 saveFile($lilydata, $filename);
 
 // Generate PDF file from .ly file
-generatePDF($filename);
+generatePdf($filename);
 
 // Display the link
 displayLink($filename);
