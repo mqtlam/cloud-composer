@@ -184,7 +184,9 @@ $_newData = "";
  */
 $_newDataPerInstrument = array();
 foreach ($INSTRUMENTS as $instrument => $name)
+{
   $_newDataPerInstrument[$instrument] = "";
+}
 
 /**
  * Stores the current position state, used to compute rests.
@@ -192,7 +194,9 @@ foreach ($INSTRUMENTS as $instrument => $name)
 $_currentCol = FIRST_COLUMN;
 $_currentColumn = array();
 foreach ($INSTRUMENTS as $instrument => $name)
+{
   $_currentColumn[$instrument] = FIRST_COLUMN;
+}
 
 /**
  * Stores the total amount of rhythms processed,
@@ -200,7 +204,9 @@ foreach ($INSTRUMENTS as $instrument => $name)
  */
 $_rhythmBuffer = array();
 foreach ($INSTRUMENTS as $instrument => $name)
+{
   $_rhythmBuffer[$instrument] = FIRST_COLUMN;
+}
 
 /**
  * Stores a buffer of {length,pitch}'s per instrument per column.
@@ -219,7 +225,8 @@ $_withinPitchTag = false;
  * e.g. <start>. $name stores the tag name and 
  * $attribs is an array of attributes.
  */
-function startElemHandler($parser, $name, $attribs) {
+function startElemHandler($parser, $name, $attribs)
+{
     global $INSTRUMENTS;
     global $_currentCol;
     global $_currentColumn;
@@ -229,22 +236,32 @@ function startElemHandler($parser, $name, $attribs) {
     global $_withinLengthTag;
     global $_withinPitchTag;
 
-    if (strcasecmp($name, NOTE_DATA_TAG) == 0) {
+    if (strcasecmp($name, NOTE_DATA_TAG) == 0)
+    {
         // <noteData tempo="num"> detected
         $_tempo = $attribs[NOTE_DATA_TEMPO_ATTR];
-    } else if (strcasecmp($name, COLUMN_TAG) == 0) {
+    }
+    else if (strcasecmp($name, COLUMN_TAG) == 0) =
+    {
         // <column id="num"> detected
         $_currentCol = $attribs[COLUMN_ID_ATTR];
-    } else if (strcasecmp($name, LENGTH_TAG) == 0) {
+    }
+    else if (strcasecmp($name, LENGTH_TAG) == 0)
+    {
         // <length> detected
         $_withinLengthTag = true;
-    } else if (strcasecmp($name, PITCH_TAG) == 0) {
+    }
+    else if (strcasecmp($name, PITCH_TAG) == 0)
+    {
         // <pitch> detected
         $_withinPitchTag = true;
-    } else if (strcasecmp($name, INSTRUMENT_TAG) == 0) {
+    }
+    else if (strcasecmp($name, INSTRUMENT_TAG) == 0)
+    {
         foreach ($INSTRUMENTS as $instr => $instrName)
         {
-            if (strcasecmp($attribs[INSTRUMENT_NAME_ATTR], $instrName) == 0) {
+            if (strcasecmp($attribs[INSTRUMENT_NAME_ATTR], $instrName) == 0)
+            {
               // <name> detected
               $_currentInstrument = $instr;
               $_currentColumn[$_currentInstrument] = $_currentCol;
@@ -260,7 +277,8 @@ function startElemHandler($parser, $name, $attribs) {
  * Called whenever SAX parser encounters an end tag,
  * e.g. </start>. $name stores the tag name.
  */
-function endElemHandler($parser, $name) {
+function endElemHandler($parser, $name)
+{
     global $INSTRUMENTS;
     global $_currentCol;
     global $_currentColumn;
@@ -270,13 +288,18 @@ function endElemHandler($parser, $name) {
     global $_withinLengthTag;
     global $_withinPitchTag;
     
-    if (strcasecmp($name, LENGTH_TAG) == 0) {
+    if (strcasecmp($name, LENGTH_TAG) == 0)
+    {
         // </length> detected
         $_withinLengthTag = false;
-    } else if (strcasecmp($name, PITCH_TAG) == 0) {
+    }
+    else if (strcasecmp($name, PITCH_TAG) == 0)
+    {
         // </pitch> detected
         $_withinPitchTag = false;
-    } else if (strcasecmp($name, INSTRUMENT_TAG) == 0) {
+    }
+    else if (strcasecmp($name, INSTRUMENT_TAG) == 0)
+    {
         // </instrument> detected          
         parseNotes();
         
@@ -289,16 +312,21 @@ function endElemHandler($parser, $name) {
  * Called whenever SAX parser encounters text data between tags,
  * e.g. <start>DATA</end>, where DATA would be stored in $data.
  */
-function characterData($parser, $data) {
+function characterData($parser, $data)
+{
     // text data detected
     global $_withinLengthTag;
     global $_withinPitchTag;
     global $_notesBuffer;
     
     if ($_withinLengthTag)
+    {
       $_notesBuffer .= "{{$data},";
+    }
     else if ($_withinPitchTag)
+    {
       $_notesBuffer .= "{$data}}";
+    }
 }
 
 /**
@@ -321,7 +349,8 @@ function parseNotes()
     
     // This describes a state where there is a start to polyphony.
     // We ignore it for now, i.e. don't trascribe it.
-    if ($_rhythmBuffer[$_currentInstrument] > $_currentColumn[$_currentInstrument]) {
+    if ($_rhythmBuffer[$_currentInstrument] > $_currentColumn[$_currentInstrument])
+    {
       $_exactTranscription = false;
       return;
     }
@@ -332,16 +361,21 @@ function parseNotes()
       $nextBar = $_rhythmBuffer[$_currentInstrument];
       
       if ($_rhythmBuffer[$_currentInstrument] % SIXTEENTH_NOTES_PER_MEASURE != 0)
+      {
         $nextBar = $_rhythmBuffer[$_currentInstrument] + (SIXTEENTH_NOTES_PER_MEASURE - $_rhythmBuffer[$_currentInstrument] % SIXTEENTH_NOTES_PER_MEASURE);
+      }
       
       // fills in rest up to the measure if one exists
-      if ($_currentColumn[$_currentInstrument] > $nextBar) {
+      if ($_currentColumn[$_currentInstrument] > $nextBar)
+      {
         $restDuration = $nextBar - $_rhythmBuffer[$_currentInstrument];
         durationHelper($restDuration, "r");
         
         $restDuration = $_currentColumn[$_currentInstrument] - $nextBar;
         durationHelper($restDuration, "r");
-      } else {
+      }
+      else
+      {
         $restDuration = $_currentColumn[$_currentInstrument] - $_rhythmBuffer[$_currentInstrument];
         durationHelper($restDuration, "r");
       }
@@ -362,22 +396,28 @@ function parseNotes()
     $duration = 0;
 
     // pass 1: find max duration among col
-    foreach ($rows as $row) {
+    foreach ($rows as $row)
+    {
       list($length, $pitch) = explode(",", $row);
       
       // if two different durations detected in one column
       if ($duration > 0 && $duration != $length)
+      {
         $_exactTranscription = false;
+      }
       
       $duration = max($duration, $length);
     }
     
     // pass 2: only record notes with the max duration among col
-    foreach ($rows as $row) {
+    foreach ($rows as $row)
+    {
       list($length, $pitch) = explode(",", $row);
       
       if ($length == $duration)
+      {
         $chord .= "{$PITCHES[$pitch]} ";
+      }
     }
 
     $chord .= ">";
@@ -416,7 +456,9 @@ function durationHelper($duration, $chord)
       $currentDuration = min(SIXTEENTH_NOTES_PER_MEASURE, $remainingDuration);
       
       if ($usingNotes)
+      {
         $_rhythmBuffer[$_currentInstrument] += $currentDuration;
+      }
 
       // if any remaining duration left after the (possible) whole note,
       // use it up in the next iteration of the loop
@@ -437,33 +479,54 @@ function durationHelper($duration, $chord)
         // {{{ for general notation case
 
         if ($numQuarterNotes == 1)
+        {
           $_newDataPerInstrument[$_currentInstrument] .= " {$inserted}4 ";
+        }
         else if ($numQuarterNotes == 2)
+        {
           $_newDataPerInstrument[$_currentInstrument] .= " {$inserted}2 ";
+        }
         else if ($numQuarterNotes == 3)
+        {
           $_newDataPerInstrument[$_currentInstrument] .= " {$inserted}2. ";
+        }
         else if ($numQuarterNotes == 4)
+        {
           $_newDataPerInstrument[$_currentInstrument] .= " {$inserted}1 ";
+        }
 
-        if ($remainingSixteenthNotes > 0 && $numQuarterNotes > 0) {
+        if ($remainingSixteenthNotes > 0 && $numQuarterNotes > 0)
+        {
           if ($usingNotes)
+          {
             $_newDataPerInstrument[$_currentInstrument] .= " ~ ";
+          }
           else
+          {
             $_newDataPerInstrument[$_currentInstrument] .= " ";
+          }
         }
 
         if ($remainingSixteenthNotes == 1)
+        {
           $_newDataPerInstrument[$_currentInstrument] .= " {$inserted}16 ";
+        }
         else if ($remainingSixteenthNotes == 2)
+        {
           $_newDataPerInstrument[$_currentInstrument] .= " {$inserted}8 ";
+        }
         else if ($remainingSixteenthNotes == 3)
+        {
           $_newDataPerInstrument[$_currentInstrument] .= " {$inserted}8. ";
+        }
 
         // }}}
       }
 
       if ($usingNotes && $remainingDuration > 0)
+      {
         $_newDataPerInstrument[$_currentInstrument] .= " ~ ";
+      }
 
     }
 }
@@ -484,8 +547,10 @@ function generateFileName()
     $existingFileNames = array();
     $handler = opendir(SAVE_DIRECTORY);
 
-    while ($file = readdir($handler)) {
-        if ($file != "." && $file != "..") {
+    while ($file = readdir($handler))
+    {
+        if ($file != "." && $file != "..")
+        {
             $existingFileNames[] = $file;
         }
     }
@@ -501,8 +566,8 @@ function generateFileName()
     {
         $filename = rand(1000000000, 9999999999);
 
-        if (array_search($filename . LILY_FILE_EXTENSION,
-            $existingFileNames)) {
+        if (array_search($filename . LILY_FILE_EXTENSION, $existingFileNames))
+        {
             $filename = "";
         }
     }
@@ -555,13 +620,19 @@ function interpretData($data)
     {
       $_newData .= "\\new Staff\n{\n\t\\set Staff.instrumentName = #\"{$INSTRUMENTS[$instr]}\""
               . "\n\t\\clef treble\n\t\\time $timeSignatureNumerator/4\n\t";
+      
       if ($_tempo > 0)
+      {
         $_newData .= "\\tempo 4 = $_tempo\n\t";
+      }
+      
       $_newData .= $instrumentData . " \\bar \"|.\"" . "\n}\n\n";
     }
     
     if (!$_exactTranscription)
+    {
       $_newData .= "\\markup {\n\t" . SIMPLIFIED_TRANSCRIPTION_MESSAGE . "\n}\n";
+    }
 
     // }}}
 
@@ -605,8 +676,10 @@ function displayLink($filename)
 // }}}
 // {{{ SAVE SESSION AND DISPLAY LINK
 
+// This is for easy debugging purposes.
 $data = $_POST[DATA_PARAM];
-if (isset($_GET[TEST_PARAM])) {
+if (isset($_GET[TEST_PARAM]))
+{
   $myFile = $_GET[TEST_PARAM];
   $fh = fopen($myFile, 'r')
     or die("CANNOT LOAD TEST FILE");
