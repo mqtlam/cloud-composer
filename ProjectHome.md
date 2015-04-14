@@ -1,0 +1,1 @@
+A simple web tool for creating online music compositions.
